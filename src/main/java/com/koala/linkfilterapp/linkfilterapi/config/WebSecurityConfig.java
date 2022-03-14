@@ -42,7 +42,9 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/","/checkLink","/reportLink","/getSponsor").permitAll()
                 .anyRequest().fullyAuthenticated()
                 .and()
-                .oauth2Login().and().
+//                .httpBasic()
+                .oauth2Login()
+                .and().
                 csrf().disable().cors();
     }
 
