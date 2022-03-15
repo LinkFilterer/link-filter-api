@@ -3,11 +3,11 @@ package com.koala.linkfilterapp.linkfilterapi.service.common.impl;
 import com.koala.linkfilterapp.linkfilterapi.api.common.dto.response.RequestHistoryData;
 import com.koala.linkfilterapp.linkfilterapi.api.common.dto.response.RequestHistoryStatResponse;
 import com.koala.linkfilterapp.linkfilterapi.api.common.dto.response.RequestHistoryStatistic;
+import com.koala.linkfilterapp.linkfilterapi.api.common.entity.RequestHistory;
 import com.koala.linkfilterapp.linkfilterapi.api.common.enums.RequestType;
 import com.koala.linkfilterapp.linkfilterapi.api.common.enums.TimeInterval;
-import com.koala.linkfilterapp.linkfilterapi.api.link.entity.Link;
-import com.koala.linkfilterapp.linkfilterapi.api.common.entity.RequestHistory;
 import com.koala.linkfilterapp.linkfilterapi.api.common.exception.LinkException;
+import com.koala.linkfilterapp.linkfilterapi.api.link.entity.Link;
 import com.koala.linkfilterapp.linkfilterapi.repository.RequestHistoryRepository;
 import org.dozer.DozerBeanMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,7 +27,8 @@ import java.time.format.DateTimeFormatter;
 import java.util.*;
 import java.util.logging.Logger;
 
-import static com.koala.linkfilterapp.linkfilterapi.service.common.CommonApiConstants.*;
+import static com.koala.linkfilterapp.linkfilterapi.service.common.CommonApiConstants.CONNECTION_THRESHOLD;
+import static com.koala.linkfilterapp.linkfilterapi.service.common.CommonApiConstants.REQUEST_DATE_FORMAT;
 import static java.util.Objects.nonNull;
 
 @Service
