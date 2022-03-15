@@ -1,7 +1,6 @@
 package com.koala.linkfilterapp.linkfilterapi.controller.maintenance;
 
 import com.koala.linkfilterapp.linkfilterapi.api.common.dto.response.RestResponse;
-import com.koala.linkfilterapp.linkfilterapi.api.common.enums.LinkSortType;
 import com.koala.linkfilterapp.linkfilterapi.api.common.enums.SponsorSortType;
 import com.koala.linkfilterapp.linkfilterapi.api.common.exception.LinkException;
 import com.koala.linkfilterapp.linkfilterapi.api.sponsor.dto.request.SponsorRequestBean;
@@ -18,9 +17,6 @@ import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 import java.util.logging.Logger;
 
-import static com.koala.linkfilterapp.linkfilterapi.controller.ControllerConstants.UI_SERVER_ORIGIN;
-
-@CrossOrigin(origins = UI_SERVER_ORIGIN)
 @RestController
 public class SponsorMaintenanceController {
     Logger log = Logger.getLogger("SponsorMaintenanceController");
