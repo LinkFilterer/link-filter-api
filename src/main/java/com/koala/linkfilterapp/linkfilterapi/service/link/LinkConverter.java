@@ -1,8 +1,8 @@
 package com.koala.linkfilterapp.linkfilterapi.service.link;
 
-import com.koala.linkfilterapp.linkfilterapi.api.common.exception.LinkException;
 import com.koala.linkfilterapp.linkfilterapi.api.link.dto.response.LinkBean;
 import com.koala.linkfilterapp.linkfilterapi.api.link.entity.Link;
+import com.koala.linkfilterapp.linkfilterapi.api.common.exception.LinkException;
 
 public class LinkConverter {
     public static Link convert(LinkBean bean) throws LinkException {

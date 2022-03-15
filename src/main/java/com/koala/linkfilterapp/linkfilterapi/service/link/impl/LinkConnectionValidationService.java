@@ -1,7 +1,7 @@
 package com.koala.linkfilterapp.linkfilterapi.service.link.impl;
 
-import com.koala.linkfilterapp.linkfilterapi.api.common.enums.LinkStatus;
 import com.koala.linkfilterapp.linkfilterapi.api.link.entity.Link;
+import com.koala.linkfilterapp.linkfilterapi.api.common.enums.LinkStatus;
 import org.jsoup.Connection;
 import org.jsoup.HttpStatusException;
 import org.jsoup.Jsoup;
@@ -17,7 +17,7 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import static com.koala.linkfilterapp.linkfilterapi.service.link.validator.LinkValidator.parseUrlToDomainString;
+import static com.koala.linkfilterapp.linkfilterapi.service.link.validator.LinkValidator.*;
 import static java.util.Objects.isNull;
 
 @Service

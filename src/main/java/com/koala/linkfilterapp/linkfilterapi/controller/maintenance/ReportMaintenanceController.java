@@ -1,20 +1,21 @@
 package com.koala.linkfilterapp.linkfilterapi.controller.maintenance;
 
 import com.koala.linkfilterapp.linkfilterapi.api.common.dto.response.RestResponse;
+import com.koala.linkfilterapp.linkfilterapi.api.common.enums.ReportType;
 import com.koala.linkfilterapp.linkfilterapi.api.common.exception.LinkException;
 import com.koala.linkfilterapp.linkfilterapi.api.report.dto.LinkReportBean;
 import com.koala.linkfilterapp.linkfilterapi.service.report.maintenance.impl.ReportMaintenanceServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.logging.Logger;
 
+import static com.koala.linkfilterapp.linkfilterapi.controller.ControllerConstants.UI_SERVER_ORIGIN;
+
+@CrossOrigin(origins = UI_SERVER_ORIGIN)
 @RestController
 public class ReportMaintenanceController {
     Logger log = Logger.getLogger("ReportMaintenanceController");

@@ -1,24 +1,26 @@
 package com.koala.linkfilterapp.linkfilterapi.controller;
 
+import com.koala.linkfilterapp.linkfilterapi.api.link.dto.response.LinkBean;
 import com.koala.linkfilterapp.linkfilterapi.api.common.dto.response.RestResponse;
+import com.koala.linkfilterapp.linkfilterapi.api.sponsor.dto.response.SponsorBean;
 import com.koala.linkfilterapp.linkfilterapi.api.common.enums.ReportType;
 import com.koala.linkfilterapp.linkfilterapi.api.common.exception.LinkException;
-import com.koala.linkfilterapp.linkfilterapi.api.link.dto.response.LinkBean;
-import com.koala.linkfilterapp.linkfilterapi.api.sponsor.dto.response.SponsorBean;
 import com.koala.linkfilterapp.linkfilterapi.service.common.impl.IpAddressServiceImpl;
-import com.koala.linkfilterapp.linkfilterapi.service.common.impl.RequestHistoryServiceImpl;
 import com.koala.linkfilterapp.linkfilterapi.service.link.impl.LinkServiceImpl;
+import com.koala.linkfilterapp.linkfilterapi.service.common.impl.RequestHistoryServiceImpl;
 import com.koala.linkfilterapp.linkfilterapi.service.sponsor.impl.SponsorServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.logging.Logger;
 
+import static com.koala.linkfilterapp.linkfilterapi.controller.ControllerConstants.BROWSER_EXTENSION_ORIGIN;
+import static com.koala.linkfilterapp.linkfilterapi.controller.ControllerConstants.UI_SERVER_ORIGIN;
+
+@CrossOrigin(origins = {UI_SERVER_ORIGIN, BROWSER_EXTENSION_ORIGIN})
 @RestController
 public class LinkController {
     Logger log = Logger.getLogger("LinkController");
