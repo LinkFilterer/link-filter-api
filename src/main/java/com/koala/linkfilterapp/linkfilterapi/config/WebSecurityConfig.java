@@ -39,7 +39,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
         http.authorizeRequests()
                 // Public
-                .antMatchers("/","/checkLink","/reportLink","/getSponsor").permitAll()
+                .antMatchers("/","/checkLink","/reportLink","/getSponsor","/oauth/token").permitAll()
                 .anyRequest().fullyAuthenticated()
                 .and()
 //                .httpBasic()
