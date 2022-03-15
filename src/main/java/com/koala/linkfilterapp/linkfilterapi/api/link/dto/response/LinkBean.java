@@ -1,7 +1,7 @@
 package com.koala.linkfilterapp.linkfilterapi.api.link.dto.response;
 
-import com.koala.linkfilterapp.linkfilterapi.api.common.enums.LinkStatus;
 import com.koala.linkfilterapp.linkfilterapi.api.sponsor.dto.response.SponsorBean;
+import com.koala.linkfilterapp.linkfilterapi.api.common.enums.LinkStatus;
 import lombok.Data;
 
 @Data

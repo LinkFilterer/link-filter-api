@@ -1,16 +1,20 @@
 package com.koala.linkfilterapp.linkfilterapi.service.link.impl;
 
+import com.koala.linkfilterapp.linkfilterapi.api.common.enums.RequestType;
+import com.koala.linkfilterapp.linkfilterapi.api.link.dto.request.LinkUpdate;
+import com.koala.linkfilterapp.linkfilterapi.api.link.dto.request.LinkUpdateRequest;
+import com.koala.linkfilterapp.linkfilterapi.api.link.dto.response.LinkBean;
+import com.koala.linkfilterapp.linkfilterapi.api.link.entity.Link;
 import com.koala.linkfilterapp.linkfilterapi.api.common.entity.RequestHistory;
 import com.koala.linkfilterapp.linkfilterapi.api.common.enums.LinkStatus;
 import com.koala.linkfilterapp.linkfilterapi.api.common.enums.ReportType;
-import com.koala.linkfilterapp.linkfilterapi.api.common.enums.RequestType;
 import com.koala.linkfilterapp.linkfilterapi.api.common.exception.LinkException;
-import com.koala.linkfilterapp.linkfilterapi.api.link.dto.response.LinkBean;
-import com.koala.linkfilterapp.linkfilterapi.api.link.entity.Link;
 import com.koala.linkfilterapp.linkfilterapi.repository.LinkRepository;
+import com.koala.linkfilterapp.linkfilterapi.service.report.ReportService;
+import com.koala.linkfilterapp.linkfilterapi.service.link.LinkConverter;
 import com.koala.linkfilterapp.linkfilterapi.service.common.impl.RequestHistoryServiceImpl;
 import com.koala.linkfilterapp.linkfilterapi.service.link.LinkService;
-import com.koala.linkfilterapp.linkfilterapi.service.report.ReportService;
+import org.openqa.selenium.chrome.ChromeOptions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
@@ -18,12 +22,13 @@ import org.springframework.util.CollectionUtils;
 
 import java.sql.Timestamp;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 import java.util.logging.Logger;
+import java.util.stream.Collectors;
 
-import static com.koala.linkfilterapp.linkfilterapi.service.common.CommonApiConstants.CHECK_LINK_CD;
-import static com.koala.linkfilterapp.linkfilterapi.service.common.CommonApiConstants.REPORT_LINK_CD;
+import static com.koala.linkfilterapp.linkfilterapi.service.common.CommonApiConstants.*;
 import static com.koala.linkfilterapp.linkfilterapi.service.link.LinkConverter.convert;
 import static com.koala.linkfilterapp.linkfilterapi.service.link.validator.LinkValidator.parseUrlToDomainString;
 import static com.koala.linkfilterapp.linkfilterapi.service.link.validator.LinkValidator.validateReportType;

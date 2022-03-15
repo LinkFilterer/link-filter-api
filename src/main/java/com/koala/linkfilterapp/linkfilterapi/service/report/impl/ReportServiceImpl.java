@@ -1,9 +1,9 @@
 package com.koala.linkfilterapp.linkfilterapi.service.report.impl;
 
-import com.koala.linkfilterapp.linkfilterapi.api.common.enums.LinkStatus;
-import com.koala.linkfilterapp.linkfilterapi.api.common.exception.LinkException;
 import com.koala.linkfilterapp.linkfilterapi.api.link.entity.Link;
 import com.koala.linkfilterapp.linkfilterapi.api.report.entity.LinkReport;
+import com.koala.linkfilterapp.linkfilterapi.api.common.enums.LinkStatus;
+import com.koala.linkfilterapp.linkfilterapi.api.common.exception.LinkException;
 import com.koala.linkfilterapp.linkfilterapi.repository.LinkReportRepository;
 import com.koala.linkfilterapp.linkfilterapi.repository.LinkRepository;
 import com.koala.linkfilterapp.linkfilterapi.service.report.ReportService;
@@ -14,7 +14,7 @@ import java.sql.Timestamp;
 import java.util.Optional;
 import java.util.logging.Logger;
 
-import static com.koala.linkfilterapp.linkfilterapi.service.common.CommonApiConstants.REPORT_INSPECTION_THRESHOLD;
+import static com.koala.linkfilterapp.linkfilterapi.service.common.CommonApiConstants.*;
 import static com.koala.linkfilterapp.linkfilterapi.service.report.LinkReportConverter.convert;
 
 @Service
