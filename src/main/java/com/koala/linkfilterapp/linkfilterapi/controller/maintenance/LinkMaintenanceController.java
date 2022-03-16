@@ -22,7 +22,6 @@ import org.springframework.web.bind.annotation.*;
 import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 import java.util.logging.Logger;
-import java.util.stream.Collectors;
 
 import static com.koala.linkfilterapp.linkfilterapi.controller.ControllerConstants.UI_SERVER_ORIGIN;
 import static com.koala.linkfilterapp.linkfilterapi.service.link.LinkConverter.convert;

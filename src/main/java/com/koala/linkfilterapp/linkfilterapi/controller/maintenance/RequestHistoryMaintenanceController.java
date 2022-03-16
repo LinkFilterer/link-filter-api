@@ -3,7 +3,6 @@ package com.koala.linkfilterapp.linkfilterapi.controller.maintenance;
 import com.koala.linkfilterapp.linkfilterapi.api.common.dto.response.RequestHistoryData;
 import com.koala.linkfilterapp.linkfilterapi.api.common.dto.response.RequestHistoryStatResponse;
 import com.koala.linkfilterapp.linkfilterapi.api.common.dto.response.RestResponse;
-import com.koala.linkfilterapp.linkfilterapi.api.common.entity.RequestHistory;
 import com.koala.linkfilterapp.linkfilterapi.api.common.enums.TimeInterval;
 import com.koala.linkfilterapp.linkfilterapi.api.common.exception.LinkException;
 import com.koala.linkfilterapp.linkfilterapi.service.common.impl.RequestHistoryServiceImpl;
@@ -11,9 +10,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 
-import javax.xml.ws.Response;
 import java.util.logging.Logger;
 
 import static com.koala.linkfilterapp.linkfilterapi.controller.ControllerConstants.UI_SERVER_MAINTENACE_ORIGIN;

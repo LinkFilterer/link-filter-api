@@ -1,7 +1,6 @@
 package com.koala.linkfilterapp.linkfilterapi.controller.maintenance;
 
 import com.koala.linkfilterapp.linkfilterapi.api.common.dto.response.RestResponse;
-import com.koala.linkfilterapp.linkfilterapi.api.common.enums.ReportType;
 import com.koala.linkfilterapp.linkfilterapi.api.common.exception.LinkException;
 import com.koala.linkfilterapp.linkfilterapi.api.report.dto.LinkReportBean;
 import com.koala.linkfilterapp.linkfilterapi.service.report.maintenance.impl.ReportMaintenanceServiceImpl;

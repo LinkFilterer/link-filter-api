@@ -1,14 +1,11 @@
 package com.koala.linkfilterapp.linkfilterapi.service.sponsor.impl;
 
-import com.koala.linkfilterapp.linkfilterapi.api.common.enums.LinkSortType;
 import com.koala.linkfilterapp.linkfilterapi.api.common.enums.SponsorSortType;
-import com.koala.linkfilterapp.linkfilterapi.api.link.entity.Link;
+import com.koala.linkfilterapp.linkfilterapi.api.common.exception.LinkException;
 import com.koala.linkfilterapp.linkfilterapi.api.sponsor.dto.request.SponsorRequestBean;
 import com.koala.linkfilterapp.linkfilterapi.api.sponsor.dto.response.SponsorBean;
 import com.koala.linkfilterapp.linkfilterapi.api.sponsor.entity.Sponsor;
-import com.koala.linkfilterapp.linkfilterapi.api.common.exception.LinkException;
 import com.koala.linkfilterapp.linkfilterapi.repository.SponsorRepository;
-import com.koala.linkfilterapp.linkfilterapi.service.link.LinkConverter;
 import com.koala.linkfilterapp.linkfilterapi.service.sponsor.SponsorService;
 import com.koala.linkfilterapp.linkfilterapi.service.sponsor.converter.SponsorConverter;
 import org.springframework.beans.factory.annotation.Autowired;

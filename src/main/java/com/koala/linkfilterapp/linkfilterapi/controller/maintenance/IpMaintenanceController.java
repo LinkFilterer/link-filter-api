@@ -1,13 +1,10 @@
 package com.koala.linkfilterapp.linkfilterapi.controller.maintenance;
 
 import com.koala.linkfilterapp.linkfilterapi.api.common.dto.request.BanAction;
-import com.koala.linkfilterapp.linkfilterapi.api.common.dto.request.IpBanRequest;
 import com.koala.linkfilterapp.linkfilterapi.api.common.dto.response.RestResponse;
 import com.koala.linkfilterapp.linkfilterapi.api.common.entity.IpAddress;
 import com.koala.linkfilterapp.linkfilterapi.api.common.enums.IpSortType;
-import com.koala.linkfilterapp.linkfilterapi.api.common.enums.SponsorSortType;
 import com.koala.linkfilterapp.linkfilterapi.api.common.exception.LinkException;
-import com.koala.linkfilterapp.linkfilterapi.api.sponsor.entity.Sponsor;
 import com.koala.linkfilterapp.linkfilterapi.service.common.impl.IpAddressServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
