@@ -36,11 +36,11 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
         http.authorizeRequests()
                 // Public
-                .antMatchers("/","/checkLink","/reportLink","/getSponsor","/oauth/token").permitAll()
+                .antMatchers("/","/checkLink","/reportLink","/getSponsor","/login").permitAll()
                 .anyRequest().fullyAuthenticated()
                 .and()
-//                .httpBasic()
-                .oauth2Login()
+                .httpBasic()
+//                .oauth2Login()
                 .and().
                 csrf().disable().cors();
     }
