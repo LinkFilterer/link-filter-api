@@ -25,16 +25,6 @@ public class ReportMaintenanceController {
     @Autowired
     ReportMaintenanceServiceImpl service;
 
-    @GetMapping(value = "/maintenance/getReportsByUrl")
-    public ResponseEntity<RestResponse<List<LinkReportBean>>> getReportsByUrl(
-            @RequestParam String url
-    ) throws LinkException {
-        List<LinkReportBean> response = service.getReportsByUrl(url);
-
-        return new ResponseEntity<>(
-                new RestResponse<>(HttpStatus.OK.toString(), "Successfully retrieved reports", response, null), HttpStatus.OK);
-    }
-
     @GetMapping(value = "maintenance/getReports")
     public ResponseEntity<RestResponse<Page<LinkReportBean>>> getReports(
             @RequestParam(value = "id", required = false) String id,
@@ -62,30 +52,6 @@ public class ReportMaintenanceController {
         return new ResponseEntity<>(
                 new RestResponse<>(HttpStatus.OK.toString(), "Successfully retrieved reports", response, null), HttpStatus.OK);
     }
-
-    @GetMapping(value = "/maintenance/getReportsByIp")
-    public ResponseEntity<RestResponse<List<LinkReportBean>>> getReportsByIp(
-            @RequestParam String ipAddress
-    ) throws LinkException {
-
-        List<LinkReportBean> response = service.getReportsByIp(ipAddress);
-
-        return new ResponseEntity<>(
-                new RestResponse<>(HttpStatus.OK.toString(), "Successfully retrieved reports", response, null), HttpStatus.OK);
-    }
-
-    @GetMapping(value = "/maintenance/getReportsByUrlAndIp")
-    public ResponseEntity<RestResponse<LinkReportBean>> getReportsByUrlAndIp(
-            @RequestParam String url,
-            @RequestParam String ipAddress
-    ) throws LinkException {
-
-        LinkReportBean response = service.getReportsByUrlAndIpAddress(url, ipAddress);
-
-        return new ResponseEntity<>(
-                new RestResponse<>(HttpStatus.OK.toString(), "Successfully retrieved reports", response, null), HttpStatus.OK);
-    }
-
 
     // Deletes all reports from given Ip
     @DeleteMapping(value = "/maintenance/deleteReportsByIp")
