@@ -1,4 +1,4 @@
-package com.koala.linkfilterapp.linkfilterapi.api.common.enums;
+package com.koala.linkfilterapp.linkfilterapi.api.link.enums;
 
 public enum LinkStatus {
     VERIFIED("VERIFIED"), // 0

@@ -1,10 +1,7 @@
 package com.koala.linkfilterapp.linkfilterapi.service.link.maintenance;
 
-import com.koala.linkfilterapp.linkfilterapi.api.common.entity.RequestHistory;
-import com.koala.linkfilterapp.linkfilterapi.api.common.enums.LinkSortType;
-import com.koala.linkfilterapp.linkfilterapi.api.common.enums.LinkStatus;
-import com.koala.linkfilterapp.linkfilterapi.api.common.enums.ReportType;
-import com.koala.linkfilterapp.linkfilterapi.api.common.enums.RequestType;
+import com.koala.linkfilterapp.linkfilterapi.api.link.dto.request.LinkSearchBean;
+import com.koala.linkfilterapp.linkfilterapi.api.link.enums.LinkStatus;
 import com.koala.linkfilterapp.linkfilterapi.api.common.exception.LinkException;
 import com.koala.linkfilterapp.linkfilterapi.api.link.dto.request.CreateLinkRequest;
 import com.koala.linkfilterapp.linkfilterapi.api.link.dto.request.LinkUpdate;
@@ -12,12 +9,9 @@ import com.koala.linkfilterapp.linkfilterapi.api.link.dto.request.LinkUpdateRequ
 import com.koala.linkfilterapp.linkfilterapi.api.link.dto.response.LinkBean;
 import com.koala.linkfilterapp.linkfilterapi.api.link.entity.Link;
 import com.koala.linkfilterapp.linkfilterapi.repository.LinkRepository;
-import com.koala.linkfilterapp.linkfilterapi.service.common.impl.RequestHistoryServiceImpl;
 import com.koala.linkfilterapp.linkfilterapi.service.link.LinkConverter;
 import com.koala.linkfilterapp.linkfilterapi.service.link.impl.LinkConnectionValidationService;
-import com.koala.linkfilterapp.linkfilterapi.service.link.impl.LinkValidationServiceImpl;
 import com.koala.linkfilterapp.linkfilterapi.service.link.impl.LinkWhoIsService;
-import com.koala.linkfilterapp.linkfilterapi.service.report.ReportService;
 import org.dozer.DozerBeanMapper;
 import org.openqa.selenium.chrome.ChromeOptions;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,22 +19,21 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
-import org.springframework.util.CollectionUtils;
+import org.springframework.util.StringUtils;
 
+import javax.persistence.criteria.Predicate;
 import java.sql.Timestamp;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 import java.util.logging.Logger;
 import java.util.stream.Collectors;
 
-import static com.koala.linkfilterapp.linkfilterapi.service.common.CommonApiConstants.REPORT_LINK_CD;
 import static com.koala.linkfilterapp.linkfilterapi.service.common.CommonApiConstants.SERVICE_LOG_MESSAGE;
-import static com.koala.linkfilterapp.linkfilterapi.service.link.LinkConverter.convert;
-import static com.koala.linkfilterapp.linkfilterapi.service.link.validator.LinkValidator.parseUrlToDomainString;
-import static com.koala.linkfilterapp.linkfilterapi.service.link.validator.LinkValidator.validateReportType;
 import static java.util.Objects.isNull;
 import static java.util.Objects.nonNull;
 
@@ -52,19 +45,10 @@ public class LinkMaintenanceService {
     LinkRepository repository;
 
     @Autowired
-    RequestHistoryServiceImpl requestHistoryService;
-
-    @Autowired
-    ReportService reportService;
-
-    @Autowired
     LinkConnectionValidationService connectionValidationService;
 
     @Autowired
     LinkWhoIsService whoIsService;
-
-    @Autowired
-    LinkValidationServiceImpl validationService;
 
     public Link createLink(CreateLinkRequest request) {
         Link entity = new DozerBeanMapper().map(request, Link.class);
@@ -75,104 +59,42 @@ public class LinkMaintenanceService {
         return res;
     }
 
-    public Page<LinkBean> getAllLinks(int pageNum, int size, LinkSortType sortType) {
-        Pageable page = PageRequest.of(pageNum, size).withSort(Sort.by(sortType.toString()).ascending());
-        Page<Link> found = repository.findAll(page);
-        return found.map(LinkConverter::convert);
+    public Page<LinkBean> getLinks(LinkSearchBean searchBean) {
+        Specification<Link> querySpec = createQuery(searchBean);
+        Pageable pageRequest = getPageableRequest(searchBean);
+        return repository.findAll(querySpec, pageRequest).map(LinkConverter::convert);
     }
 
-    public Page<LinkBean> searchLink(int pageNum, int size, LinkSortType sortType, String url) {
-        Pageable page = PageRequest.of(pageNum, size).withSort(Sort.by(sortType.toString()).ascending());
-        Page<Link> found = repository.findByUrlContains(url, page);
-        return found.map(LinkConverter::convert);
+    private Specification<Link> createQuery(LinkSearchBean searchBean) {
+        return (root, query, builder) -> {
+            final List<Predicate> predicates = new ArrayList<>();
+            if(StringUtils.hasText(searchBean.getUrl())) { predicates.add(builder.equal(root.<String>get("url"), searchBean.getUrl())); }
+            if(nonNull(searchBean.getStatus())) { predicates.add(builder.equal(root.<String>get("status"), searchBean.getStatus())); }
+            if(StringUtils.hasText(searchBean.getSecurityLevel())) { predicates.add(builder.equal(root.<String>get("securityLevel"), searchBean.getSecurityLevel())); }
+            if(StringUtils.hasText(searchBean.getBadCount())) { predicates.add(builder.equal(root.<String>get("badCount"), searchBean.getBadCount())); }
+            if(StringUtils.hasText(searchBean.getCreationDate())) { predicates.add(builder.equal(root.<String>get("creationDate"), searchBean.getCreationDate())); }
+            if(StringUtils.hasText(searchBean.getModifiedDate())) { predicates.add(builder.equal(root.<String>get("modifiedDate"), searchBean.getModifiedDate())); }
+            if(StringUtils.hasText(searchBean.getDescription())) { predicates.add(builder.equal(root.<String>get("description"), searchBean.getDescription())); }
+            if(nonNull(searchBean.getIsConnectable())) { predicates.add(builder.equal(root.<String>get("isConnectable"), searchBean.getIsConnectable())); }
+            if(nonNull(searchBean.getStatusCode())) { predicates.add(builder.equal(root.<String>get("statusCode"), searchBean.getStatusCode())); }
+            if(StringUtils.hasText(searchBean.getLastMaintenance())) { predicates.add(builder.equal(root.<String>get("lastMaintenance"), searchBean.getLastMaintenance())); }
+            if(StringUtils.hasText(searchBean.getWhoIsDate())) { predicates.add(builder.equal(root.<String>get("whoIsDate"), searchBean.getWhoIsDate())); }
+            return builder.and(predicates.toArray(new Predicate[predicates.size()]));
+        };
     }
 
-    public LinkBean getLink(String url) throws LinkException {
-        Optional<Link> res = repository.findById(url);
-        if (res.isPresent()) {
-            return LinkConverter.convert(res.get());
-        } else {
-            LinkException exception = new LinkException(HttpStatus.NOT_FOUND,String.format("Link with url: '%s' not found!", url), null, "Get Link", null);
-            log.warning(exception.toString());
-            throw exception;
-        }
-    }
-
-//    public List<LinkBean> checkLinks(List<String> urls, String ipAddress) throws LinkException {
-//        List<LinkBean> checkedLinks = new ArrayList<>();
-//        if(!CollectionUtils.isEmpty(urls)) {
-//            for (String url : urls) {
-//                checkedLinks.add(checkLink(url, ipAddress));
-//            }
-//        }
-//        return checkedLinks;
-//    }
-
-    private void performConnectionCheck(Link entity, RequestHistory request) {
-        if (connectionValidationService.isValidConnection(entity.getUrl())) {
-            whoIsService.setWhoIsDate(entity);
-            log.info("URL CONNECTABLE, UNKNOWN STATUS");
-            entity.setStatus(LinkStatus.SUSPICIOUS);
-            requestHistoryService.processRequestHistory(request, entity);
-        } else {
-            log.info("URL CANT BE CONNECTED TO");
-            entity.setStatus(LinkStatus.NOT_CONNECTABLE);
-            requestHistoryService.processRequestHistory(request, entity);
-        }
-        entity.setSecurityLevel(-1);
-        saveNewEntity(entity);
-    }
-
-    private boolean performConnectionCheck(Link entity) {
-        if (connectionValidationService.isValidConnection(entity.getUrl())) {
-            whoIsService.setWhoIsDate(entity);
-            log.info("URL CONNECTABLE, UNKNOWN STATUS");
-            entity.setStatus(LinkStatus.SUSPICIOUS);
-        } else {
-            log.info("URL CANT BE CONNECTED TO");
-            entity.setStatus(LinkStatus.NOT_CONNECTABLE);
-            return false;
-        }
-        entity.setSecurityLevel(-1);
-        saveNewEntity(entity);
-        return true;
-    }
-
-    // Will report a link
-    public LinkBean reportLink(String url, String ipAddress, ReportType reportType) throws LinkException {
-        log.info(REPORT_LINK_CD + " url = '" + url + "' received from " + ipAddress);
-        requestHistoryService.ipCheck(ipAddress);
-        RequestHistory request = requestHistoryService.saveRequestHistory(url, ipAddress, RequestType.REPORT);
-        log.info(request.toString());
-
-        List<String> errors = validationService.validateLinkRequest(url, ipAddress);
-        boolean isValid = validateReportType(reportType);
-
-        if (!CollectionUtils.isEmpty(errors) || (!ReportType.INVALID.equals(reportType) && !ReportType.VALID.equals(reportType))) {
-            LinkException exception = new LinkException(HttpStatus.BAD_REQUEST, "Error occurred while validating request: " + url, null, ipAddress, errors);
-            log.warning(exception.toString());
-            throw exception;
+    private Pageable getPageableRequest(LinkSearchBean searchBean) {
+        Sort sortOrder = Sort.by(searchBean.getSortType().toString());
+        Optional<Sort.Direction> sortDirection = Sort.Direction.fromOptionalString(searchBean.getSortDir());
+        if (sortDirection.isPresent()) {
+            sortOrder = Sort.by(sortDirection.get(), searchBean.getSortType().toString());
         }
 
-        String parsedUrl = parseUrlToDomainString(url);
-
-        Optional<Link> retrievedEntity = repository.findById(parsedUrl);
-        Link entity = null;
-
-        if (!retrievedEntity.isPresent()) {
-            entity = saveNewEntity(parsedUrl);
-            performConnectionCheck(entity, request);
-        } else if (retrievedEntity.get().getStatus().equals(LinkStatus.UNPROCCESSED)) {
-            retrievedEntity.get().setUrl(parsedUrl);
-            request.setUrl(parsedUrl);
-            performConnectionCheck(retrievedEntity.get(), request);
-        }
-
-        requestHistoryService.processRequestHistory(request, nonNull(entity) ? entity : retrievedEntity.get());
-        return convert(reportService.reportLink(parsedUrl, ipAddress, isValid));
+        return PageRequest.of(searchBean.getPageNo(), searchBean.getPageSize(), sortOrder);
     }
 
-    // TODO: ALL PUBLIC FUNCTIONS BELOW ARE FOR ADMIN USE
+
+    // TODO: ALL FUNCTIONS BELOW ARE FOR ADMIN USE
     public LinkBean validateLink(String url) throws LinkException {
         // TODO: redo selenium validation LinkVerificationService.isConnectable()
         return null;
@@ -292,38 +214,6 @@ public class LinkMaintenanceService {
                 .collect(Collectors.toList());
         connectionValidationService.setIsConnectableSelenium(unknownLinks);
         repository.saveAll(unknownLinks);
-
-    }
-
-    // Service Private functions
-    private void saveNewEntity(Link entity) {
-        Timestamp currentTime = new Timestamp((System.currentTimeMillis()));
-        if(isNull(entity.getCreationDate())) {
-            entity.setCreationDate(currentTime);
-        }
-        entity.setModifiedDate(currentTime);
-        repository.save(entity);
-    }
-
-    private Link saveNewEntity(String url) {
-        Link entity = new Link();
-        entity.setUrl(url);
-        Timestamp currentTime = new Timestamp((System.currentTimeMillis()));
-        if(isNull(entity.getCreationDate())) {
-            entity.setCreationDate(currentTime);
-        }
-        entity.setModifiedDate(currentTime);
-        repository.save(entity);
-        return entity;
-    }
-
-    // TODO: delete when done with use;
-    private void setAllDates() {
-        List<Link> allLinks = repository.findAll();
-        for (Link link : allLinks) {
-            link.setCreationDate(new Date());
-            repository.save(link);
-        }
     }
 
     private void setLastModifiedInfo(Link entity) {

@@ -1,13 +1,10 @@
 package com.koala.linkfilterapp.linkfilterapi.controller.maintenance;
 
 import com.koala.linkfilterapp.linkfilterapi.api.common.dto.response.RestResponse;
-import com.koala.linkfilterapp.linkfilterapi.api.common.enums.LinkSortType;
-import com.koala.linkfilterapp.linkfilterapi.api.common.enums.LinkStatus;
+import com.koala.linkfilterapp.linkfilterapi.api.link.dto.request.*;
+import com.koala.linkfilterapp.linkfilterapi.api.link.enums.LinkSortType;
+import com.koala.linkfilterapp.linkfilterapi.api.link.enums.LinkStatus;
 import com.koala.linkfilterapp.linkfilterapi.api.common.exception.LinkException;
-import com.koala.linkfilterapp.linkfilterapi.api.link.dto.request.CheckLinksRequest;
-import com.koala.linkfilterapp.linkfilterapi.api.link.dto.request.CreateLinkRequest;
-import com.koala.linkfilterapp.linkfilterapi.api.link.dto.request.LinkUpdate;
-import com.koala.linkfilterapp.linkfilterapi.api.link.dto.request.LinkUpdateRequest;
 import com.koala.linkfilterapp.linkfilterapi.api.link.dto.response.LinkBean;
 import com.koala.linkfilterapp.linkfilterapi.api.link.dto.response.LinkCollection;
 import com.koala.linkfilterapp.linkfilterapi.api.link.entity.Link;
@@ -46,17 +43,32 @@ public class LinkMaintenanceController {
                 new RestResponse<>(HttpStatus.CREATED.toString(),"Link successfully created", response, null), HttpStatus.CREATED);
     }
 
-    @GetMapping(value = "/maintenance/getAllLinks")
-    public ResponseEntity<RestResponse<Page<LinkBean>>> getAllLinks(
-            @RequestParam Integer page, @RequestParam Integer size, @RequestParam LinkSortType sortType, HttpServletRequest request) throws LinkException {
-        Page<LinkBean> response = maintenanceService.getAllLinks(page, size, sortType);
-        return new ResponseEntity<>(
-                new RestResponse<>(HttpStatus.OK.toString(), "Successfully retrieved links", response, null), HttpStatus.OK);
-    }
-
-    @GetMapping(value = "/maintenance/searchLink")
-    public ResponseEntity<RestResponse<Page<LinkBean>>> searchLink(@RequestParam String url, @RequestParam Integer page, @RequestParam Integer size, @RequestParam LinkSortType sortType, HttpServletRequest request) throws LinkException {
-        Page<LinkBean> response = maintenanceService.searchLink(page, size, sortType, url);
+    @GetMapping(value = "/maintenance/searchLinks")
+    public ResponseEntity<RestResponse<Page<LinkBean>>> searchLinks(
+            @RequestParam(required = false) String url,
+            @RequestParam(required = false) LinkStatus status,
+            @RequestParam(required = false) String securityLevel,
+            @RequestParam(required = false) String badCount,
+            @RequestParam(required = false) String creationDate,
+            @RequestParam(required = false) String modifiedDate,
+            @RequestParam(required = false) String description,
+            @RequestParam(required = false) Boolean isConnectable,
+            @RequestParam(required = false) Integer statusCode,
+            @RequestParam(required = false) String lastMaintenance,
+            @RequestParam(required = false) String whoIsDate,
+            @RequestParam(required = false, defaultValue = "modifiedDate") LinkSortType sortType,
+            @RequestParam(required = false, defaultValue = "asc") String sortDir,
+            @RequestParam(required = false, defaultValue = "0") Integer pagoNo,
+            @RequestParam(required = false, defaultValue = "10") Integer pageSize,
+            HttpServletRequest request) throws LinkException {
+        LinkSearchBean searchBean = LinkSearchBean.builder()
+                .url(url).status(status).securityLevel(securityLevel)
+                .badCount(badCount).creationDate(creationDate).modifiedDate(modifiedDate)
+                .description(description).isConnectable(isConnectable).statusCode(statusCode)
+                .lastMaintenance(lastMaintenance).whoIsDate(whoIsDate)
+                .sortType(sortType).sortDir(sortDir).pageNo(pagoNo).pageSize(pageSize)
+                .build();
+        Page<LinkBean> response = maintenanceService.getLinks(searchBean);
         return new ResponseEntity<>(
                 new RestResponse<>(HttpStatus.OK.toString(), "Successfully retrieved links", response, null), HttpStatus.OK);
     }
@@ -67,16 +79,6 @@ public class LinkMaintenanceController {
 
         return new ResponseEntity<>(
                 new RestResponse<>(HttpStatus.OK.toString(), "Successfully checked links", response, null), HttpStatus.OK);
-    }
-
-    @GetMapping(value = "/maintenance/getLinkByStatus")
-    public ResponseEntity<RestResponse<LinkCollection>> updateLink(
-            @RequestParam LinkStatus status) throws LinkException {
-        LinkCollection response = new LinkCollection();
-        response.setLinks(maintenanceService.getLinksByStatus(status));
-
-        return new ResponseEntity<>(
-                new RestResponse<>(HttpStatus.OK.toString(), "Successfully Retrieved Link Data", response, null), HttpStatus.OK);
     }
 
     @PutMapping(value = "/maintenance/updateLink")

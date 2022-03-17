@@ -1,6 +1,6 @@
 package com.koala.linkfilterapp.linkfilterapi.service.link.impl;
 
-import com.koala.linkfilterapp.linkfilterapi.api.common.enums.LinkStatus;
+import com.koala.linkfilterapp.linkfilterapi.api.link.enums.LinkStatus;
 import com.koala.linkfilterapp.linkfilterapi.api.link.entity.Link;
 import org.jsoup.Connection;
 import org.jsoup.HttpStatusException;

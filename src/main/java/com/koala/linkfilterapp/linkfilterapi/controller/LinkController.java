@@ -1,7 +1,7 @@
 package com.koala.linkfilterapp.linkfilterapi.controller;
 
 import com.koala.linkfilterapp.linkfilterapi.api.common.dto.response.RestResponse;
-import com.koala.linkfilterapp.linkfilterapi.api.common.enums.ReportType;
+import com.koala.linkfilterapp.linkfilterapi.api.report.enums.ReportType;
 import com.koala.linkfilterapp.linkfilterapi.api.common.exception.LinkException;
 import com.koala.linkfilterapp.linkfilterapi.api.link.dto.response.LinkBean;
 import com.koala.linkfilterapp.linkfilterapi.api.sponsor.dto.response.SponsorBean;

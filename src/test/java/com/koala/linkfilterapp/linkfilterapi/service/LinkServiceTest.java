@@ -1,31 +1,12 @@
 package com.koala.linkfilterapp.linkfilterapi.service;
 
 
-import com.koala.linkfilterapp.linkfilterapi.api.link.dto.request.CreateLinkRequest;
-import com.koala.linkfilterapp.linkfilterapi.api.link.dto.response.LinkBean;
-import com.koala.linkfilterapp.linkfilterapi.api.link.entity.Link;
-import com.koala.linkfilterapp.linkfilterapi.api.common.entity.RequestHistory;
-import com.koala.linkfilterapp.linkfilterapi.api.common.enums.LinkStatus;
-import com.koala.linkfilterapp.linkfilterapi.api.common.exception.LinkException;
-import com.koala.linkfilterapp.linkfilterapi.repository.LinkRepository;
-import com.koala.linkfilterapp.linkfilterapi.service.report.ReportService;
-import com.koala.linkfilterapp.linkfilterapi.service.link.impl.LinkServiceImpl;
-import com.koala.linkfilterapp.linkfilterapi.service.link.impl.LinkConnectionValidationService;
-import com.koala.linkfilterapp.linkfilterapi.service.common.impl.RequestHistoryServiceImpl;
-import org.junit.Before;
 import org.junit.Test;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
-import org.mockito.MockitoAnnotations;
-import org.springframework.web.util.UriComponentsBuilder;
 
-import java.net.URI;
 import java.util.*;
 
 import static org.junit.Assert.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.anyString;
-import static org.mockito.Mockito.when;
 
 public class LinkServiceTest {
 //    RequestHistory requestHistory;

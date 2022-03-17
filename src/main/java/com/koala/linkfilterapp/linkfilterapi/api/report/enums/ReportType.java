@@ -1,4 +1,4 @@
-package com.koala.linkfilterapp.linkfilterapi.api.common.enums;
+package com.koala.linkfilterapp.linkfilterapi.api.report.enums;
 
 public enum ReportType {
     VALID("VALID"), INVALID("INVALID");

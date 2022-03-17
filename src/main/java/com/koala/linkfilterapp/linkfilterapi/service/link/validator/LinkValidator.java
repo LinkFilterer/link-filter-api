@@ -1,7 +1,7 @@
 package com.koala.linkfilterapp.linkfilterapi.service.link.validator;
 
 import com.google.common.net.InternetDomainName;
-import com.koala.linkfilterapp.linkfilterapi.api.common.enums.ReportType;
+import com.koala.linkfilterapp.linkfilterapi.api.report.enums.ReportType;
 import com.koala.linkfilterapp.linkfilterapi.api.common.exception.LinkException;
 import com.koala.linkfilterapp.linkfilterapi.api.link.entity.Link;
 import org.springframework.http.HttpStatus;
