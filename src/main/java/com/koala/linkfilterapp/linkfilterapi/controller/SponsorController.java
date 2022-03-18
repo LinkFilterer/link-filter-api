@@ -3,7 +3,7 @@ package com.koala.linkfilterapp.linkfilterapi.controller;
 import com.koala.linkfilterapp.linkfilterapi.api.common.dto.response.RestResponse;
 import com.koala.linkfilterapp.linkfilterapi.api.common.exception.LinkException;
 import com.koala.linkfilterapp.linkfilterapi.api.sponsor.dto.response.SponsorBean;
-import com.koala.linkfilterapp.linkfilterapi.service.common.impl.IpAddressServiceImpl;
+import com.koala.linkfilterapp.linkfilterapi.service.ipaddress.impl.IpAddressServiceImpl;
 import com.koala.linkfilterapp.linkfilterapi.service.sponsor.impl.SponsorServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;

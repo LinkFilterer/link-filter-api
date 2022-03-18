@@ -6,10 +6,8 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
+import java.util.Date;
 
 @Table (name = "ip_table")
 @Entity
@@ -25,4 +23,8 @@ public class IpAddress {
 
     @Column(name = "addressType")
     IpAddressType addressType;
+
+    @Temporal(TemporalType.TIMESTAMP)
+    @Column(name = "lastAccessed")
+    Date lastAccessed;
 }

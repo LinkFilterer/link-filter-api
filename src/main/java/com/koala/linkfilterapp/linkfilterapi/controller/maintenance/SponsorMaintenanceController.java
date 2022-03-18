@@ -5,7 +5,7 @@ import com.koala.linkfilterapp.linkfilterapi.api.common.enums.SponsorSortType;
 import com.koala.linkfilterapp.linkfilterapi.api.common.exception.LinkException;
 import com.koala.linkfilterapp.linkfilterapi.api.sponsor.dto.request.SponsorRequestBean;
 import com.koala.linkfilterapp.linkfilterapi.api.sponsor.entity.Sponsor;
-import com.koala.linkfilterapp.linkfilterapi.service.common.impl.IpAddressServiceImpl;
+import com.koala.linkfilterapp.linkfilterapi.service.ipaddress.impl.IpAddressServiceImpl;
 import com.koala.linkfilterapp.linkfilterapi.service.sponsor.impl.SponsorServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;

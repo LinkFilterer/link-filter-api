@@ -1,4 +1,4 @@
-package com.koala.linkfilterapp.linkfilterapi.service.common.impl;
+package com.koala.linkfilterapp.linkfilterapi.service.ipaddress.impl;
 
 import com.koala.linkfilterapp.linkfilterapi.api.common.dto.response.RequestHistoryData;
 import com.koala.linkfilterapp.linkfilterapi.api.common.dto.response.RequestHistoryStatResponse;

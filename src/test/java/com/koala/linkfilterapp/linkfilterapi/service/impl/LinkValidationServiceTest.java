@@ -39,6 +39,8 @@ public class LinkValidationServiceTest {
     @Test
     public void shouldTest() {
         Link link = new Link();
+        String test = "STATION STCD";
+        System.out.println(test.split(" ")[0]);
 //        String date = "19970516";
 //        String formatted = String.format("%s-%s-%s", date.substring(0,4), date.substring(4,6), date.substring(6,8));
 //        System.out.println(formatted);

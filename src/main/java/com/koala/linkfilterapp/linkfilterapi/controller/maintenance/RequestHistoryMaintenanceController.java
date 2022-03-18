@@ -5,7 +5,7 @@ import com.koala.linkfilterapp.linkfilterapi.api.common.dto.response.RequestHist
 import com.koala.linkfilterapp.linkfilterapi.api.common.dto.response.RestResponse;
 import com.koala.linkfilterapp.linkfilterapi.api.common.enums.TimeInterval;
 import com.koala.linkfilterapp.linkfilterapi.api.common.exception.LinkException;
-import com.koala.linkfilterapp.linkfilterapi.service.common.impl.RequestHistoryServiceImpl;
+import com.koala.linkfilterapp.linkfilterapi.service.ipaddress.impl.RequestHistoryServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
