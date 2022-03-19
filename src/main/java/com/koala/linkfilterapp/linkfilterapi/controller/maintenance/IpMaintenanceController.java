@@ -2,7 +2,7 @@ package com.koala.linkfilterapp.linkfilterapi.controller.maintenance;
 
 import com.koala.linkfilterapp.linkfilterapi.api.ipaddress.dto.BanAction;
 import com.koala.linkfilterapp.linkfilterapi.api.common.dto.response.RestResponse;
-import com.koala.linkfilterapp.linkfilterapi.api.common.entity.IpAddress;
+import com.koala.linkfilterapp.linkfilterapi.api.ipaddress.entity.IpAddress;
 import com.koala.linkfilterapp.linkfilterapi.api.common.enums.BanStatus;
 import com.koala.linkfilterapp.linkfilterapi.api.common.enums.IpAddressType;
 import com.koala.linkfilterapp.linkfilterapi.api.common.exception.LinkException;

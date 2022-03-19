@@ -1,6 +1,6 @@
-package com.koala.linkfilterapp.linkfilterapi.api.common.entity;
+package com.koala.linkfilterapp.linkfilterapi.api.requesthistory.entity;
 
-import com.koala.linkfilterapp.linkfilterapi.api.common.enums.RequestType;
+import com.koala.linkfilterapp.linkfilterapi.api.requesthistory.enums.RequestType;
 import com.koala.linkfilterapp.linkfilterapi.api.link.entity.Link;
 import lombok.Data;
 import lombok.ToString;

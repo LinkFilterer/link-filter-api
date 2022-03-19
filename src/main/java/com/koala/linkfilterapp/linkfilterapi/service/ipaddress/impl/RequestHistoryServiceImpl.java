@@ -1,10 +1,11 @@
 package com.koala.linkfilterapp.linkfilterapi.service.ipaddress.impl;
 
-import com.koala.linkfilterapp.linkfilterapi.api.common.dto.response.RequestHistoryData;
-import com.koala.linkfilterapp.linkfilterapi.api.common.dto.response.RequestHistoryStatResponse;
-import com.koala.linkfilterapp.linkfilterapi.api.common.dto.response.RequestHistoryStatistic;
-import com.koala.linkfilterapp.linkfilterapi.api.common.entity.RequestHistory;
-import com.koala.linkfilterapp.linkfilterapi.api.common.enums.RequestType;
+import com.koala.linkfilterapp.linkfilterapi.api.requesthistory.dto.RequestHistoryData;
+import com.koala.linkfilterapp.linkfilterapi.api.requesthistory.dto.RequestHistorySearchBean;
+import com.koala.linkfilterapp.linkfilterapi.api.requesthistory.dto.RequestHistoryStatResponse;
+import com.koala.linkfilterapp.linkfilterapi.api.requesthistory.dto.RequestHistoryStatistic;
+import com.koala.linkfilterapp.linkfilterapi.api.requesthistory.entity.RequestHistory;
+import com.koala.linkfilterapp.linkfilterapi.api.requesthistory.enums.RequestType;
 import com.koala.linkfilterapp.linkfilterapi.api.common.enums.TimeInterval;
 import com.koala.linkfilterapp.linkfilterapi.api.common.exception.LinkException;
 import com.koala.linkfilterapp.linkfilterapi.api.link.entity.Link;
@@ -15,10 +16,12 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
+import javax.persistence.criteria.Predicate;
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
@@ -66,10 +69,35 @@ public class RequestHistoryServiceImpl {
         requestHistoryRepository.save(requestHistory);
     }
 
-    public Page<RequestHistoryData> getAllRequestHistory(Integer pageNbr, Integer pageSize, String sortType) {
+    public Page<RequestHistoryData> getAllRequestHistory(RequestHistorySearchBean searchBean) {
+
         DozerBeanMapper mapper = new DozerBeanMapper();
-        Pageable page = PageRequest.of(pageNbr, pageSize).withSort(Sort.Direction.ASC, sortType);
-        return requestHistoryRepository.findAll(page).map(entity -> mapper.map(entity, RequestHistoryData.class));
+        Specification<RequestHistory> querySpec = createQuery(searchBean);
+        Pageable page = getPageableRequest(searchBean);
+        return requestHistoryRepository.findAll(querySpec, page).map(entity -> mapper.map(entity, RequestHistoryData.class));
+    }
+
+    private Pageable getPageableRequest(RequestHistorySearchBean searchBean) {
+        Sort sortOrder = Sort.by(searchBean.getSortType().toString());
+        Optional<Sort.Direction> sortDirection = Sort.Direction.fromOptionalString(searchBean.getSortDir());
+        if (sortDirection.isPresent()) {
+            sortOrder = Sort.by(sortDirection.get(), searchBean.getSortType().toString());
+        }
+        return PageRequest.of(searchBean.getPageNo(), searchBean.getPageSize(), sortOrder);
+
+    }
+
+    private Specification<RequestHistory> createQuery(RequestHistorySearchBean searchBean) {
+        return (root, query, builder) -> {
+            final List<Predicate> predicates = new ArrayList<>();
+            if(nonNull(searchBean.getId())) { predicates.add(builder.equal(root.<String>get("id"), searchBean.getId())); }
+            if(nonNull(searchBean.getRequestType())) { predicates.add(builder.equal(root.<String>get("requestType"), searchBean.getRequestType())); }
+            if(StringUtils.hasText(searchBean.getUrl())) { predicates.add(builder.equal(root.<String>get("url"), searchBean.getUrl())); }
+            if(StringUtils.hasText(searchBean.getRequestedUrl())) { predicates.add(builder.equal(root.<String>get("requestedUrl"), searchBean.getRequestedUrl())); }
+            if(StringUtils.hasText(searchBean.getIpAddress())) { predicates.add(builder.equal(root.<String>get("ipAddress"), searchBean.getIpAddress())); }
+            if(StringUtils.hasText(searchBean.getRequestTime())) { predicates.add(builder.equal(root.<String>get("requestTime"), searchBean.getRequestTime())); }
+            return builder.and(predicates.toArray(new Predicate[predicates.size()]));
+        };
     }
 
     public RequestHistoryStatResponse getRequestHistoryStatistics(String url, TimeInterval timeInterval, String startingDate,

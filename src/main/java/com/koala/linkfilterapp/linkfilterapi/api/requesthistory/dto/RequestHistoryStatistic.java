@@ -1,4 +1,4 @@
-package com.koala.linkfilterapp.linkfilterapi.api.common.dto.response;
+package com.koala.linkfilterapp.linkfilterapi.api.requesthistory.dto;
 
 import lombok.Data;
 

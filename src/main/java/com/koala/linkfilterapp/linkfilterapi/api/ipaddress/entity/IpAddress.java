@@ -1,4 +1,4 @@
-package com.koala.linkfilterapp.linkfilterapi.api.common.entity;
+package com.koala.linkfilterapp.linkfilterapi.api.ipaddress.entity;
 
 import com.koala.linkfilterapp.linkfilterapi.api.common.enums.BanStatus;
 import com.koala.linkfilterapp.linkfilterapi.api.common.enums.IpAddressType;

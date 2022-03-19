@@ -1,6 +1,6 @@
 package com.koala.linkfilterapp.linkfilterapi.api.link.entity;
 
-import com.koala.linkfilterapp.linkfilterapi.api.common.entity.RequestHistory;
+import com.koala.linkfilterapp.linkfilterapi.api.requesthistory.entity.RequestHistory;
 import com.koala.linkfilterapp.linkfilterapi.api.link.enums.LinkStatus;
 import com.koala.linkfilterapp.linkfilterapi.api.report.entity.LinkReport;
 import lombok.Data;

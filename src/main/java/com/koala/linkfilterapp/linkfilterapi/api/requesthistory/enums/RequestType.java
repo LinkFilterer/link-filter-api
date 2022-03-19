@@ -1,4 +1,4 @@
-package com.koala.linkfilterapp.linkfilterapi.api.common.enums;
+package com.koala.linkfilterapp.linkfilterapi.api.requesthistory.enums;
 
 public enum RequestType {
     CHECK("CHECK"), REPORT("REPORT");

@@ -1,14 +1,15 @@
 package com.koala.linkfilterapp.linkfilterapi.repository;
 
-import com.koala.linkfilterapp.linkfilterapi.api.common.entity.RequestHistory;
+import com.koala.linkfilterapp.linkfilterapi.api.requesthistory.entity.RequestHistory;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.stereotype.Repository;
 
 import java.util.Date;
 import java.util.List;
 
 @Repository
-public interface RequestHistoryRepository extends JpaRepository<RequestHistory, String> {
+public interface RequestHistoryRepository extends JpaRepository<RequestHistory, String>, JpaSpecificationExecutor<RequestHistory> {
     List<RequestHistory> findByRequestTime(Date requestTime);
 
     List<RequestHistory> findByRequestTimeBetween(Date time1, Date time2);

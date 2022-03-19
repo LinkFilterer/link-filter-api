@@ -1,9 +1,9 @@
 package com.koala.linkfilterapp.linkfilterapi.service.link.impl;
 
-import com.koala.linkfilterapp.linkfilterapi.api.common.entity.RequestHistory;
+import com.koala.linkfilterapp.linkfilterapi.api.requesthistory.entity.RequestHistory;
 import com.koala.linkfilterapp.linkfilterapi.api.link.enums.LinkStatus;
 import com.koala.linkfilterapp.linkfilterapi.api.report.enums.ReportType;
-import com.koala.linkfilterapp.linkfilterapi.api.common.enums.RequestType;
+import com.koala.linkfilterapp.linkfilterapi.api.requesthistory.enums.RequestType;
 import com.koala.linkfilterapp.linkfilterapi.api.common.exception.LinkException;
 import com.koala.linkfilterapp.linkfilterapi.api.link.dto.response.LinkBean;
 import com.koala.linkfilterapp.linkfilterapi.api.link.entity.Link;
