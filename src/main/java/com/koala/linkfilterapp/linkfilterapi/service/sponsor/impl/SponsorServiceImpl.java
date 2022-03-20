@@ -68,8 +68,6 @@ public class SponsorServiceImpl implements SponsorService {
         };
     }
 
-
-
     public Sponsor createSponsor(SponsorRequestBean bean) throws LinkException {
         Optional<Sponsor> foundSponsor = repository.findById(bean.getId());
 
