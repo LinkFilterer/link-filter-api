@@ -1,8 +1,10 @@
 package com.koala.linkfilterapp.linkfilterapi.service.sponsor.impl;
 
-import com.koala.linkfilterapp.linkfilterapi.api.common.enums.SponsorSortType;
 import com.koala.linkfilterapp.linkfilterapi.api.common.exception.LinkException;
+import com.koala.linkfilterapp.linkfilterapi.api.ipaddress.dto.IpSearchBean;
+import com.koala.linkfilterapp.linkfilterapi.api.ipaddress.entity.IpAddress;
 import com.koala.linkfilterapp.linkfilterapi.api.sponsor.dto.request.SponsorRequestBean;
+import com.koala.linkfilterapp.linkfilterapi.api.sponsor.dto.request.SponsorSearchBean;
 import com.koala.linkfilterapp.linkfilterapi.api.sponsor.dto.response.SponsorBean;
 import com.koala.linkfilterapp.linkfilterapi.api.sponsor.entity.Sponsor;
 import com.koala.linkfilterapp.linkfilterapi.repository.SponsorRepository;
@@ -13,10 +15,13 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
+import org.springframework.util.StringUtils;
 
+import javax.persistence.criteria.Predicate;
 import java.util.*;
 import java.util.logging.Logger;
 
@@ -33,15 +38,37 @@ public class SponsorServiceImpl implements SponsorService {
     @Autowired
     SponsorConverter converter;
 
-    public List<Sponsor> getAllSponsors() {
-        return repository.findAll();
+    public Page<Sponsor> searchSponsors(SponsorSearchBean searchBean) {
+        Specification<Sponsor> querySpec = createQuery(searchBean);
+        Pageable pageRequest = getPageableRequest(searchBean);
+        return repository.findAll(querySpec, pageRequest);
     }
 
-    public Page<Sponsor> searchSponsors(int pageNum, int size, SponsorSortType sortType, String projectName) {
-        Pageable page = PageRequest.of(pageNum, size).withSort(Sort.by(sortType.toString()).ascending());
-        Page<Sponsor> found = repository.findByIdContains(projectName, page);
-        return found;
+    private Pageable getPageableRequest(SponsorSearchBean searchBean) {
+        Sort sortOrder = Sort.by(searchBean.getSortType().toString());
+        Optional<Sort.Direction> sortDirection = Sort.Direction.fromOptionalString(searchBean.getSortDir());
+        if (sortDirection.isPresent()) {
+            sortOrder = Sort.by(sortDirection.get(), searchBean.getSortType().toString());
+        }
+        return PageRequest.of(searchBean.getPageNo(), searchBean.getPageSize(), sortOrder);
     }
+
+    private Specification<Sponsor> createQuery(SponsorSearchBean searchBean) {
+        return (root, query, builder) -> {
+            final List<Predicate> predicates = new ArrayList<>();
+            if(StringUtils.hasText(searchBean.getId())) { predicates.add(builder.equal(root.<String>get("id"), searchBean.getId())); }
+            if(StringUtils.hasText(searchBean.getDescription())) { predicates.add(builder.equal(root.<String>get("description"), searchBean.getDescription())); }
+            if(StringUtils.hasText(searchBean.getBanner())) { predicates.add(builder.equal(root.<String>get("banner"), searchBean.getBanner())); }
+            if(StringUtils.hasText(searchBean.getUrl())) { predicates.add(builder.equal(root.<String>get("url"), searchBean.getUrl())); }
+            if(StringUtils.hasText(searchBean.getCreationDate())) { predicates.add(builder.equal(root.<String>get("creationDate"), searchBean.getCreationDate())); }
+            if(StringUtils.hasText(searchBean.getEndDate())) { predicates.add(builder.equal(root.<String>get("endDate"), searchBean.getEndDate())); }
+            if(nonNull(searchBean.getIsExpired())) { predicates.add(builder.equal(root.<String>get("isExpired"), searchBean.getIsExpired())); }
+            if(nonNull(searchBean.getWeight())) { predicates.add(builder.equal(root.<String>get("weight"), searchBean.getWeight())); }
+            return builder.and(predicates.toArray(new Predicate[predicates.size()]));
+        };
+    }
+
+
 
     public Sponsor createSponsor(SponsorRequestBean bean) throws LinkException {
         Optional<Sponsor> foundSponsor = repository.findById(bean.getId());
