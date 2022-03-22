@@ -14,6 +14,7 @@ import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.security.authentication.event.AbstractAuthenticationEvent;
 import org.springframework.security.web.authentication.WebAuthenticationDetails;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.EnableTransactionManagement;
 import springfox.documentation.builders.RequestHandlerSelectors;
 import springfox.documentation.spi.DocumentationType;
 import springfox.documentation.spring.web.plugins.Docket;
@@ -24,10 +25,11 @@ import java.util.Optional;
 import java.util.logging.Logger;
 
 @EnableSwagger2
-@SpringBootApplication
-@ComponentScan(basePackages = "com.*")
-@EntityScan("com.koala.linkfilterapp.linkfilterapi.api.*")
-@EnableJpaRepositories("com.koala.linkfilterapp.linkfilterapi.*")
+@SpringBootApplication(scanBasePackages = "com.koala.linkfilterapp")
+@ComponentScan(basePackages = "com.koala.linkfilterapp")
+@EntityScan("com.koala.linkfilterapp")
+@EnableJpaRepositories("com.koala.linkfilterapp")
+@EnableTransactionManagement
 public class LinkfilterappApplication {
 	Logger log = Logger.getLogger("LinkfilterApplication");
 
