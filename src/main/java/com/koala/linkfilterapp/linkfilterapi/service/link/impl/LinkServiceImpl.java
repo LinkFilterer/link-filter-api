@@ -4,7 +4,7 @@ import com.koala.linkfilterapp.linkfilterapi.api.requesthistory.entity.RequestHi
 import com.koala.linkfilterapp.linkfilterapi.api.link.enums.LinkStatus;
 import com.koala.linkfilterapp.linkfilterapi.api.report.enums.ReportType;
 import com.koala.linkfilterapp.linkfilterapi.api.requesthistory.enums.RequestType;
-import com.koala.linkfilterapp.linkfilterapi.api.common.exception.LinkException;
+import com.koala.linkfilterapp.linkfilterapi.api.common.exception.CommonException;
 import com.koala.linkfilterapp.linkfilterapi.api.link.dto.response.LinkBean;
 import com.koala.linkfilterapp.linkfilterapi.api.link.entity.Link;
 import com.koala.linkfilterapp.linkfilterapi.repository.LinkRepository;
@@ -53,14 +53,14 @@ public class LinkServiceImpl implements LinkService {
     LinkValidationServiceImpl validationService;
 
     // Will only check the database for results
-    public LinkBean checkLink(String url, String ipAddress) throws LinkException {
+    public LinkBean checkLink(String url, String ipAddress) throws CommonException {
         log.info(CHECK_LINK_CD + " url = '" + url + "' received from " + ipAddress);
         requestHistoryService.ipCheck(ipAddress);
         RequestHistory request = requestHistoryService.saveRequestHistory(url, ipAddress, RequestType.CHECK);
 
         List<String> errors = validationService.validateLinkRequest(url, ipAddress);
         if (!CollectionUtils.isEmpty(errors)) {
-            LinkException exception = new LinkException(HttpStatus.BAD_REQUEST, "Error occurred while validating request: " + url, null, ipAddress, errors);
+            CommonException exception = new CommonException(HttpStatus.BAD_REQUEST, "Error occurred while validating request: " + url, null, ipAddress, errors);
             log.warning(exception.toString());
             throw exception;
         }
@@ -84,7 +84,7 @@ public class LinkServiceImpl implements LinkService {
         return convert(nonNull(entity) ? entity : retrievedEntity.get());
     }
 
-    public List<LinkBean> checkLinks(List<String> urls, String ipAddress) throws LinkException {
+    public List<LinkBean> checkLinks(List<String> urls, String ipAddress) throws CommonException {
         List<LinkBean> checkedLinks = new ArrayList<>();
         if(!CollectionUtils.isEmpty(urls)) {
             for (String url : urls) {
@@ -110,7 +110,7 @@ public class LinkServiceImpl implements LinkService {
     }
 
     // Will report a link
-    public LinkBean reportLink(String url, String ipAddress, ReportType reportType) throws LinkException {
+    public LinkBean reportLink(String url, String ipAddress, ReportType reportType) throws CommonException {
         log.info(REPORT_LINK_CD + " url = '" + url + "' received from " + ipAddress);
         requestHistoryService.ipCheck(ipAddress);
         RequestHistory request = requestHistoryService.saveRequestHistory(url, ipAddress, RequestType.REPORT);
@@ -120,7 +120,7 @@ public class LinkServiceImpl implements LinkService {
         boolean isValid = validateReportType(reportType);
 
         if (!CollectionUtils.isEmpty(errors) || (!ReportType.INVALID.equals(reportType) && !ReportType.VALID.equals(reportType))) {
-            LinkException exception = new LinkException(HttpStatus.BAD_REQUEST, "Error occurred while validating request: " + url, null, ipAddress, errors);
+            CommonException exception = new CommonException(HttpStatus.BAD_REQUEST, "Error occurred while validating request: " + url, null, ipAddress, errors);
             log.warning(exception.toString());
             throw exception;
         }

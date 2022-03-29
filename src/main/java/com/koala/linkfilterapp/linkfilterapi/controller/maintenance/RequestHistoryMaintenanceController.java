@@ -5,7 +5,7 @@ import com.koala.linkfilterapp.linkfilterapi.api.requesthistory.dto.RequestHisto
 import com.koala.linkfilterapp.linkfilterapi.api.requesthistory.dto.RequestHistoryStatResponse;
 import com.koala.linkfilterapp.linkfilterapi.api.common.dto.response.RestResponse;
 import com.koala.linkfilterapp.linkfilterapi.api.common.enums.TimeInterval;
-import com.koala.linkfilterapp.linkfilterapi.api.common.exception.LinkException;
+import com.koala.linkfilterapp.linkfilterapi.api.common.exception.CommonException;
 import com.koala.linkfilterapp.linkfilterapi.api.requesthistory.enums.RequestField;
 import com.koala.linkfilterapp.linkfilterapi.api.requesthistory.enums.RequestType;
 import com.koala.linkfilterapp.linkfilterapi.service.ipaddress.impl.RequestHistoryServiceImpl;
@@ -20,8 +20,8 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.util.logging.Logger;
 
-import static com.koala.linkfilterapp.linkfilterapi.controller.ControllerConstants.UI_SERVER_MAINTENACE_ORIGIN;
-import static com.koala.linkfilterapp.linkfilterapi.controller.ControllerConstants.UI_SERVER_ORIGIN;
+import static com.koala.linkfilterapp.linkfilterapi.controller.common.ControllerConstants.UI_SERVER_MAINTENACE_ORIGIN;
+import static com.koala.linkfilterapp.linkfilterapi.controller.common.ControllerConstants.UI_SERVER_ORIGIN;
 
 @CrossOrigin(origins = {UI_SERVER_ORIGIN, UI_SERVER_MAINTENACE_ORIGIN})
 @RestController
@@ -67,7 +67,7 @@ public class RequestHistoryMaintenanceController {
             @RequestParam (required = false) String url,
             @RequestParam TimeInterval timeInterval,
             @RequestParam String startingDate,
-            @RequestParam String endDate) throws LinkException {
+            @RequestParam String endDate) throws CommonException {
         RequestHistoryStatResponse response = requestHistoryService.getRequestHistoryStatistics(url, timeInterval, startingDate, endDate);
 
         return new ResponseEntity<>(

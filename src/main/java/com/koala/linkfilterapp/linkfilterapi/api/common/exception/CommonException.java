@@ -13,7 +13,7 @@ import java.util.List;
 @EqualsAndHashCode(callSuper = true)
 @AllArgsConstructor
 @NoArgsConstructor
-public class LinkException extends Exception {
+public class CommonException extends Exception {
     HttpStatus httpStatus;
     String description;
     Link link;

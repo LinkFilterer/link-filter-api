@@ -3,7 +3,7 @@ package com.koala.linkfilterapp.linkfilterapi.service.ipaddress.impl;
 import com.koala.linkfilterapp.linkfilterapi.api.ipaddress.dto.BanAction;
 import com.koala.linkfilterapp.linkfilterapi.api.ipaddress.entity.IpAddress;
 import com.koala.linkfilterapp.linkfilterapi.api.common.enums.BanStatus;
-import com.koala.linkfilterapp.linkfilterapi.api.common.exception.LinkException;
+import com.koala.linkfilterapp.linkfilterapi.api.common.exception.CommonException;
 import com.koala.linkfilterapp.linkfilterapi.api.ipaddress.dto.IpSearchBean;
 import com.koala.linkfilterapp.linkfilterapi.repository.IpAddressRepository;
 import com.koala.linkfilterapp.linkfilterapi.service.ipaddress.IpAddressService;
@@ -79,7 +79,7 @@ public class IpAddressServiceImpl implements IpAddressService {
     }
 
     @Override
-    public List<IpAddress> manageIpBan(List<BanAction> request) throws LinkException {
+    public List<IpAddress> manageIpBan(List<BanAction> request) throws CommonException {
         if(!CollectionUtils.isEmpty(request)) {
             return request.stream().map(action -> {
                 IpAddress entity;

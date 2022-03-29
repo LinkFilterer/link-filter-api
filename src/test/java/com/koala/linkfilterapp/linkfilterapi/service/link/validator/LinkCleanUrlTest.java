@@ -1,6 +1,6 @@
 package com.koala.linkfilterapp.linkfilterapi.service.link.validator;
 
-import com.koala.linkfilterapp.linkfilterapi.api.common.exception.LinkException;
+import com.koala.linkfilterapp.linkfilterapi.api.common.exception.CommonException;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -64,7 +64,7 @@ public class LinkCleanUrlTest {
     }
 
 
-    @Test (expected = LinkException.class)
+    @Test (expected = CommonException.class)
     public void shouldNot_ParseUrl() throws Exception {
         String input1 = "12341234125";
         String input2 = "googǀe.com";

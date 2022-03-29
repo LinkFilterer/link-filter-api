@@ -2,7 +2,7 @@ package com.koala.linkfilterapp.linkfilterapi.controller;
 
 import com.koala.linkfilterapp.linkfilterapi.api.common.dto.response.RestResponse;
 import com.koala.linkfilterapp.linkfilterapi.api.report.enums.ReportType;
-import com.koala.linkfilterapp.linkfilterapi.api.common.exception.LinkException;
+import com.koala.linkfilterapp.linkfilterapi.api.common.exception.CommonException;
 import com.koala.linkfilterapp.linkfilterapi.api.link.dto.response.LinkBean;
 import com.koala.linkfilterapp.linkfilterapi.api.sponsor.dto.response.SponsorBean;
 import com.koala.linkfilterapp.linkfilterapi.service.ipaddress.impl.IpAddressServiceImpl;
@@ -20,12 +20,12 @@ import org.springframework.web.bind.annotation.RestController;
 import javax.servlet.http.HttpServletRequest;
 import java.util.logging.Logger;
 
-import static com.koala.linkfilterapp.linkfilterapi.controller.ControllerConstants.BROWSER_EXTENSION_ORIGIN;
-import static com.koala.linkfilterapp.linkfilterapi.controller.ControllerConstants.UI_SERVER_ORIGIN;
+import static com.koala.linkfilterapp.linkfilterapi.controller.common.ControllerConstants.BROWSER_EXTENSION_ORIGIN;
+import static com.koala.linkfilterapp.linkfilterapi.controller.common.ControllerConstants.UI_SERVER_ORIGIN;
 
 @CrossOrigin(origins = {UI_SERVER_ORIGIN, BROWSER_EXTENSION_ORIGIN})
 @RestController
-public class LinkController {
+public class MainController {
     Logger log = Logger.getLogger("LinkController");
 
     @Autowired
@@ -42,7 +42,7 @@ public class LinkController {
 
     // Will simply check database for a result and return it (INVALID/VALID/UNKNOWN) is public
     @PostMapping(value = "/checkLink")
-    public ResponseEntity<RestResponse<LinkBean>> checkLink(@RequestParam String url, HttpServletRequest request) throws LinkException {
+    public ResponseEntity<RestResponse<LinkBean>> checkLink(@RequestParam String url, HttpServletRequest request) throws CommonException {
         if (ipAddressService.checkIfBanned(request.getRemoteAddr())) {
             return null;
         }
@@ -58,7 +58,7 @@ public class LinkController {
     }
 
     @PostMapping(value = "/reportLink")
-    public ResponseEntity<RestResponse<LinkBean>> reportLink(@RequestParam String url, @RequestParam ReportType reportType, HttpServletRequest request) throws LinkException {
+    public ResponseEntity<RestResponse<LinkBean>> reportLink(@RequestParam String url, @RequestParam ReportType reportType, HttpServletRequest request) throws CommonException {
         if (ipAddressService.checkIfBanned(request.getRemoteAddr())) {
             return null;
         }

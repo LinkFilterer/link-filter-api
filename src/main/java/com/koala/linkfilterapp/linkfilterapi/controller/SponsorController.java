@@ -1,7 +1,7 @@
 package com.koala.linkfilterapp.linkfilterapi.controller;
 
 import com.koala.linkfilterapp.linkfilterapi.api.common.dto.response.RestResponse;
-import com.koala.linkfilterapp.linkfilterapi.api.common.exception.LinkException;
+import com.koala.linkfilterapp.linkfilterapi.api.common.exception.CommonException;
 import com.koala.linkfilterapp.linkfilterapi.api.sponsor.dto.response.SponsorBean;
 import com.koala.linkfilterapp.linkfilterapi.service.ipaddress.impl.IpAddressServiceImpl;
 import com.koala.linkfilterapp.linkfilterapi.service.sponsor.impl.SponsorServiceImpl;
@@ -27,7 +27,7 @@ public class SponsorController {
     IpAddressServiceImpl ipAddressService;
 
     @GetMapping (value = "/getSponsor")
-    public ResponseEntity<RestResponse<SponsorBean>> getSponsor(HttpServletRequest request) throws LinkException {
+    public ResponseEntity<RestResponse<SponsorBean>> getSponsor(HttpServletRequest request) throws CommonException {
         if (ipAddressService.checkIfBanned(request.getRemoteAddr())) {
             return null;
         }

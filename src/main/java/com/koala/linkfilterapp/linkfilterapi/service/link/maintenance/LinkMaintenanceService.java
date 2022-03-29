@@ -2,7 +2,7 @@ package com.koala.linkfilterapp.linkfilterapi.service.link.maintenance;
 
 import com.koala.linkfilterapp.linkfilterapi.api.link.dto.request.LinkSearchBean;
 import com.koala.linkfilterapp.linkfilterapi.api.link.enums.LinkStatus;
-import com.koala.linkfilterapp.linkfilterapi.api.common.exception.LinkException;
+import com.koala.linkfilterapp.linkfilterapi.api.common.exception.CommonException;
 import com.koala.linkfilterapp.linkfilterapi.api.link.dto.request.CreateLinkRequest;
 import com.koala.linkfilterapp.linkfilterapi.api.link.dto.request.LinkUpdate;
 import com.koala.linkfilterapp.linkfilterapi.api.link.dto.request.LinkUpdateRequest;
@@ -95,16 +95,16 @@ public class LinkMaintenanceService {
 
 
     // TODO: ALL FUNCTIONS BELOW ARE FOR ADMIN USE
-    public LinkBean validateLink(String url) throws LinkException {
+    public LinkBean validateLink(String url) throws CommonException {
         // TODO: redo selenium validation LinkVerificationService.isConnectable()
         return null;
     }
 
-    public List<LinkBean> getLinksByStatus(LinkStatus status) throws LinkException {
+    public List<LinkBean> getLinksByStatus(LinkStatus status) throws CommonException {
         List<Link> links = repository.findByStatus(status);
         if (links.isEmpty()) {
 
-            LinkException exception = new LinkException(
+            CommonException exception = new CommonException(
                     HttpStatus.NOT_FOUND,
                     SERVICE_LOG_MESSAGE + "No links with status " + status + " found!",
                     null,"GET",null);
@@ -113,10 +113,10 @@ public class LinkMaintenanceService {
         return links.stream().map(LinkConverter::convert).collect(Collectors.toList());
     }
 
-    public void updateLink(LinkUpdate request) throws LinkException {
+    public void updateLink(LinkUpdate request) throws CommonException {
         Optional<Link> found = repository.findById(request.getUrl());
         if (!found.isPresent()) {
-            LinkException exception = new LinkException(
+            CommonException exception = new CommonException(
                     HttpStatus.NOT_FOUND,
                     SERVICE_LOG_MESSAGE + "Link not found!",
                     null,"PUT",null);
@@ -141,10 +141,10 @@ public class LinkMaintenanceService {
         }
     }
 
-    public void deleteLinkByUrl(String url) throws LinkException {
+    public void deleteLinkByUrl(String url) throws CommonException {
         Optional<Link> foundLink = repository.findById(url);
         if (!foundLink.isPresent()) {
-            LinkException exception = new LinkException(HttpStatus.NOT_FOUND, "Link doesn't exist!", null, "DELETE", null);
+            CommonException exception = new CommonException(HttpStatus.NOT_FOUND, "Link doesn't exist!", null, "DELETE", null);
             log.info(exception.toString());
             throw exception;
         }
@@ -177,10 +177,10 @@ public class LinkMaintenanceService {
         }
     }
 
-    public Link performMaintenance(String url) throws LinkException {
+    public Link performMaintenance(String url) throws CommonException {
         Optional<Link> foundLink = repository.findById(url);
         if (!foundLink.isPresent()) {
-            LinkException exception = new LinkException(HttpStatus.NOT_FOUND, "Url not found", null, "maintenance", null);
+            CommonException exception = new CommonException(HttpStatus.NOT_FOUND, "Url not found", null, "maintenance", null);
             log.warning(exception.toString());
             throw exception;
         }

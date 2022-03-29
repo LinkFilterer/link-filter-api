@@ -1,7 +1,7 @@
 package com.koala.linkfilterapp.linkfilterapi.service.report.impl;
 
 import com.koala.linkfilterapp.linkfilterapi.api.link.enums.LinkStatus;
-import com.koala.linkfilterapp.linkfilterapi.api.common.exception.LinkException;
+import com.koala.linkfilterapp.linkfilterapi.api.common.exception.CommonException;
 import com.koala.linkfilterapp.linkfilterapi.api.link.entity.Link;
 import com.koala.linkfilterapp.linkfilterapi.api.report.entity.LinkReport;
 import com.koala.linkfilterapp.linkfilterapi.repository.LinkReportRepository;
@@ -27,7 +27,7 @@ public class ReportServiceImpl implements ReportService {
     @Autowired
     LinkReportRepository reportRepository;
 
-    public Link reportLink(String url, String ipAddress, boolean isValid) throws LinkException {
+    public Link reportLink(String url, String ipAddress, boolean isValid) throws CommonException {
         Optional<LinkReport> foundReport = reportRepository.findByUrlAndIpAddress(url, ipAddress);
         // TODO: Rework to do interval-based reported per ip
         if (foundReport.isPresent()) {

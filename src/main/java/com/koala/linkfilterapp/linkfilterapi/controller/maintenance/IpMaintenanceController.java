@@ -5,7 +5,7 @@ import com.koala.linkfilterapp.linkfilterapi.api.common.dto.response.RestRespons
 import com.koala.linkfilterapp.linkfilterapi.api.ipaddress.entity.IpAddress;
 import com.koala.linkfilterapp.linkfilterapi.api.common.enums.BanStatus;
 import com.koala.linkfilterapp.linkfilterapi.api.common.enums.IpAddressType;
-import com.koala.linkfilterapp.linkfilterapi.api.common.exception.LinkException;
+import com.koala.linkfilterapp.linkfilterapi.api.common.exception.CommonException;
 import com.koala.linkfilterapp.linkfilterapi.api.ipaddress.dto.IpSearchBean;
 import com.koala.linkfilterapp.linkfilterapi.api.ipaddress.enums.IpSortType;
 import com.koala.linkfilterapp.linkfilterapi.service.ipaddress.impl.IpAddressServiceImpl;
@@ -19,7 +19,7 @@ import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 import java.util.logging.Logger;
 
-import static com.koala.linkfilterapp.linkfilterapi.controller.ControllerConstants.UI_SERVER_ORIGIN;
+import static com.koala.linkfilterapp.linkfilterapi.controller.common.ControllerConstants.UI_SERVER_ORIGIN;
 
 @CrossOrigin(origins = UI_SERVER_ORIGIN)
 @RestController
@@ -31,14 +31,14 @@ public class IpMaintenanceController {
 
     @PostMapping(value = "/maintenance/banIp")
     public ResponseEntity<RestResponse<List<IpAddress>>> banIpAddress(
-            @RequestBody List<BanAction> request) throws LinkException {
+            @RequestBody List<BanAction> request) throws CommonException {
         List<IpAddress> addresses = ipAddressService.manageIpBan(request);
         return new ResponseEntity<>(
                 new RestResponse<>(HttpStatus.OK.toString(), String.format("Ips processed: %d", addresses.size()), addresses, null), HttpStatus.OK);
     }
 
     @GetMapping(value = "/maintenance/getAllIps")
-    public ResponseEntity<RestResponse<List<IpAddress>>> getAllIps(HttpServletRequest request) throws LinkException {
+    public ResponseEntity<RestResponse<List<IpAddress>>> getAllIps(HttpServletRequest request) throws CommonException {
         if (ipAddressService.checkIfBanned(request.getRemoteAddr())) {
             return null;
         }
@@ -59,7 +59,7 @@ public class IpMaintenanceController {
             @RequestParam(required = false, defaultValue = "asc") String sortDirection,
             @RequestParam(required = false, defaultValue = "0") Integer pageNo,
             @RequestParam(required = false, defaultValue = "10") Integer pageSize,
-            HttpServletRequest request) throws LinkException {
+            HttpServletRequest request) throws CommonException {
 
         IpSearchBean searchBean = IpSearchBean.builder()
                 .ipAddress(ipAddress).isBanned(isBanned).ipAddressType(ipAddressType).lastAccessed(lastAccessed).sortDirection(sortDirection)

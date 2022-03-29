@@ -1,11 +1,11 @@
 package com.koala.linkfilterapp.linkfilterapi.service.link;
 
-import com.koala.linkfilterapp.linkfilterapi.api.common.exception.LinkException;
+import com.koala.linkfilterapp.linkfilterapi.api.common.exception.CommonException;
 import com.koala.linkfilterapp.linkfilterapi.api.link.dto.response.LinkBean;
 import com.koala.linkfilterapp.linkfilterapi.api.link.entity.Link;
 
 public class LinkConverter {
-    public static Link convert(LinkBean bean) throws LinkException {
+    public static Link convert(LinkBean bean) throws CommonException {
         Link link = new Link();
         link.setUrl(bean.getUrl());
         link.setDescription(bean.getDescription());

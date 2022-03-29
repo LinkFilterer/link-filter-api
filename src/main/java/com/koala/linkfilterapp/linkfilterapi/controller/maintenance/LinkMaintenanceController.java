@@ -4,9 +4,8 @@ import com.koala.linkfilterapp.linkfilterapi.api.common.dto.response.RestRespons
 import com.koala.linkfilterapp.linkfilterapi.api.link.dto.request.*;
 import com.koala.linkfilterapp.linkfilterapi.api.link.enums.LinkSortType;
 import com.koala.linkfilterapp.linkfilterapi.api.link.enums.LinkStatus;
-import com.koala.linkfilterapp.linkfilterapi.api.common.exception.LinkException;
+import com.koala.linkfilterapp.linkfilterapi.api.common.exception.CommonException;
 import com.koala.linkfilterapp.linkfilterapi.api.link.dto.response.LinkBean;
-import com.koala.linkfilterapp.linkfilterapi.api.link.dto.response.LinkCollection;
 import com.koala.linkfilterapp.linkfilterapi.api.link.entity.Link;
 import com.koala.linkfilterapp.linkfilterapi.service.link.impl.LinkServiceImpl;
 import com.koala.linkfilterapp.linkfilterapi.service.link.maintenance.LinkMaintenanceService;
@@ -20,7 +19,7 @@ import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 import java.util.logging.Logger;
 
-import static com.koala.linkfilterapp.linkfilterapi.controller.ControllerConstants.UI_SERVER_ORIGIN;
+import static com.koala.linkfilterapp.linkfilterapi.controller.common.ControllerConstants.UI_SERVER_ORIGIN;
 import static com.koala.linkfilterapp.linkfilterapi.service.link.LinkConverter.convert;
 
 @CrossOrigin(origins = UI_SERVER_ORIGIN)
@@ -60,7 +59,7 @@ public class LinkMaintenanceController {
             @RequestParam(required = false, defaultValue = "asc") String sortDir,
             @RequestParam(required = false, defaultValue = "0") Integer pagoNo,
             @RequestParam(required = false, defaultValue = "10") Integer pageSize,
-            HttpServletRequest request) throws LinkException {
+            HttpServletRequest request) throws CommonException {
         LinkSearchBean searchBean = LinkSearchBean.builder()
                 .url(url).status(status).securityLevel(securityLevel)
                 .badCount(badCount).creationDate(creationDate).modifiedDate(modifiedDate)
@@ -74,7 +73,7 @@ public class LinkMaintenanceController {
     }
 
     @PostMapping(value = "/maintenance/checkLinks")
-    public ResponseEntity<RestResponse<List<LinkBean>>> postLink(@RequestBody CheckLinksRequest checkRequest, HttpServletRequest request) throws LinkException {
+    public ResponseEntity<RestResponse<List<LinkBean>>> postLink(@RequestBody CheckLinksRequest checkRequest, HttpServletRequest request) throws CommonException {
         List<LinkBean> response = linkService.checkLinks(checkRequest.getUrls(), request.getRemoteAddr());
 
         return new ResponseEntity<>(
@@ -83,7 +82,7 @@ public class LinkMaintenanceController {
 
     @PutMapping(value = "/maintenance/updateLink")
     public ResponseEntity<RestResponse<String>> updateLink(
-            @RequestBody LinkUpdate request) throws LinkException {
+            @RequestBody LinkUpdate request) throws CommonException {
         maintenanceService.updateLink(request);
         return new ResponseEntity<>(
                 new RestResponse<>(HttpStatus.OK.toString(), "Successfully updated Link", null, null), HttpStatus.OK);
@@ -91,7 +90,7 @@ public class LinkMaintenanceController {
 
     @PutMapping(value = "/maintenance/updateLinks")
     public ResponseEntity<RestResponse<String>> updateLinks(
-            @RequestBody LinkUpdateRequest request) throws LinkException {
+            @RequestBody LinkUpdateRequest request) throws CommonException {
         maintenanceService.updateLinks(request);
         return new ResponseEntity<>(
                 new RestResponse<>(HttpStatus.OK.toString(), "Successfully updated Link", null, null), HttpStatus.OK);
@@ -99,7 +98,7 @@ public class LinkMaintenanceController {
 
     @DeleteMapping(value = "/maintenance/deleteLinkByUrl")
     public ResponseEntity<RestResponse<String>> deleteLink(
-            @RequestParam String url) throws LinkException {
+            @RequestParam String url) throws CommonException {
         maintenanceService.deleteLinkByUrl(url);
 
         return new ResponseEntity<>(
@@ -108,7 +107,7 @@ public class LinkMaintenanceController {
 
     // Will use selenium to validate a link (resource intensive!!!)
     @PostMapping(value = "/maintenance/validateLink")
-    public ResponseEntity<RestResponse<LinkBean>> postLink(@RequestParam String url) throws LinkException {
+    public ResponseEntity<RestResponse<LinkBean>> postLink(@RequestParam String url) throws CommonException {
         LinkBean response = maintenanceService.validateLink(url);
 
         return new ResponseEntity<RestResponse<LinkBean>>(
@@ -116,14 +115,14 @@ public class LinkMaintenanceController {
     }
 
     @PutMapping(value = "/maintenance/maintainLink")
-    public ResponseEntity<RestResponse<LinkBean>> performLinkMaintenance(@RequestParam String url) throws LinkException {
+    public ResponseEntity<RestResponse<LinkBean>> performLinkMaintenance(@RequestParam String url) throws CommonException {
         Link link = maintenanceService.performMaintenance(url);
         return new ResponseEntity<RestResponse<LinkBean>>(
                 new RestResponse<LinkBean>(HttpStatus.OK.toString(), "Successfully performed maintenance}",convert(link), null), HttpStatus.OK);
     }
 
     @PutMapping(value = "/maintenance/performMaintenance")
-    public ResponseEntity<RestResponse<LinkBean>> performLinkMaintenance() throws LinkException {
+    public ResponseEntity<RestResponse<LinkBean>> performLinkMaintenance() throws CommonException {
         maintenanceService.performMaintenance();
         return new ResponseEntity<RestResponse<LinkBean>>(
                 new RestResponse<LinkBean>(HttpStatus.OK.toString(), "Successfully performed maintenance}",null, null), HttpStatus.OK);

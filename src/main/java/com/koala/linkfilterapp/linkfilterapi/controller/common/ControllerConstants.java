@@ -1,4 +1,4 @@
-package com.koala.linkfilterapp.linkfilterapi.controller;
+package com.koala.linkfilterapp.linkfilterapi.controller.common;
 
 public class ControllerConstants {
     public static final String UI_SERVER_ORIGIN = "http://localhost:4200";

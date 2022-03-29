@@ -7,7 +7,7 @@ import com.koala.linkfilterapp.linkfilterapi.api.requesthistory.dto.RequestHisto
 import com.koala.linkfilterapp.linkfilterapi.api.requesthistory.entity.RequestHistory;
 import com.koala.linkfilterapp.linkfilterapi.api.requesthistory.enums.RequestType;
 import com.koala.linkfilterapp.linkfilterapi.api.common.enums.TimeInterval;
-import com.koala.linkfilterapp.linkfilterapi.api.common.exception.LinkException;
+import com.koala.linkfilterapp.linkfilterapi.api.common.exception.CommonException;
 import com.koala.linkfilterapp.linkfilterapi.api.link.entity.Link;
 import com.koala.linkfilterapp.linkfilterapi.repository.RequestHistoryRepository;
 import org.dozer.DozerBeanMapper;
@@ -41,7 +41,7 @@ public class RequestHistoryServiceImpl {
     @Autowired
     RequestHistoryRepository requestHistoryRepository;
 
-    public void ipCheck(String ipAddress) throws LinkException {
+    public void ipCheck(String ipAddress) throws CommonException {
         Timestamp currentTime = new Timestamp(System.currentTimeMillis());
         Calendar calendar = Calendar.getInstance();
         calendar.setTimeInMillis(currentTime.getTime());
@@ -49,7 +49,7 @@ public class RequestHistoryServiceImpl {
         Timestamp timeInterval = new Timestamp(calendar.getTime().getTime());
         long timesConnected = requestHistoryRepository.countByRequestTimeAfterAndIpAddress(timeInterval,ipAddress);
         if (timesConnected > CONNECTION_THRESHOLD) {
-            LinkException exception = new LinkException(HttpStatus.TOO_MANY_REQUESTS, "Connection threshold reached please try again in a minute", null, null, null);
+            CommonException exception = new CommonException(HttpStatus.TOO_MANY_REQUESTS, "Connection threshold reached please try again in a minute", null, null, null);
             throw exception;
         }
     }
@@ -101,7 +101,7 @@ public class RequestHistoryServiceImpl {
     }
 
     public RequestHistoryStatResponse getRequestHistoryStatistics(String url, TimeInterval timeInterval, String startingDate,
-                                                                  String endDate) throws LinkException {
+                                                                  String endDate) throws CommonException {
         log.info("Get request statistics service");
         RequestHistoryStatResponse response = new RequestHistoryStatResponse();
         response.setInterval(timeInterval);
@@ -128,7 +128,7 @@ public class RequestHistoryServiceImpl {
                 responseData.add(stat);
             }
         } else {
-            LinkException exception = new LinkException();
+            CommonException exception = new CommonException();
             exception.setDescription(String.format("INVALID START/END DATES: %s, %s", startingDate, endDate));
             throw exception;
         }

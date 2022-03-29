@@ -1,8 +1,6 @@
 package com.koala.linkfilterapp.linkfilterapi.service.sponsor.impl;
 
-import com.koala.linkfilterapp.linkfilterapi.api.common.exception.LinkException;
-import com.koala.linkfilterapp.linkfilterapi.api.ipaddress.dto.IpSearchBean;
-import com.koala.linkfilterapp.linkfilterapi.api.ipaddress.entity.IpAddress;
+import com.koala.linkfilterapp.linkfilterapi.api.common.exception.CommonException;
 import com.koala.linkfilterapp.linkfilterapi.api.sponsor.dto.request.SponsorRequestBean;
 import com.koala.linkfilterapp.linkfilterapi.api.sponsor.dto.request.SponsorSearchBean;
 import com.koala.linkfilterapp.linkfilterapi.api.sponsor.dto.response.SponsorBean;
@@ -68,22 +66,22 @@ public class SponsorServiceImpl implements SponsorService {
         };
     }
 
-    public Sponsor createSponsor(SponsorRequestBean bean) throws LinkException {
+    public Sponsor createSponsor(SponsorRequestBean bean) throws CommonException {
         Optional<Sponsor> foundSponsor = repository.findById(bean.getId());
 
         if (foundSponsor.isPresent()) {
-            throw new LinkException(HttpStatus.CONFLICT, "Sponsor already exists, use update api", null, null, null);
+            throw new CommonException(HttpStatus.CONFLICT, "Sponsor already exists, use update api", null, null, null);
         }
 
         repository.save(converter.convert(bean));
         return bean;
     }
 
-    public Sponsor updateSponsor(SponsorRequestBean bean) throws LinkException {
+    public Sponsor updateSponsor(SponsorRequestBean bean) throws CommonException {
         Optional<Sponsor> foundSponsor = repository.findById(bean.getId());
 
         if (!foundSponsor.isPresent()) {
-            throw new LinkException(HttpStatus.NOT_FOUND, "Sponsor not found!", null, null, null);
+            throw new CommonException(HttpStatus.NOT_FOUND, "Sponsor not found!", null, null, null);
         }
 
         repository.delete(foundSponsor.get());
@@ -91,27 +89,27 @@ public class SponsorServiceImpl implements SponsorService {
         return bean;
     }
 
-    public void deleteSponsor(String projectName) throws LinkException {
+    public void deleteSponsor(String projectName) throws CommonException {
         Optional<Sponsor> foundSponsor = repository.findById(projectName);
 
         if (!foundSponsor.isPresent()) {
-            throw new LinkException(HttpStatus.NOT_FOUND, "Sponsor not found!", null, null, null);
+            throw new CommonException(HttpStatus.NOT_FOUND, "Sponsor not found!", null, null, null);
         }
 
         repository.delete(foundSponsor.get());
     }
 
-    public SponsorBean getSponsorInfo(String projectName, String ipAddress) throws LinkException {
+    public SponsorBean getSponsorInfo(String projectName, String ipAddress) throws CommonException {
         Optional<Sponsor> retrievedSponsor = repository.findById(projectName);
         if (retrievedSponsor.isPresent()) {
             return converter.convert(retrievedSponsor.get());
         } else {
-            LinkException exception = new LinkException(HttpStatus.BAD_REQUEST, "Unable to find sponsor: " + projectName, null, ipAddress, null);
+            CommonException exception = new CommonException(HttpStatus.BAD_REQUEST, "Unable to find sponsor: " + projectName, null, ipAddress, null);
             throw exception;
         }
     }
 
-    public SponsorBean getSponsorInfo() throws LinkException {
+    public SponsorBean getSponsorInfo() throws CommonException {
         Random rand = new Random();
 
         List<Sponsor> retrievedSponsors = repository.findAll();

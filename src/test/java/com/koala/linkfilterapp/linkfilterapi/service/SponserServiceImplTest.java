@@ -2,7 +2,7 @@ package com.koala.linkfilterapp.linkfilterapi.service;
 
 import com.koala.linkfilterapp.linkfilterapi.api.sponsor.dto.response.SponsorBean;
 import com.koala.linkfilterapp.linkfilterapi.api.sponsor.entity.Sponsor;
-import com.koala.linkfilterapp.linkfilterapi.api.common.exception.LinkException;
+import com.koala.linkfilterapp.linkfilterapi.api.common.exception.CommonException;
 import com.koala.linkfilterapp.linkfilterapi.repository.SponsorRepository;
 import com.koala.linkfilterapp.linkfilterapi.service.sponsor.impl.SponsorServiceImpl;
 import org.junit.Before;
@@ -47,7 +47,7 @@ public class SponserServiceImplTest {
     }
 
     @Test
-    public void shouldGetRandomSponsor() throws LinkException {
+    public void shouldGetRandomSponsor() throws CommonException {
         sponsor1.setId("1");
         sponsor2.setId("2");
         sponsor3.setId("3");

@@ -1,6 +1,6 @@
 package com.koala.linkfilterapp.linkfilterapi.service.report.maintenance.impl;
 
-import com.koala.linkfilterapp.linkfilterapi.api.common.exception.LinkException;
+import com.koala.linkfilterapp.linkfilterapi.api.common.exception.CommonException;
 import com.koala.linkfilterapp.linkfilterapi.api.report.dto.LinkReportBean;
 import com.koala.linkfilterapp.linkfilterapi.api.report.dto.LinkReportSearchBean;
 import com.koala.linkfilterapp.linkfilterapi.api.report.entity.LinkReport;
@@ -38,10 +38,10 @@ public class ReportMaintenanceServiceImpl {
         return repository.findAll(querySpec, pageRequest).map(LinkReportConverter::convert);
     }
 
-    public List<LinkReportBean> deleteReportsByIp(String ip) throws LinkException {
+    public List<LinkReportBean> deleteReportsByIp(String ip) throws CommonException {
         List<LinkReport> reports = repository.findByIpAddress(ip);
         if (reports.isEmpty()) {
-            LinkException exception = new LinkException(HttpStatus.NOT_FOUND, "No reports found from ip " + ip , null, "Delete Report", null);
+            CommonException exception = new CommonException(HttpStatus.NOT_FOUND, "No reports found from ip " + ip , null, "Delete Report", null);
             log.warning(exception.toString());
             throw exception;
         }

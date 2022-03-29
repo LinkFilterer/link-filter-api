@@ -1,7 +1,7 @@
 package com.koala.linkfilterapp.linkfilterapi.controller.maintenance;
 
 import com.koala.linkfilterapp.linkfilterapi.api.common.dto.response.RestResponse;
-import com.koala.linkfilterapp.linkfilterapi.api.common.exception.LinkException;
+import com.koala.linkfilterapp.linkfilterapi.api.common.exception.CommonException;
 import com.koala.linkfilterapp.linkfilterapi.api.sponsor.dto.request.SponsorRequestBean;
 import com.koala.linkfilterapp.linkfilterapi.api.sponsor.dto.request.SponsorSearchBean;
 import com.koala.linkfilterapp.linkfilterapi.api.sponsor.entity.Sponsor;
@@ -17,7 +17,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.servlet.http.HttpServletRequest;
 import java.util.logging.Logger;
 
-import static com.koala.linkfilterapp.linkfilterapi.controller.ControllerConstants.UI_SERVER_ORIGIN;
+import static com.koala.linkfilterapp.linkfilterapi.controller.common.ControllerConstants.UI_SERVER_ORIGIN;
 
 @CrossOrigin(origins = UI_SERVER_ORIGIN)
 @RestController
@@ -44,7 +44,7 @@ public class SponsorMaintenanceController {
             @RequestParam(required = false, defaultValue = "asc") String sortDir,
             @RequestParam(required = false, defaultValue = "0") Integer pageNo,
             @RequestParam(required = false, defaultValue = "10") Integer pageSize,
-            HttpServletRequest request) throws LinkException {
+            HttpServletRequest request) throws CommonException {
         if (ipAddressService.checkIfBanned(request.getRemoteAddr())) {
             return null;
         }
@@ -73,7 +73,7 @@ public class SponsorMaintenanceController {
     }
 
     @PostMapping(value = "/maintenance/postSponsor")
-    public ResponseEntity<RestResponse<Sponsor>> postSponsor(@RequestBody SponsorRequestBean bean, HttpServletRequest request) throws LinkException {
+    public ResponseEntity<RestResponse<Sponsor>> postSponsor(@RequestBody SponsorRequestBean bean, HttpServletRequest request) throws CommonException {
         if (ipAddressService.checkIfBanned(request.getRemoteAddr())) {
             return null;
         }
@@ -86,7 +86,7 @@ public class SponsorMaintenanceController {
     }
 
     @PutMapping(value = "/maintenance/updateSponsor")
-    public ResponseEntity<RestResponse<Sponsor>> updateSponsor(@RequestBody SponsorRequestBean bean, HttpServletRequest request) throws LinkException {
+    public ResponseEntity<RestResponse<Sponsor>> updateSponsor(@RequestBody SponsorRequestBean bean, HttpServletRequest request) throws CommonException {
         if (ipAddressService.checkIfBanned(request.getRemoteAddr())) {
             return null;
         }
@@ -99,7 +99,7 @@ public class SponsorMaintenanceController {
     }
 
     @DeleteMapping (value = "/maintenance/deleteSponsor")
-    public ResponseEntity<RestResponse<String>> deleteSponsor(String projectName, HttpServletRequest request) throws LinkException {
+    public ResponseEntity<RestResponse<String>> deleteSponsor(String projectName, HttpServletRequest request) throws CommonException {
         if (ipAddressService.checkIfBanned(request.getRemoteAddr())) {
             return null;
         }

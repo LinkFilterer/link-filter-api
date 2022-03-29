@@ -2,7 +2,7 @@ package com.koala.linkfilterapp.linkfilterapi.service.link.validator;
 
 import com.google.common.net.InternetDomainName;
 import com.koala.linkfilterapp.linkfilterapi.api.report.enums.ReportType;
-import com.koala.linkfilterapp.linkfilterapi.api.common.exception.LinkException;
+import com.koala.linkfilterapp.linkfilterapi.api.common.exception.CommonException;
 import com.koala.linkfilterapp.linkfilterapi.api.link.entity.Link;
 import org.springframework.http.HttpStatus;
 
@@ -12,20 +12,20 @@ import java.util.regex.Pattern;
 
 
 public class LinkValidator {
-    public static boolean validateReportType(ReportType reportType) throws LinkException {
+    public static boolean validateReportType(ReportType reportType) throws CommonException {
         if (reportType.equals(ReportType.VALID)) {
             return true;
         } else if (reportType.equals(ReportType.INVALID)) {
             return false;
         } else {
-            LinkException exception = new LinkException();
+            CommonException exception = new CommonException();
             exception.setHttpStatus(HttpStatus.BAD_REQUEST);
             exception.setDescription("Invalid Report Type: " + reportType);
             throw exception;
         }
     }
 
-    private static URL parseUrl(String strUrl) throws LinkException {
+    private static URL parseUrl(String strUrl) throws CommonException {
         strUrl = strUrl.trim();
         try {
             if(isValidUrlString(strUrl) && isHttpPrefixed(strUrl)) {
@@ -38,19 +38,19 @@ public class LinkValidator {
                 URL uri = new URL("https://" + strUrl);
                 return uri;
             } else { // invalid
-                LinkException exception = new LinkException();
+                CommonException exception = new CommonException();
                 exception.setDescription("Regex does not match: " + strUrl);
                 throw exception;
             }
         } catch (Exception e) {
             Link badLink = new Link();
             badLink.setUrl(strUrl);
-            LinkException exception = new LinkException(HttpStatus.BAD_REQUEST, e.toString(), badLink,  null, null);
+            CommonException exception = new CommonException(HttpStatus.BAD_REQUEST, e.toString(), badLink,  null, null);
             throw exception;
         }
     }
 
-    public static String parseUrlToDomainString(String url) throws LinkException  {
+    public static String parseUrlToDomainString(String url) throws CommonException {
         URL parsedUrl = parseUrl(url);
         return InternetDomainName.from(parsedUrl.getHost()).topPrivateDomain().toString();
     }

@@ -1,4 +1,4 @@
-package com.koala.linkfilterapp.linkfilterapi.service.common.converter;
+package com.koala.linkfilterapp.linkfilterapi.service.requesthistory.converter;
 
 import com.koala.linkfilterapp.linkfilterapi.api.requesthistory.entity.RequestHistory;
 import com.koala.linkfilterapp.linkfilterapi.api.link.entity.Link;
