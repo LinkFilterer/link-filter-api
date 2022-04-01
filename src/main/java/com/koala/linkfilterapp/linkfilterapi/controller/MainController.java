@@ -9,6 +9,7 @@ import com.koala.linkfilterapp.linkfilterapi.service.ipaddress.impl.IpAddressSer
 import com.koala.linkfilterapp.linkfilterapi.service.ipaddress.impl.RequestHistoryServiceImpl;
 import com.koala.linkfilterapp.linkfilterapi.service.link.impl.LinkServiceImpl;
 import com.koala.linkfilterapp.linkfilterapi.service.sponsor.impl.SponsorServiceImpl;
+import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -25,8 +26,8 @@ import static com.koala.linkfilterapp.linkfilterapi.controller.common.Controller
 
 @CrossOrigin(origins = {UI_SERVER_ORIGIN, BROWSER_EXTENSION_ORIGIN})
 @RestController
+@Log4j2
 public class MainController {
-    Logger log = Logger.getLogger("LinkController");
 
     @Autowired
     LinkServiceImpl linkService;
@@ -48,9 +49,7 @@ public class MainController {
         }
         log.info(String.format("Request: %s", request.getAuthType()));
         LinkBean response = linkService.checkLink(url, request.getRemoteAddr());
-        log.info("before get sponser info");
         SponsorBean sponsor = sponsorService.getSponsorInfo();
-        log.info("after get sponser info");
         response.setSponsor(sponsor);
         log.info(String.format("Sending Response to %s: %s", request.getRemoteAddr(), response));
         return new ResponseEntity<>(
