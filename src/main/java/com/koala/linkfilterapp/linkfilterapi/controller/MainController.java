@@ -1,6 +1,7 @@
 package com.koala.linkfilterapp.linkfilterapi.controller;
 
 import com.koala.linkfilterapp.linkfilterapi.api.common.dto.response.RestResponse;
+import com.koala.linkfilterapp.linkfilterapi.api.common.enums.AddressType;
 import com.koala.linkfilterapp.linkfilterapi.api.report.enums.ReportType;
 import com.koala.linkfilterapp.linkfilterapi.api.common.exception.CommonException;
 import com.koala.linkfilterapp.linkfilterapi.api.link.dto.response.LinkBean;
@@ -19,7 +20,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletRequest;
-import java.util.logging.Logger;
 
 import static com.koala.linkfilterapp.linkfilterapi.controller.common.ControllerConstants.BROWSER_EXTENSION_ORIGIN;
 import static com.koala.linkfilterapp.linkfilterapi.controller.common.ControllerConstants.UI_SERVER_ORIGIN;
@@ -43,8 +43,11 @@ public class MainController {
 
     // Will simply check database for a result and return it (INVALID/VALID/UNKNOWN) is public
     @PostMapping(value = "/checkLink")
-    public ResponseEntity<RestResponse<LinkBean>> checkLink(@RequestParam String url, HttpServletRequest request) throws CommonException {
-        if (ipAddressService.checkIfBanned(request.getRemoteAddr())) {
+    public ResponseEntity<RestResponse<LinkBean>> checkLink(@RequestParam String url,
+                                                            @RequestParam(required = false, defaultValue = "UNKNOWN") AddressType source,
+                                                            @RequestParam(required = false) String userId,
+                                                            HttpServletRequest request) throws CommonException {
+        if (ipAddressService.checkIfBanned(request.getRemoteAddr(), source, userId)) {
             return null;
         }
         log.info(String.format("Request: %s", request.getAuthType()));
@@ -57,8 +60,12 @@ public class MainController {
     }
 
     @PostMapping(value = "/reportLink")
-    public ResponseEntity<RestResponse<LinkBean>> reportLink(@RequestParam String url, @RequestParam ReportType reportType, HttpServletRequest request) throws CommonException {
-        if (ipAddressService.checkIfBanned(request.getRemoteAddr())) {
+    public ResponseEntity<RestResponse<LinkBean>> reportLink(@RequestParam String url,
+                                                             @RequestParam(required = false, defaultValue = "UNKNOWN") AddressType source,
+                                                             @RequestParam(required = false) String userId,
+                                                             @RequestParam ReportType reportType,
+                                                             HttpServletRequest request) throws CommonException {
+        if (ipAddressService.checkIfBanned(request.getRemoteAddr(), source, userId)) {
             return null;
         }
         LinkBean response = linkService.reportLink(url, request.getRemoteAddr(), reportType);

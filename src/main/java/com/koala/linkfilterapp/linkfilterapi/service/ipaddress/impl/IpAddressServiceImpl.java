@@ -1,10 +1,12 @@
 package com.koala.linkfilterapp.linkfilterapi.service.ipaddress.impl;
 
+import com.koala.linkfilterapp.linkfilterapi.api.common.enums.AddressType;
 import com.koala.linkfilterapp.linkfilterapi.api.ipaddress.dto.BanAction;
 import com.koala.linkfilterapp.linkfilterapi.api.ipaddress.entity.IpAddress;
 import com.koala.linkfilterapp.linkfilterapi.api.common.enums.BanStatus;
 import com.koala.linkfilterapp.linkfilterapi.api.common.exception.CommonException;
 import com.koala.linkfilterapp.linkfilterapi.api.ipaddress.dto.IpSearchBean;
+import com.koala.linkfilterapp.linkfilterapi.api.ipaddress.entity.IpAddressPk;
 import com.koala.linkfilterapp.linkfilterapi.repository.IpAddressRepository;
 import com.koala.linkfilterapp.linkfilterapi.service.ipaddress.IpAddressService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -64,15 +66,45 @@ public class IpAddressServiceImpl implements IpAddressService {
         };
     }
 
-    @Override
     public boolean checkIfBanned(String ipAddress) {
-        Optional<IpAddress> ipAddressEntity = repository.findById(ipAddress.trim());
+        IpAddressPk id = new IpAddressPk(ipAddress, "N/A");
+        Optional<IpAddress> ipAddressEntity = repository.findById(id);
         if(ipAddressEntity.isPresent()) {
             ipAddressEntity.get().setLastAccessed(new Date());
             repository.save(ipAddressEntity.get());
             return BanStatus.BAN.equals(ipAddressEntity.get().getIsBanned());
         } else {
-            IpAddress newIp = new IpAddress(ipAddress, BanStatus.NOT_BANNED, null, new Date());
+            IpAddress newIp = new IpAddress(id, BanStatus.NOT_BANNED, AddressType.ADMIN, new Date());
+            repository.save(newIp);
+            return false;
+        }
+    }
+
+
+    @Override
+    public boolean checkIfBanned(String ipAddress, AddressType addressType) {
+        IpAddressPk id = new IpAddressPk(ipAddress, "N/A");
+        Optional<IpAddress> ipAddressEntity = repository.findById(id);
+        if(ipAddressEntity.isPresent()) {
+            ipAddressEntity.get().setLastAccessed(new Date());
+            repository.save(ipAddressEntity.get());
+            return BanStatus.BAN.equals(ipAddressEntity.get().getIsBanned());
+        } else {
+            IpAddress newIp = new IpAddress(id, BanStatus.NOT_BANNED, addressType, new Date());
+            repository.save(newIp);
+            return false;
+        }
+    }
+
+    public boolean checkIfBanned(String ipAddress, AddressType addressType, String userId) {
+        IpAddressPk id = new IpAddressPk(ipAddress, userId);
+        Optional<IpAddress> ipAddressEntity = repository.findById(id);
+        if(ipAddressEntity.isPresent()) {
+            ipAddressEntity.get().setLastAccessed(new Date());
+            repository.save(ipAddressEntity.get());
+            return BanStatus.BAN.equals(ipAddressEntity.get().getIsBanned());
+        } else {
+            IpAddress newIp = new IpAddress(id, BanStatus.NOT_BANNED, addressType, new Date());
             repository.save(newIp);
             return false;
         }
@@ -80,13 +112,14 @@ public class IpAddressServiceImpl implements IpAddressService {
 
     @Override
     public List<IpAddress> manageIpBan(List<BanAction> request) throws CommonException {
+        IpAddressPk id = new IpAddressPk();
         if(!CollectionUtils.isEmpty(request)) {
             return request.stream().map(action -> {
                 IpAddress entity;
-                Optional<IpAddress> ipAddressEntity = repository.findById(action.getIpAddress());
+                Optional<IpAddress> ipAddressEntity = repository.findById(id);
 
                 if (!ipAddressEntity.isPresent()) {
-                    entity = new IpAddress(action.getIpAddress(), action.getIsBanned(), null, new Date());
+                    entity = new IpAddress(id, action.getIsBanned(), null, new Date());
                     repository.save(entity);
                 } else {
                     entity = ipAddressEntity.get();

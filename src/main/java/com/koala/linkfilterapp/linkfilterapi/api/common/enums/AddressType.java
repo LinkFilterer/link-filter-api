@@ -1,13 +1,17 @@
 package com.koala.linkfilterapp.linkfilterapi.api.common.enums;
 
-public enum IpAddressType {
+public enum AddressType {
     WEB("WEB"),
     DISCORD("DISCORD"),
-    TELEGRAM("TELEGRAM");
+    TELEGRAM("TELEGRAM"),
+    ADMIN("ADMIN"),
+
+    UNKNOWN("UNKNOWN");
 
     private final String source;
 
-    private IpAddressType(String source) {
+    private AddressType(String source) {
         this.source = source;
     }
+
 }

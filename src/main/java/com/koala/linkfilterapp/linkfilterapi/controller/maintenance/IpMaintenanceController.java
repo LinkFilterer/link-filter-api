@@ -4,7 +4,7 @@ import com.koala.linkfilterapp.linkfilterapi.api.ipaddress.dto.BanAction;
 import com.koala.linkfilterapp.linkfilterapi.api.common.dto.response.RestResponse;
 import com.koala.linkfilterapp.linkfilterapi.api.ipaddress.entity.IpAddress;
 import com.koala.linkfilterapp.linkfilterapi.api.common.enums.BanStatus;
-import com.koala.linkfilterapp.linkfilterapi.api.common.enums.IpAddressType;
+import com.koala.linkfilterapp.linkfilterapi.api.common.enums.AddressType;
 import com.koala.linkfilterapp.linkfilterapi.api.common.exception.CommonException;
 import com.koala.linkfilterapp.linkfilterapi.api.ipaddress.dto.IpSearchBean;
 import com.koala.linkfilterapp.linkfilterapi.api.ipaddress.enums.IpSortType;
@@ -53,7 +53,7 @@ public class IpMaintenanceController {
     public ResponseEntity<RestResponse<Page<IpAddress>>> searchIps(
             @RequestParam(required = false) String ipAddress,
             @RequestParam(required = false) BanStatus isBanned,
-            @RequestParam(required = false) IpAddressType ipAddressType,
+            @RequestParam(required = false) AddressType ipAddressType,
             @RequestParam(required = false) String lastAccessed,
             @RequestParam(required = false, defaultValue = "lastAccessed") IpSortType sortType,
             @RequestParam(required = false, defaultValue = "asc") String sortDirection,
