@@ -11,6 +11,7 @@ import com.koala.linkfilterapp.linkfilterapi.service.ipaddress.impl.RequestHisto
 import com.koala.linkfilterapp.linkfilterapi.service.link.impl.LinkServiceImpl;
 import com.koala.linkfilterapp.linkfilterapi.service.sponsor.impl.SponsorServiceImpl;
 import lombok.extern.log4j.Log4j2;
+import org.apache.logging.log4j.util.Strings;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -44,8 +45,8 @@ public class MainController {
     // Will simply check database for a result and return it (INVALID/VALID/UNKNOWN) is public
     @PostMapping(value = "/checkLink")
     public ResponseEntity<RestResponse<LinkBean>> checkLink(@RequestParam String url,
-                                                            @RequestParam(required = false, defaultValue = "UNKNOWN") AddressType source,
-                                                            @RequestParam(required = false) String userId,
+                                                            @RequestParam(required = false, defaultValue = Strings.EMPTY) AddressType source,
+                                                            @RequestParam(required = false, defaultValue = Strings.EMPTY) String userId,
                                                             HttpServletRequest request) throws CommonException {
         if (ipAddressService.checkIfBanned(request.getRemoteAddr(), source, userId)) {
             return null;
@@ -61,8 +62,8 @@ public class MainController {
 
     @PostMapping(value = "/reportLink")
     public ResponseEntity<RestResponse<LinkBean>> reportLink(@RequestParam String url,
-                                                             @RequestParam(required = false, defaultValue = "UNKNOWN") AddressType source,
-                                                             @RequestParam(required = false) String userId,
+                                                             @RequestParam(required = false, defaultValue = Strings.EMPTY) AddressType source,
+                                                             @RequestParam(required = false, defaultValue = Strings.EMPTY) String userId,
                                                              @RequestParam ReportType reportType,
                                                              HttpServletRequest request) throws CommonException {
         if (ipAddressService.checkIfBanned(request.getRemoteAddr(), source, userId)) {
