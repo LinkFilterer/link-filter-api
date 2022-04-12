@@ -2,13 +2,10 @@ package com.koala.linkfilterapp.linkfilterapp.security.dto;
 
 import lombok.Data;
 
-import javax.validation.constraints.NotBlank;
+import java.io.Serializable;
 
 @Data
-public class LoginRequest {
-    @NotBlank
-    private String email;
-
-    @NotBlank
-    private String password;
+public class LoginRequest implements Serializable {
+    String email;
+    String password;
 }

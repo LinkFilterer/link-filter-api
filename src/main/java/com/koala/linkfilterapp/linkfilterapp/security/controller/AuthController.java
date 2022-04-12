@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -36,14 +37,21 @@ public class AuthController {
     TokenProvider tokenProvider;
 
     @PostMapping("/signin")
-    public ResponseEntity<?> authenticateUser(@Valid @RequestBody LoginRequest loginRequest) {
-        Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(loginRequest.getEmail(), loginRequest.getPassword()));
-        SecurityContextHolder.getContext().setAuthentication(authentication);
-        String jwt = tokenProvider.createToken(authentication);
-        LocalUser localUser = (LocalUser) authentication.getPrincipal();
-        ResponseEntity<JwtAuthenticationResponse> response =  ResponseEntity.ok(new JwtAuthenticationResponse(jwt, GeneralUtils.buildUserInfo(localUser)));
-        log.info(response.toString());
-        return response ;
+    public ResponseEntity<?> authenticateUser(@RequestBody LoginRequest loginRequest) {
+        Authentication authentication;
+        try {
+            UsernamePasswordAuthenticationToken token = new UsernamePasswordAuthenticationToken(loginRequest.getEmail(), loginRequest.getPassword());
+            authentication = authenticationManager.authenticate(token);
+            SecurityContextHolder.getContext().setAuthentication(authentication);
+            String jwt = tokenProvider.createToken(authentication);
+            LocalUser localUser = (LocalUser) authentication.getPrincipal();
+            ResponseEntity<JwtAuthenticationResponse> response =  ResponseEntity.ok(new JwtAuthenticationResponse(jwt, GeneralUtils.buildUserInfo(localUser)));
+            log.info(response.toString());
+            return response;
+        } catch (Exception e) {
+            log.info(e.toString());
+        }
+        return null;
     }
 
     @PostMapping("/signup")

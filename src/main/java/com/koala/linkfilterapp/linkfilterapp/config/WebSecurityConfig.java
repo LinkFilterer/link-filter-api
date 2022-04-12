@@ -8,6 +8,7 @@ import com.koala.linkfilterapp.linkfilterapp.security.oauth2.CustomOAuth2UserSer
 import com.koala.linkfilterapp.linkfilterapp.security.oauth2.CustomOidcUserService;
 import com.koala.linkfilterapp.linkfilterapp.security.oauth2.OAuth2AccessTokenResponseConverterWithDefaults;
 import com.koala.linkfilterapp.linkfilterapp.security.repository.HttpCookieOAuth2AuthorizationRequestRepository;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -33,6 +34,7 @@ import org.springframework.web.client.RestTemplate;
 
 import java.util.Arrays;
 
+@Slf4j
 @Configuration
 @EnableWebSecurity
 @EnableGlobalMethodSecurity(prePostEnabled = true, securedEnabled = true, jsr250Enabled = true)
@@ -75,9 +77,9 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .authorizeRequests()
                 .antMatchers("/login","/signin","/",
                         "/error", "/api/all",
-                        "/api/auth/**", "/oauth2/**","/checkLink","/reportLink").permitAll()
-                .anyRequest()
-                .authenticated()
+                        "/api/auth/**", "/oauth2/**").permitAll()
+                .anyRequest().permitAll()
+                //.authenticated()
                 .and()
                 .oauth2Login()
                 .authorizationEndpoint()
@@ -126,13 +128,14 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         return new BCryptPasswordEncoder(10);
     }
 
-    @Bean(BeanIds.AUTHENTICATION_MANAGER)
+    @Bean
     @Override
     public AuthenticationManager authenticationManagerBean() throws Exception {
         return super.authenticationManagerBean();
     }
 
     private OAuth2AccessTokenResponseClient<OAuth2AuthorizationCodeGrantRequest> authorizationCodeTokenResponseClient() {
+
         OAuth2AccessTokenResponseHttpMessageConverter tokenResponseHttpMessageConverter = new OAuth2AccessTokenResponseHttpMessageConverter();
         tokenResponseHttpMessageConverter.setTokenResponseConverter(new OAuth2AccessTokenResponseConverterWithDefaults());
         RestTemplate restTemplate = new RestTemplate(Arrays.asList(new FormHttpMessageConverter(), tokenResponseHttpMessageConverter));
