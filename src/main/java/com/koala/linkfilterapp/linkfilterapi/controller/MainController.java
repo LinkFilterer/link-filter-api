@@ -49,10 +49,10 @@ public class MainController {
     public ResponseEntity<RestResponse<LinkBean>> checkLink(@RequestParam String url,
                                                             HttpServletRequest request) throws CommonException {
         String ipAddress = request.getRemoteAddr();
-        if (ipAddressService.checkIfBanned(ipAddress, AddressType.WEB, null)) {
+        if (ipAddressService.checkIfBanned(ipAddress, AddressType.WEB, Strings.EMPTY)) {
             return null;
         }
-        RequestHistory requestHistory = requestHistoryService.saveRequestHistory(url, ipAddress, null, RequestType.CHECK, AddressType.WEB);
+        RequestHistory requestHistory = requestHistoryService.saveRequestHistory(url, ipAddress, Strings.EMPTY, RequestType.CHECK, AddressType.WEB);
         requestHistoryService.ipCheck(request.getRemoteAddr());
         log.info(String.format("Request: %s", request.getAuthType()));
         LinkBean response = linkService.checkLink(url, request.getRemoteAddr(), requestHistory);
@@ -68,10 +68,10 @@ public class MainController {
                                                              @RequestParam ReportType reportType,
                                                              HttpServletRequest request) throws CommonException {
         String ipAddress = request.getRemoteAddr();
-        if (ipAddressService.checkIfBanned(ipAddress, AddressType.WEB, null)) {
+        if (ipAddressService.checkIfBanned(ipAddress, AddressType.WEB, Strings.EMPTY)) {
             return null;
         }
-        RequestHistory requestHistory = requestHistoryService.saveRequestHistory(url, ipAddress,null, RequestType.CHECK, AddressType.WEB);
+        RequestHistory requestHistory = requestHistoryService.saveRequestHistory(url, ipAddress,Strings.EMPTY, RequestType.CHECK, AddressType.WEB);
         LinkBean response = linkService.reportLink(url, request.getRemoteAddr(), reportType, requestHistory );
         log.info(String.format("Sending Response to %s: %s", request.getRemoteAddr(), response));
         return new ResponseEntity<>(
