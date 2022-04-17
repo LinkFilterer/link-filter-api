@@ -71,7 +71,7 @@ public class MainController {
         if (ipAddressService.checkIfBanned(ipAddress, AddressType.WEB, Strings.EMPTY)) {
             return null;
         }
-        RequestHistory requestHistory = requestHistoryService.saveRequestHistory(url, ipAddress,Strings.EMPTY, RequestType.CHECK, AddressType.WEB);
+        RequestHistory requestHistory = requestHistoryService.saveRequestHistory(url, ipAddress,Strings.EMPTY, RequestType.REPORT, AddressType.WEB);
         LinkBean response = linkService.reportLink(url, request.getRemoteAddr(), reportType, requestHistory );
         log.info(String.format("Sending Response to %s: %s", request.getRemoteAddr(), response));
         return new ResponseEntity<>(
