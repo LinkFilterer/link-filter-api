@@ -1,10 +1,10 @@
-package com.koala.linkfilterapp.linkfilterapi.controller;
+package com.koala.linkfilterapp.linkfilterapi.controller.discord;
 
 import com.koala.linkfilterapp.linkfilterapi.api.common.dto.response.RestResponse;
 import com.koala.linkfilterapp.linkfilterapi.api.common.enums.AddressType;
-import com.koala.linkfilterapp.linkfilterapi.api.report.enums.ReportType;
 import com.koala.linkfilterapp.linkfilterapi.api.common.exception.CommonException;
 import com.koala.linkfilterapp.linkfilterapi.api.link.dto.response.LinkBean;
+import com.koala.linkfilterapp.linkfilterapi.api.report.enums.ReportType;
 import com.koala.linkfilterapp.linkfilterapi.api.sponsor.dto.response.SponsorBean;
 import com.koala.linkfilterapp.linkfilterapi.service.ipaddress.impl.IpAddressServiceImpl;
 import com.koala.linkfilterapp.linkfilterapi.service.ipaddress.impl.RequestHistoryServiceImpl;
@@ -15,10 +15,7 @@ import org.apache.logging.log4j.util.Strings;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -28,7 +25,8 @@ import static com.koala.linkfilterapp.linkfilterapi.controller.common.Controller
 @CrossOrigin(origins = {UI_SERVER_ORIGIN, BROWSER_EXTENSION_ORIGIN})
 @RestController
 @Log4j2
-public class MainController {
+@RequestMapping("/discord")
+public class DiscordController {
 
     @Autowired
     LinkServiceImpl linkService;
@@ -45,13 +43,12 @@ public class MainController {
     // Will simply check database for a result and return it (INVALID/VALID/UNKNOWN) is public
     @PostMapping(value = "/checkLink")
     public ResponseEntity<RestResponse<LinkBean>> checkLink(@RequestParam String url,
-                                                            @RequestParam(required = false, defaultValue = Strings.EMPTY) AddressType source,
-                                                            @RequestParam(required = false, defaultValue = Strings.EMPTY) String userId,
+                                                            @RequestParam AddressType source,
+                                                            @RequestParam String userId,
                                                             HttpServletRequest request) throws CommonException {
         if (ipAddressService.checkIfBanned(request.getRemoteAddr(), source, userId)) {
             return null;
         }
-        requestHistoryService.ipCheck(request.getRemoteAddr());
         log.info(String.format("Request: %s", request.getAuthType()));
         LinkBean response = linkService.checkLink(url, request.getRemoteAddr());
         SponsorBean sponsor = sponsorService.getSponsorInfo();
@@ -63,8 +60,8 @@ public class MainController {
 
     @PostMapping(value = "/reportLink")
     public ResponseEntity<RestResponse<LinkBean>> reportLink(@RequestParam String url,
-                                                             @RequestParam(required = false, defaultValue = Strings.EMPTY) AddressType source,
-                                                             @RequestParam(required = false, defaultValue = Strings.EMPTY) String userId,
+                                                             @RequestParam AddressType source,
+                                                             @RequestParam String userId,
                                                              @RequestParam ReportType reportType,
                                                              HttpServletRequest request) throws CommonException {
         if (ipAddressService.checkIfBanned(request.getRemoteAddr(), source, userId)) {

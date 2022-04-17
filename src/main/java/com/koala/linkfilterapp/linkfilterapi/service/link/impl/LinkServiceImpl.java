@@ -55,7 +55,7 @@ public class LinkServiceImpl implements LinkService {
     // Will only check the database for results
     public LinkBean checkLink(String url, String ipAddress) throws CommonException {
         log.info(CHECK_LINK_CD + " url = '" + url + "' received from " + ipAddress);
-        requestHistoryService.ipCheck(ipAddress);
+
         RequestHistory request = requestHistoryService.saveRequestHistory(url, ipAddress, RequestType.CHECK);
 
         List<String> errors = validationService.validateLinkRequest(url, ipAddress);

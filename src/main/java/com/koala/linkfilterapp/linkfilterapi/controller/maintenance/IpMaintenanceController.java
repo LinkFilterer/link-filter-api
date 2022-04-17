@@ -23,13 +23,14 @@ import static com.koala.linkfilterapp.linkfilterapi.controller.common.Controller
 
 @CrossOrigin(origins = UI_SERVER_ORIGIN)
 @RestController
+@RequestMapping("/maintenance")
 public class IpMaintenanceController {
     Logger log = Logger.getLogger("IpMaintenanceController");
 
     @Autowired
     IpAddressServiceImpl ipAddressService;
 
-    @PostMapping(value = "/maintenance/banIp")
+    @PostMapping(value = "/banIp")
     public ResponseEntity<RestResponse<List<IpAddress>>> banIpAddress(
             @RequestBody List<BanAction> request) throws CommonException {
         List<IpAddress> addresses = ipAddressService.manageIpBan(request);
@@ -37,7 +38,7 @@ public class IpMaintenanceController {
                 new RestResponse<>(HttpStatus.OK.toString(), String.format("Ips processed: %d", addresses.size()), addresses, null), HttpStatus.OK);
     }
 
-    @GetMapping(value = "/maintenance/getAllIps")
+    @GetMapping(value = "/getAllIps")
     public ResponseEntity<RestResponse<List<IpAddress>>> getAllIps(HttpServletRequest request) throws CommonException {
         if (ipAddressService.checkIfBanned(request.getRemoteAddr())) {
             return null;
@@ -49,7 +50,7 @@ public class IpMaintenanceController {
                 new RestResponse<>(HttpStatus.OK.toString(), "Ips fetched", res, null), HttpStatus.OK);
     }
 
-    @GetMapping (value = "/maintenance/searchIps")
+    @GetMapping (value = "/searchIps")
     public ResponseEntity<RestResponse<Page<IpAddress>>> searchIps(
             @RequestParam(required = false) String ipAddress,
             @RequestParam(required = false) BanStatus isBanned,
