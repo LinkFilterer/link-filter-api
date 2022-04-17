@@ -47,14 +47,12 @@ public class MainController {
     // Will simply check database for a result and return it (INVALID/VALID/UNKNOWN) is public
     @PostMapping(value = "/checkLink")
     public ResponseEntity<RestResponse<LinkBean>> checkLink(@RequestParam String url,
-                                                            @RequestParam(required = false, defaultValue = Strings.EMPTY) AddressType source,
-                                                            @RequestParam(required = false, defaultValue = Strings.EMPTY) String userId,
                                                             HttpServletRequest request) throws CommonException {
         String ipAddress = request.getRemoteAddr();
-        if (ipAddressService.checkIfBanned(ipAddress, source, userId)) {
+        if (ipAddressService.checkIfBanned(ipAddress, AddressType.WEB, null)) {
             return null;
         }
-        RequestHistory requestHistory = requestHistoryService.saveRequestHistory(url, ipAddress, userId, RequestType.CHECK, source);
+        RequestHistory requestHistory = requestHistoryService.saveRequestHistory(url, ipAddress, null, RequestType.CHECK, AddressType.WEB);
         requestHistoryService.ipCheck(request.getRemoteAddr());
         log.info(String.format("Request: %s", request.getAuthType()));
         LinkBean response = linkService.checkLink(url, request.getRemoteAddr(), requestHistory);
@@ -67,15 +65,13 @@ public class MainController {
 
     @PostMapping(value = "/reportLink")
     public ResponseEntity<RestResponse<LinkBean>> reportLink(@RequestParam String url,
-                                                             @RequestParam(required = false, defaultValue = Strings.EMPTY) AddressType source,
-                                                             @RequestParam(required = false, defaultValue = Strings.EMPTY) String userId,
                                                              @RequestParam ReportType reportType,
                                                              HttpServletRequest request) throws CommonException {
         String ipAddress = request.getRemoteAddr();
-        if (ipAddressService.checkIfBanned(ipAddress, source, userId)) {
+        if (ipAddressService.checkIfBanned(ipAddress, AddressType.WEB, null)) {
             return null;
         }
-        RequestHistory requestHistory = requestHistoryService.saveRequestHistory(url, ipAddress, userId, RequestType.CHECK, source);
+        RequestHistory requestHistory = requestHistoryService.saveRequestHistory(url, ipAddress,null, RequestType.CHECK, AddressType.WEB);
         LinkBean response = linkService.reportLink(url, request.getRemoteAddr(), reportType, requestHistory );
         log.info(String.format("Sending Response to %s: %s", request.getRemoteAddr(), response));
         return new ResponseEntity<>(
