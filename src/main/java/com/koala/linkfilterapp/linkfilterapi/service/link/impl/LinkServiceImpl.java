@@ -3,7 +3,6 @@ package com.koala.linkfilterapp.linkfilterapi.service.link.impl;
 import com.koala.linkfilterapp.linkfilterapi.api.requesthistory.entity.RequestHistory;
 import com.koala.linkfilterapp.linkfilterapi.api.link.enums.LinkStatus;
 import com.koala.linkfilterapp.linkfilterapi.api.report.enums.ReportType;
-import com.koala.linkfilterapp.linkfilterapi.api.requesthistory.enums.RequestType;
 import com.koala.linkfilterapp.linkfilterapi.api.common.exception.CommonException;
 import com.koala.linkfilterapp.linkfilterapi.api.link.dto.response.LinkBean;
 import com.koala.linkfilterapp.linkfilterapi.api.link.entity.Link;
@@ -53,10 +52,9 @@ public class LinkServiceImpl implements LinkService {
     LinkValidationServiceImpl validationService;
 
     // Will only check the database for results
-    public LinkBean checkLink(String url, String ipAddress) throws CommonException {
+    public LinkBean checkLink(String url, String ipAddress, RequestHistory request) throws CommonException {
         log.info(CHECK_LINK_CD + " url = '" + url + "' received from " + ipAddress);
 
-        RequestHistory request = requestHistoryService.saveRequestHistory(url, ipAddress, RequestType.CHECK);
 
         List<String> errors = validationService.validateLinkRequest(url, ipAddress);
         if (!CollectionUtils.isEmpty(errors)) {
@@ -84,11 +82,11 @@ public class LinkServiceImpl implements LinkService {
         return convert(nonNull(entity) ? entity : retrievedEntity.get());
     }
 
-    public List<LinkBean> checkLinks(List<String> urls, String ipAddress) throws CommonException {
+    public List<LinkBean> checkLinks(List<String> urls, String ipAddress, RequestHistory requestHistory) throws CommonException {
         List<LinkBean> checkedLinks = new ArrayList<>();
         if(!CollectionUtils.isEmpty(urls)) {
             for (String url : urls) {
-                checkedLinks.add(checkLink(url, ipAddress));
+                checkedLinks.add(checkLink(url, ipAddress, requestHistory));
             }
         }
         return checkedLinks;
@@ -110,10 +108,9 @@ public class LinkServiceImpl implements LinkService {
     }
 
     // Will report a link
-    public LinkBean reportLink(String url, String ipAddress, ReportType reportType) throws CommonException {
+    public LinkBean reportLink(String url, String ipAddress, ReportType reportType, RequestHistory request) throws CommonException {
         log.info(REPORT_LINK_CD + " url = '" + url + "' received from " + ipAddress);
         requestHistoryService.ipCheck(ipAddress);
-        RequestHistory request = requestHistoryService.saveRequestHistory(url, ipAddress, RequestType.REPORT);
         log.info(request.toString());
 
         List<String> errors = validationService.validateLinkRequest(url, ipAddress);

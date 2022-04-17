@@ -1,5 +1,6 @@
 package com.koala.linkfilterapp.linkfilterapi.api.requesthistory.entity;
 
+import com.koala.linkfilterapp.linkfilterapi.api.common.enums.AddressType;
 import com.koala.linkfilterapp.linkfilterapi.api.requesthistory.enums.RequestType;
 import com.koala.linkfilterapp.linkfilterapi.api.link.entity.Link;
 import lombok.Data;
@@ -31,6 +32,12 @@ public class RequestHistory {
 
     @Column(name = "ipAddress", nullable = false, updatable = false)
     String ipAddress;
+
+    @Column(name = "source")
+    AddressType source;
+
+    @Column(name = "userId")
+    String userId;
 
     @Column (name = "requestTime")
     @Temporal(TemporalType.TIMESTAMP)

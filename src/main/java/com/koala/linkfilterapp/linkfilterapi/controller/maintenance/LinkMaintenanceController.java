@@ -74,7 +74,9 @@ public class LinkMaintenanceController {
 
     @PostMapping(value = "/maintenance/checkLinks")
     public ResponseEntity<RestResponse<List<LinkBean>>> postLink(@RequestBody CheckLinksRequest checkRequest, HttpServletRequest request) throws CommonException {
-        List<LinkBean> response = linkService.checkLinks(checkRequest.getUrls(), request.getRemoteAddr());
+
+        // TODO track request history?
+        List<LinkBean> response = linkService.checkLinks(checkRequest.getUrls(), request.getRemoteAddr(), null);
 
         return new ResponseEntity<>(
                 new RestResponse<>(HttpStatus.OK.toString(), "Successfully checked links", response, null), HttpStatus.OK);

@@ -5,6 +5,8 @@ import com.koala.linkfilterapp.linkfilterapi.api.common.enums.AddressType;
 import com.koala.linkfilterapp.linkfilterapi.api.report.enums.ReportType;
 import com.koala.linkfilterapp.linkfilterapi.api.common.exception.CommonException;
 import com.koala.linkfilterapp.linkfilterapi.api.link.dto.response.LinkBean;
+import com.koala.linkfilterapp.linkfilterapi.api.requesthistory.entity.RequestHistory;
+import com.koala.linkfilterapp.linkfilterapi.api.requesthistory.enums.RequestType;
 import com.koala.linkfilterapp.linkfilterapi.api.sponsor.dto.response.SponsorBean;
 import com.koala.linkfilterapp.linkfilterapi.service.ipaddress.impl.IpAddressServiceImpl;
 import com.koala.linkfilterapp.linkfilterapi.service.ipaddress.impl.RequestHistoryServiceImpl;
@@ -48,12 +50,14 @@ public class MainController {
                                                             @RequestParam(required = false, defaultValue = Strings.EMPTY) AddressType source,
                                                             @RequestParam(required = false, defaultValue = Strings.EMPTY) String userId,
                                                             HttpServletRequest request) throws CommonException {
-        if (ipAddressService.checkIfBanned(request.getRemoteAddr(), source, userId)) {
+        String ipAddress = request.getRemoteAddr();
+        if (ipAddressService.checkIfBanned(ipAddress, source, userId)) {
             return null;
         }
+        RequestHistory requestHistory = requestHistoryService.saveRequestHistory(url, ipAddress, userId, RequestType.CHECK, source);
         requestHistoryService.ipCheck(request.getRemoteAddr());
         log.info(String.format("Request: %s", request.getAuthType()));
-        LinkBean response = linkService.checkLink(url, request.getRemoteAddr());
+        LinkBean response = linkService.checkLink(url, request.getRemoteAddr(), requestHistory);
         SponsorBean sponsor = sponsorService.getSponsorInfo();
         response.setSponsor(sponsor);
         log.info(String.format("Sending Response to %s: %s", request.getRemoteAddr(), response));
@@ -67,10 +71,12 @@ public class MainController {
                                                              @RequestParam(required = false, defaultValue = Strings.EMPTY) String userId,
                                                              @RequestParam ReportType reportType,
                                                              HttpServletRequest request) throws CommonException {
-        if (ipAddressService.checkIfBanned(request.getRemoteAddr(), source, userId)) {
+        String ipAddress = request.getRemoteAddr();
+        if (ipAddressService.checkIfBanned(ipAddress, source, userId)) {
             return null;
         }
-        LinkBean response = linkService.reportLink(url, request.getRemoteAddr(), reportType);
+        RequestHistory requestHistory = requestHistoryService.saveRequestHistory(url, ipAddress, userId, RequestType.CHECK, source);
+        LinkBean response = linkService.reportLink(url, request.getRemoteAddr(), reportType, requestHistory );
         log.info(String.format("Sending Response to %s: %s", request.getRemoteAddr(), response));
         return new ResponseEntity<>(
                 new RestResponse<>(HttpStatus.OK.toString(), "Link Reported", response, null), HttpStatus.OK);

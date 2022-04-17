@@ -1,5 +1,6 @@
 package com.koala.linkfilterapp.linkfilterapi.service.ipaddress.impl;
 
+import com.koala.linkfilterapp.linkfilterapi.api.common.enums.AddressType;
 import com.koala.linkfilterapp.linkfilterapi.api.requesthistory.dto.RequestHistoryData;
 import com.koala.linkfilterapp.linkfilterapi.api.requesthistory.dto.RequestHistorySearchBean;
 import com.koala.linkfilterapp.linkfilterapi.api.requesthistory.dto.RequestHistoryStatResponse;
@@ -52,6 +53,18 @@ public class RequestHistoryServiceImpl {
             CommonException exception = new CommonException(HttpStatus.TOO_MANY_REQUESTS, "Connection threshold reached please try again in a minute", null, null, null);
             throw exception;
         }
+    }
+
+    public RequestHistory saveRequestHistory(String url, String ipAddress, String userId, RequestType requestType, AddressType source) {
+        RequestHistory requestHistory = new RequestHistory();
+        requestHistory.setSource(source);
+        requestHistory.setUserId(userId);
+        requestHistory.setRequestType(requestType);
+        requestHistory.setIpAddress(ipAddress);
+        requestHistory.setRequestedUrl(url);
+        requestHistory.setRequestTime(new Timestamp(System.currentTimeMillis()));
+        requestHistoryRepository.save(requestHistory);
+        return requestHistory;
     }
 
     public RequestHistory saveRequestHistory(String url, String ipAddress, RequestType requestType) {
