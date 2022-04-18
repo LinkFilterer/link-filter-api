@@ -74,7 +74,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .authenticationEntryPoint(new RestAuthenticationEntryPoint())
                 .and()
                 .authorizeRequests()
-                .antMatchers("/login","/signin","/","/checkLink","/reportLink","/getSponsor",
+                .antMatchers("/signup","/login","/signin","/","/checkLink","/reportLink","/getSponsor",
                         "/error", "/api/auth/**", "/oauth2/**").permitAll()
                 .antMatchers("/discord/**").hasRole("PARTNER")
                 .antMatchers(
