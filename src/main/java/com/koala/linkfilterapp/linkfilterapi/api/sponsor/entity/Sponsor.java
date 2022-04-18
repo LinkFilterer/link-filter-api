@@ -30,9 +30,6 @@ public class Sponsor {
     @Temporal(TemporalType.DATE)
     Date endDate;
 
-    @Column (name = "isExpired")
-    Boolean isExpired;
-
     @Column (name = "weight", nullable = false)
     Double weight = 1.0;
 }

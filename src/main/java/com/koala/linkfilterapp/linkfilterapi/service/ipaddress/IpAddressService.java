@@ -1,9 +1,9 @@
 package com.koala.linkfilterapp.linkfilterapi.service.ipaddress;
 
 import com.koala.linkfilterapp.linkfilterapi.api.common.enums.AddressType;
+import com.koala.linkfilterapp.linkfilterapi.api.common.exception.CommonException;
 import com.koala.linkfilterapp.linkfilterapi.api.ipaddress.dto.BanAction;
 import com.koala.linkfilterapp.linkfilterapi.api.ipaddress.entity.IpAddress;
-import com.koala.linkfilterapp.linkfilterapi.api.common.exception.CommonException;
 
 import java.util.List;
 

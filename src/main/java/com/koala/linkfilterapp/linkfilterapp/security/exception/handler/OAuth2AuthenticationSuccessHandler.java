@@ -1,14 +1,5 @@
 package com.koala.linkfilterapp.linkfilterapp.security.exception.handler;
 
-import java.io.IOException;
-import java.net.URI;
-import java.util.Optional;
-
-import javax.servlet.ServletException;
-import javax.servlet.http.Cookie;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
 import com.koala.linkfilterapp.linkfilterapp.config.AppProperties;
 import com.koala.linkfilterapp.linkfilterapp.security.exception.BadRequestException;
 import com.koala.linkfilterapp.linkfilterapp.security.jwt.TokenProvider;
@@ -19,6 +10,14 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.web.authentication.SimpleUrlAuthenticationSuccessHandler;
 import org.springframework.stereotype.Component;
 import org.springframework.web.util.UriComponentsBuilder;
+
+import javax.servlet.ServletException;
+import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
+import java.net.URI;
+import java.util.Optional;
 
 import static com.koala.linkfilterapp.linkfilterapp.security.utils.AuthConstants.REDIRECT_URI_PARAM_COOKIE_NAME;
 

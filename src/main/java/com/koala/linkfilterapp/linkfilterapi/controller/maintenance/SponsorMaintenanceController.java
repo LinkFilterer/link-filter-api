@@ -21,6 +21,7 @@ import static com.koala.linkfilterapp.linkfilterapi.controller.common.Controller
 
 @CrossOrigin(origins = UI_SERVER_ORIGIN)
 @RestController
+@RequestMapping("/maintenance")
 public class SponsorMaintenanceController {
     Logger log = Logger.getLogger("SponsorMaintenanceController");
 
@@ -30,7 +31,7 @@ public class SponsorMaintenanceController {
     @Autowired
     IpAddressServiceImpl ipAddressService;
 
-    @GetMapping (value = "/maintenance/searchSponsors")
+    @GetMapping (value = "/searchSponsors")
     public ResponseEntity<RestResponse<Page<Sponsor>>> searchSponsors(
             @RequestParam(required = false) String projectName,
             @RequestParam(required = false) String description,
@@ -72,7 +73,7 @@ public class SponsorMaintenanceController {
                 new RestResponse<>(HttpStatus.OK.toString(), "Sponsors searched", res, null), HttpStatus.OK);
     }
 
-    @PostMapping(value = "/maintenance/postSponsor")
+    @PostMapping(value = "/postSponsor")
     public ResponseEntity<RestResponse<Sponsor>> postSponsor(@RequestBody SponsorRequestBean bean, HttpServletRequest request) throws CommonException {
         if (ipAddressService.checkIfBanned(request.getRemoteAddr())) {
             return null;
@@ -85,7 +86,7 @@ public class SponsorMaintenanceController {
                 new RestResponse<>(HttpStatus.CREATED.toString(), "Sponsor Created", response, null), HttpStatus.CREATED);
     }
 
-    @PutMapping(value = "/maintenance/updateSponsor")
+    @PutMapping(value = "/updateSponsor")
     public ResponseEntity<RestResponse<Sponsor>> updateSponsor(@RequestBody SponsorRequestBean bean, HttpServletRequest request) throws CommonException {
         if (ipAddressService.checkIfBanned(request.getRemoteAddr())) {
             return null;
@@ -98,7 +99,7 @@ public class SponsorMaintenanceController {
                 new RestResponse<>(HttpStatus.OK.toString(), "Sponsor Updated", response, null), HttpStatus.OK);
     }
 
-    @DeleteMapping (value = "/maintenance/deleteSponsor")
+    @DeleteMapping (value = "/deleteSponsor")
     public ResponseEntity<RestResponse<String>> deleteSponsor(String projectName, HttpServletRequest request) throws CommonException {
         if (ipAddressService.checkIfBanned(request.getRemoteAddr())) {
             return null;

@@ -19,13 +19,14 @@ import static com.koala.linkfilterapp.linkfilterapi.controller.common.Controller
 
 @CrossOrigin(origins = UI_SERVER_ORIGIN)
 @RestController
+@RequestMapping("/maintenance")
 public class ReportMaintenanceController {
     Logger log = Logger.getLogger("ReportMaintenanceController");
 
     @Autowired
     ReportMaintenanceServiceImpl service;
 
-    @GetMapping(value = "maintenance/getReports")
+    @GetMapping(value = "/getReports")
     public ResponseEntity<RestResponse<Page<LinkReportBean>>> getReports(
             @RequestParam(value = "id", required = false) String id,
             @RequestParam(name = "url", required = false) String url,
@@ -54,7 +55,7 @@ public class ReportMaintenanceController {
     }
 
     // Deletes all reports from given Ip
-    @DeleteMapping(value = "/maintenance/deleteReportsByIp")
+    @DeleteMapping(value = "/deleteReportsByIp")
     public ResponseEntity<RestResponse<List<LinkReportBean>>> deleteReportsByIp(
             @RequestParam String ipAddress
     ) throws CommonException {

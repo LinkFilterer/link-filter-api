@@ -1,8 +1,8 @@
 package com.koala.linkfilterapp.linkfilterapi.service.report.impl;
 
-import com.koala.linkfilterapp.linkfilterapi.api.link.enums.LinkStatus;
 import com.koala.linkfilterapp.linkfilterapi.api.common.exception.CommonException;
 import com.koala.linkfilterapp.linkfilterapi.api.link.entity.Link;
+import com.koala.linkfilterapp.linkfilterapi.api.link.enums.LinkStatus;
 import com.koala.linkfilterapp.linkfilterapi.api.report.entity.LinkReport;
 import com.koala.linkfilterapp.linkfilterapi.repository.LinkReportRepository;
 import com.koala.linkfilterapp.linkfilterapi.repository.LinkRepository;

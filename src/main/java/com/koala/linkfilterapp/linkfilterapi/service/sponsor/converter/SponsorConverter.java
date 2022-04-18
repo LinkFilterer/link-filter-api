@@ -17,7 +17,6 @@ public class SponsorConverter {
         entity.setUrl(bean.getUrl());
         entity.setWeight(bean.getWeight());
         entity.setDescription(bean.getDescription());
-        entity.setIsExpired(bean.getIsExpired());
         entity.setEndDate(bean.getEndDate());
         entity.setBanner(bean.getBanner());
         entity.setCreationDate(nonNull(bean.getCreationDate()) ? bean.getCreationDate() : new Date());

@@ -112,7 +112,8 @@ public class SponsorServiceImpl implements SponsorService {
     public SponsorBean getSponsorInfo() throws CommonException {
         Random rand = new Random();
 
-        List<Sponsor> retrievedSponsors = repository.findAll();
+        List<Sponsor> retrievedSponsors = repository.findByEndDateAfter(new Date(System.currentTimeMillis()));
+        log.info("Retrieved Sponsors " + retrievedSponsors);
         if (CollectionUtils.isEmpty(retrievedSponsors)) {
             log.warning("No Sponsors found");
             return null;
@@ -125,7 +126,6 @@ public class SponsorServiceImpl implements SponsorService {
             }
 
             Double randomDouble = rand.nextDouble() * weightTotal;
-            Sponsor randomSponsor = null;
             try {
                 return nonNull(sponserMap.higherEntry(randomDouble)) ? converter.convert(sponserMap.higherEntry(randomDouble).getValue()) : null;
             } catch (Exception e) {

@@ -1,11 +1,11 @@
 package com.koala.linkfilterapp.linkfilterapi.controller.maintenance;
 
-import com.koala.linkfilterapp.linkfilterapi.api.requesthistory.dto.RequestHistoryData;
-import com.koala.linkfilterapp.linkfilterapi.api.requesthistory.dto.RequestHistorySearchBean;
-import com.koala.linkfilterapp.linkfilterapi.api.requesthistory.dto.RequestHistoryStatResponse;
 import com.koala.linkfilterapp.linkfilterapi.api.common.dto.response.RestResponse;
 import com.koala.linkfilterapp.linkfilterapi.api.common.enums.TimeInterval;
 import com.koala.linkfilterapp.linkfilterapi.api.common.exception.CommonException;
+import com.koala.linkfilterapp.linkfilterapi.api.requesthistory.dto.RequestHistoryData;
+import com.koala.linkfilterapp.linkfilterapi.api.requesthistory.dto.RequestHistorySearchBean;
+import com.koala.linkfilterapp.linkfilterapi.api.requesthistory.dto.RequestHistoryStatResponse;
 import com.koala.linkfilterapp.linkfilterapi.api.requesthistory.enums.RequestField;
 import com.koala.linkfilterapp.linkfilterapi.api.requesthistory.enums.RequestType;
 import com.koala.linkfilterapp.linkfilterapi.service.ipaddress.impl.RequestHistoryServiceImpl;
@@ -13,10 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.logging.Logger;
 
@@ -25,13 +22,14 @@ import static com.koala.linkfilterapp.linkfilterapi.controller.common.Controller
 
 @CrossOrigin(origins = {UI_SERVER_ORIGIN, UI_SERVER_MAINTENACE_ORIGIN})
 @RestController
+@RequestMapping("/maintenance")
 public class RequestHistoryMaintenanceController {
     Logger log = Logger.getLogger("RequestHistoryMaintenanceController");
 
     @Autowired
     RequestHistoryServiceImpl requestHistoryService;
 
-    @GetMapping(value = "/maintenance/getAllRequestHistory")
+    @GetMapping(value = "/getAllRequestHistory")
     public ResponseEntity<RestResponse<Page<RequestHistoryData>>> getAllRequestHistory(
             @RequestParam(required = false) Integer id,
             @RequestParam(required = false) RequestType requestType,
@@ -62,7 +60,7 @@ public class RequestHistoryMaintenanceController {
                 new RestResponse<>(HttpStatus.OK.toString(), "Successfully Retrieved History Data", response, null), HttpStatus.OK);
     }
 
-    @GetMapping(value = "/maintenance/getRequestHistory")
+    @GetMapping(value = "/getRequestHistory")
     public ResponseEntity<RestResponse<RequestHistoryStatResponse>> getRequestHistory(
             @RequestParam (required = false) String url,
             @RequestParam TimeInterval timeInterval,

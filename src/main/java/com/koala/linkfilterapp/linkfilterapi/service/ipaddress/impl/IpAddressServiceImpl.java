@@ -1,11 +1,11 @@
 package com.koala.linkfilterapp.linkfilterapi.service.ipaddress.impl;
 
 import com.koala.linkfilterapp.linkfilterapi.api.common.enums.AddressType;
-import com.koala.linkfilterapp.linkfilterapi.api.ipaddress.dto.BanAction;
-import com.koala.linkfilterapp.linkfilterapi.api.ipaddress.entity.IpAddress;
 import com.koala.linkfilterapp.linkfilterapi.api.common.enums.BanStatus;
 import com.koala.linkfilterapp.linkfilterapi.api.common.exception.CommonException;
+import com.koala.linkfilterapp.linkfilterapi.api.ipaddress.dto.BanAction;
 import com.koala.linkfilterapp.linkfilterapi.api.ipaddress.dto.IpSearchBean;
+import com.koala.linkfilterapp.linkfilterapi.api.ipaddress.entity.IpAddress;
 import com.koala.linkfilterapp.linkfilterapi.api.ipaddress.entity.IpAddressPk;
 import com.koala.linkfilterapp.linkfilterapi.repository.IpAddressRepository;
 import com.koala.linkfilterapp.linkfilterapi.service.ipaddress.IpAddressService;

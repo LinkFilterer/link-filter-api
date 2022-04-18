@@ -1,9 +1,9 @@
 package com.koala.linkfilterapp.linkfilterapp.security.impl;
 
+import com.koala.linkfilterapp.linkfilterapp.security.UserService;
 import com.koala.linkfilterapp.linkfilterapp.security.dto.LocalUser;
 import com.koala.linkfilterapp.linkfilterapp.security.entity.User;
 import com.koala.linkfilterapp.linkfilterapp.security.exception.ResourceNotFoundException;
-import com.koala.linkfilterapp.linkfilterapp.security.UserService;
 import com.koala.linkfilterapp.linkfilterapp.security.utils.GeneralUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetailsService;

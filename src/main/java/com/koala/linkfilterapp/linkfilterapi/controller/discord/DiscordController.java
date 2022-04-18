@@ -13,7 +13,6 @@ import com.koala.linkfilterapp.linkfilterapi.service.ipaddress.impl.RequestHisto
 import com.koala.linkfilterapp.linkfilterapi.service.link.impl.LinkServiceImpl;
 import com.koala.linkfilterapp.linkfilterapi.service.sponsor.impl.SponsorServiceImpl;
 import lombok.extern.log4j.Log4j2;
-import org.apache.logging.log4j.util.Strings;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

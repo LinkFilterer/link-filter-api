@@ -1,19 +1,15 @@
 package com.koala.linkfilterapp.linkfilterapp.security.oauth2;
 
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.LinkedHashMap;
-import java.util.Map;
-import java.util.Set;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
-
 import org.springframework.core.convert.converter.Converter;
 import org.springframework.security.oauth2.core.OAuth2AccessToken;
 import org.springframework.security.oauth2.core.endpoint.OAuth2AccessTokenResponse;
 import org.springframework.security.oauth2.core.endpoint.OAuth2ParameterNames;
 import org.springframework.util.Assert;
 import org.springframework.util.StringUtils;
+
+import java.util.*;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 public class OAuth2AccessTokenResponseConverterWithDefaults implements Converter<Map<String, String>, OAuth2AccessTokenResponse> {
     private static final Set<String> TOKEN_RESPONSE_PARAMETER_NAMES = Stream

@@ -1,15 +1,15 @@
 package com.koala.linkfilterapp.linkfilterapi.service.ipaddress.impl;
 
 import com.koala.linkfilterapp.linkfilterapi.api.common.enums.AddressType;
+import com.koala.linkfilterapp.linkfilterapi.api.common.enums.TimeInterval;
+import com.koala.linkfilterapp.linkfilterapi.api.common.exception.CommonException;
+import com.koala.linkfilterapp.linkfilterapi.api.link.entity.Link;
 import com.koala.linkfilterapp.linkfilterapi.api.requesthistory.dto.RequestHistoryData;
 import com.koala.linkfilterapp.linkfilterapi.api.requesthistory.dto.RequestHistorySearchBean;
 import com.koala.linkfilterapp.linkfilterapi.api.requesthistory.dto.RequestHistoryStatResponse;
 import com.koala.linkfilterapp.linkfilterapi.api.requesthistory.dto.RequestHistoryStatistic;
 import com.koala.linkfilterapp.linkfilterapi.api.requesthistory.entity.RequestHistory;
 import com.koala.linkfilterapp.linkfilterapi.api.requesthistory.enums.RequestType;
-import com.koala.linkfilterapp.linkfilterapi.api.common.enums.TimeInterval;
-import com.koala.linkfilterapp.linkfilterapi.api.common.exception.CommonException;
-import com.koala.linkfilterapp.linkfilterapi.api.link.entity.Link;
 import com.koala.linkfilterapp.linkfilterapi.repository.RequestHistoryRepository;
 import org.dozer.DozerBeanMapper;
 import org.springframework.beans.factory.annotation.Autowired;

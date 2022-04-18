@@ -1,7 +1,7 @@
 package com.koala.linkfilterapp.linkfilterapi.api.ipaddress.entity;
 
-import com.koala.linkfilterapp.linkfilterapi.api.common.enums.BanStatus;
 import com.koala.linkfilterapp.linkfilterapi.api.common.enums.AddressType;
+import com.koala.linkfilterapp.linkfilterapi.api.common.enums.BanStatus;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;

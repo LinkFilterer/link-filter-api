@@ -1,10 +1,10 @@
 package com.koala.linkfilterapp.linkfilterapp.security.dto;
 
-import javax.validation.constraints.NotEmpty;
-import javax.validation.constraints.Size;
-
 import com.koala.linkfilterapp.linkfilterapp.security.utils.PasswordMatches;
 import lombok.Data;
+
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.Size;
 
 /**
  * @author Chinna

@@ -1,11 +1,11 @@
 package com.koala.linkfilterapp.linkfilterapi.service.link.impl;
 
-import com.koala.linkfilterapp.linkfilterapi.api.requesthistory.entity.RequestHistory;
-import com.koala.linkfilterapp.linkfilterapi.api.link.enums.LinkStatus;
-import com.koala.linkfilterapp.linkfilterapi.api.report.enums.ReportType;
 import com.koala.linkfilterapp.linkfilterapi.api.common.exception.CommonException;
 import com.koala.linkfilterapp.linkfilterapi.api.link.dto.response.LinkBean;
 import com.koala.linkfilterapp.linkfilterapi.api.link.entity.Link;
+import com.koala.linkfilterapp.linkfilterapi.api.link.enums.LinkStatus;
+import com.koala.linkfilterapp.linkfilterapi.api.report.enums.ReportType;
+import com.koala.linkfilterapp.linkfilterapi.api.requesthistory.entity.RequestHistory;
 import com.koala.linkfilterapp.linkfilterapi.repository.LinkRepository;
 import com.koala.linkfilterapp.linkfilterapi.service.ipaddress.impl.RequestHistoryServiceImpl;
 import com.koala.linkfilterapp.linkfilterapi.service.link.LinkService;

@@ -1,8 +1,8 @@
 package com.koala.linkfilterapp.linkfilterapi.api.requesthistory.entity;
 
 import com.koala.linkfilterapp.linkfilterapi.api.common.enums.AddressType;
-import com.koala.linkfilterapp.linkfilterapi.api.requesthistory.enums.RequestType;
 import com.koala.linkfilterapp.linkfilterapi.api.link.entity.Link;
+import com.koala.linkfilterapp.linkfilterapi.api.requesthistory.enums.RequestType;
 import lombok.Data;
 import lombok.ToString;
 import org.springframework.data.annotation.Immutable;

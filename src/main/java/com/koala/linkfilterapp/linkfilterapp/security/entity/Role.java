@@ -1,6 +1,5 @@
 package com.koala.linkfilterapp.linkfilterapp.security.entity;
 
-import lombok.Data;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -18,6 +17,7 @@ public class Role implements Serializable {
     public static final String ROLE_USER = "ROLE_USER";
     public static final String ROLE_ADMIN = "ROLE_ADMIN";
     public static final String ROLE_MODERATOR = "ROLE_MODERATOR";
+    public static final String ROLE_PARTNER = "ROLE_PARTNER";
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

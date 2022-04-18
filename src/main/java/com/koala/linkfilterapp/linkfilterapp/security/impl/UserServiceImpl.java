@@ -1,5 +1,8 @@
 package com.koala.linkfilterapp.linkfilterapp.security.impl;
 
+import com.koala.linkfilterapp.linkfilterapi.repository.RoleRepository;
+import com.koala.linkfilterapp.linkfilterapi.repository.UserRepository;
+import com.koala.linkfilterapp.linkfilterapp.security.UserService;
 import com.koala.linkfilterapp.linkfilterapp.security.dto.LocalUser;
 import com.koala.linkfilterapp.linkfilterapp.security.dto.SignUpRequest;
 import com.koala.linkfilterapp.linkfilterapp.security.dto.SocialProvider;
@@ -9,9 +12,6 @@ import com.koala.linkfilterapp.linkfilterapp.security.entity.User;
 import com.koala.linkfilterapp.linkfilterapp.security.entity.impl.OAuth2UserInfoFactory;
 import com.koala.linkfilterapp.linkfilterapp.security.exception.OAuth2AuthenticationProcessingException;
 import com.koala.linkfilterapp.linkfilterapp.security.exception.UserAlreadyExistAuthenticationException;
-import com.koala.linkfilterapp.linkfilterapi.repository.RoleRepository;
-import com.koala.linkfilterapp.linkfilterapi.repository.UserRepository;
-import com.koala.linkfilterapp.linkfilterapp.security.UserService;
 import com.koala.linkfilterapp.linkfilterapp.security.utils.GeneralUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;

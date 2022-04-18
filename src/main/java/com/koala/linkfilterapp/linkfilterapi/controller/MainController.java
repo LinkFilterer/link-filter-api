@@ -2,9 +2,9 @@ package com.koala.linkfilterapp.linkfilterapi.controller;
 
 import com.koala.linkfilterapp.linkfilterapi.api.common.dto.response.RestResponse;
 import com.koala.linkfilterapp.linkfilterapi.api.common.enums.AddressType;
-import com.koala.linkfilterapp.linkfilterapi.api.report.enums.ReportType;
 import com.koala.linkfilterapp.linkfilterapi.api.common.exception.CommonException;
 import com.koala.linkfilterapp.linkfilterapi.api.link.dto.response.LinkBean;
+import com.koala.linkfilterapp.linkfilterapi.api.report.enums.ReportType;
 import com.koala.linkfilterapp.linkfilterapi.api.requesthistory.entity.RequestHistory;
 import com.koala.linkfilterapp.linkfilterapi.api.requesthistory.enums.RequestType;
 import com.koala.linkfilterapp.linkfilterapi.api.sponsor.dto.response.SponsorBean;
@@ -77,5 +77,4 @@ public class MainController {
         return new ResponseEntity<>(
                 new RestResponse<>(HttpStatus.OK.toString(), "Link Reported", response, null), HttpStatus.OK);
     }
-
 }

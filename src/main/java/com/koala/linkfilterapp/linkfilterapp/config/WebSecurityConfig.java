@@ -14,7 +14,6 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.converter.FormHttpMessageConverter;
 import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.config.BeanIds;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -76,9 +75,23 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .and()
                 .authorizeRequests()
                 .antMatchers("/login","/signin","/","/checkLink","/reportLink","/getSponsor",
-                        "/error", "/api/all",
-                        "/api/auth/**", "/oauth2/**").permitAll()
-                .anyRequest().authenticated()
+                        "/error", "/api/auth/**", "/oauth2/**").permitAll()
+                .antMatchers("/discord/**").hasRole("PARTNER")
+                .antMatchers(
+                        "/discord/**"
+                        ,"/maintenance/banIp"
+                        ,"/maintenance/getAllIps"
+                        ,"/maintenance/searchIps"
+                        ,"/maintenance/createLink"
+                        ,"/maintenance/updateLink"
+                        ,"/maintenance/deleteReportsByIp"
+                        ,"/maintenance/getReports"
+                        ,"/maintenance/getAllRequestHistory"
+                        ,"/maintenance/getRequestHistory"
+                        ,"/maintenance/updateSponsor"
+                        ,"/maintenance/searchSponsors"
+                ).hasRole("MODERATOR")
+                .anyRequest().hasRole("ADMIN")
                 .and()
                 .oauth2Login()
                 .authorizationEndpoint()

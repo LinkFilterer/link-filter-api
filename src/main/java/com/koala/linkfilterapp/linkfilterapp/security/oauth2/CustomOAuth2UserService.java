@@ -1,12 +1,8 @@
 package com.koala.linkfilterapp.linkfilterapp.security.oauth2;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
+import com.koala.linkfilterapp.linkfilterapp.security.UserService;
 import com.koala.linkfilterapp.linkfilterapp.security.dto.SocialProvider;
 import com.koala.linkfilterapp.linkfilterapp.security.exception.OAuth2AuthenticationProcessingException;
-import com.koala.linkfilterapp.linkfilterapp.security.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.env.Environment;
 import org.springframework.http.HttpEntity;
@@ -21,6 +17,10 @@ import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
 import org.springframework.web.client.RestTemplate;
+
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 @Service
 public class CustomOAuth2UserService extends DefaultOAuth2UserService {

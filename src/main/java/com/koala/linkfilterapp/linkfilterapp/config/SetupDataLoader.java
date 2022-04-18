@@ -1,7 +1,5 @@
 package com.koala.linkfilterapp.linkfilterapp.config;
 
-import java.util.*;
-
 import com.koala.linkfilterapp.linkfilterapi.repository.RoleRepository;
 import com.koala.linkfilterapp.linkfilterapi.repository.UserRepository;
 import com.koala.linkfilterapp.linkfilterapp.security.dto.SocialProvider;
@@ -13,6 +11,8 @@ import org.springframework.context.event.ContextRefreshedEvent;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.*;
 
 @Component
 public class SetupDataLoader implements ApplicationListener<ContextRefreshedEvent> {
