@@ -1,7 +1,9 @@
 package com.koala.linkfilterapp.linkfilterapp.security.dto;
 
 import com.koala.linkfilterapp.linkfilterapp.security.utils.PasswordMatches;
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.Size;
@@ -12,25 +14,27 @@ import javax.validation.constraints.Size;
  */
 @Data
 @PasswordMatches
+@AllArgsConstructor
+@NoArgsConstructor
 public class SignUpRequest {
 
-    private Long userID;
+    Long userID;
 
-    private String providerUserId;
-
-    @NotEmpty
-    private String displayName;
+    String providerUserId;
 
     @NotEmpty
-    private String email;
+    String displayName;
 
-    private SocialProvider socialProvider;
+    @NotEmpty
+    String email;
+
+    SocialProvider socialProvider;
 
     @Size(min = 6, message = "{Size.userDto.password}")
-    private String password;
+    String password;
 
     @NotEmpty
-    private String matchingPassword;
+    String matchingPassword;
 
     public SignUpRequest(String providerUserId, String displayName, String email, String password, SocialProvider socialProvider) {
         this.providerUserId = providerUserId;
@@ -45,11 +49,11 @@ public class SignUpRequest {
     }
 
     public static class Builder {
-        private String providerUserID;
-        private String displayName;
-        private String email;
-        private String password;
-        private SocialProvider socialProvider;
+        String providerUserID;
+        String displayName;
+        String email;
+        String password;
+        SocialProvider socialProvider;
 
         public Builder addProviderUserID(final String userID) {
             this.providerUserID = userID;
