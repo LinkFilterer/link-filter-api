@@ -35,9 +35,7 @@ public class UserManagementController {
                 .pageNo(pagoNo)
                 .pageSize(pageSize)
                 .build();
-        log.info("Get Users request " + searchBean);
         Page<User> users = service.getUsers(searchBean);
-        log.info(users.toString());
         return new RestResponse<>(HttpStatus.OK.toString(), "", users,null);
     }
 }
