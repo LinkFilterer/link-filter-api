@@ -1,6 +1,6 @@
-package com.koala.linkfilterapp.linkfilterapp.security.impl;
+package com.koala.linkfilterapp.linkfilterapp.security.service.impl;
 
-import com.koala.linkfilterapp.linkfilterapp.security.UserService;
+import com.koala.linkfilterapp.linkfilterapp.security.service.UserService;
 import com.koala.linkfilterapp.linkfilterapp.security.dto.LocalUser;
 import com.koala.linkfilterapp.linkfilterapp.security.entity.User;
 import com.koala.linkfilterapp.linkfilterapp.security.exception.ResourceNotFoundException;
@@ -14,7 +14,7 @@ import org.springframework.transaction.annotation.Transactional;
 @Service
 public class LocalUserDetailService implements UserDetailsService {
     @Autowired
-    private UserService userService;
+    UserService userService;
 
     @Override
     @Transactional

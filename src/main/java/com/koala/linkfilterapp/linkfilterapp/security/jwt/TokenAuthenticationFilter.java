@@ -1,6 +1,6 @@
 package com.koala.linkfilterapp.linkfilterapp.security.jwt;
 
-import com.koala.linkfilterapp.linkfilterapp.security.impl.LocalUserDetailService;
+import com.koala.linkfilterapp.linkfilterapp.security.service.impl.LocalUserDetailService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;

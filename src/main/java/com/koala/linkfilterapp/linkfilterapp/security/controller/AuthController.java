@@ -1,6 +1,6 @@
 package com.koala.linkfilterapp.linkfilterapp.security.controller;
 
-import com.koala.linkfilterapp.linkfilterapp.security.UserService;
+import com.koala.linkfilterapp.linkfilterapp.security.service.UserService;
 import com.koala.linkfilterapp.linkfilterapp.security.dto.*;
 import com.koala.linkfilterapp.linkfilterapp.security.exception.UserAlreadyExistAuthenticationException;
 import com.koala.linkfilterapp.linkfilterapp.security.jwt.TokenProvider;

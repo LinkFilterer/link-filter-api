@@ -1,6 +1,6 @@
 package com.koala.linkfilterapp.linkfilterapp.security.oauth2;
 
-import com.koala.linkfilterapp.linkfilterapp.security.UserService;
+import com.koala.linkfilterapp.linkfilterapp.security.service.UserService;
 import com.koala.linkfilterapp.linkfilterapp.security.exception.OAuth2AuthenticationProcessingException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.AuthenticationException;

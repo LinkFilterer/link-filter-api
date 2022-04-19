@@ -1,8 +1,8 @@
-package com.koala.linkfilterapp.linkfilterapp.security.impl;
+package com.koala.linkfilterapp.linkfilterapp.security.service.impl;
 
 import com.koala.linkfilterapp.linkfilterapi.repository.RoleRepository;
 import com.koala.linkfilterapp.linkfilterapi.repository.UserRepository;
-import com.koala.linkfilterapp.linkfilterapp.security.UserService;
+import com.koala.linkfilterapp.linkfilterapp.security.service.UserService;
 import com.koala.linkfilterapp.linkfilterapp.security.dto.LocalUser;
 import com.koala.linkfilterapp.linkfilterapp.security.dto.SignUpRequest;
 import com.koala.linkfilterapp.linkfilterapp.security.dto.SocialProvider;

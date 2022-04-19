@@ -1,4 +1,4 @@
-package com.koala.linkfilterapp.linkfilterapp.security;
+package com.koala.linkfilterapp.linkfilterapp.security.service;
 
 import com.koala.linkfilterapp.linkfilterapp.security.dto.LocalUser;
 import com.koala.linkfilterapp.linkfilterapp.security.dto.SignUpRequest;
