@@ -1,6 +1,5 @@
 package com.koala.linkfilterapp.linkfilterapp.security.entity;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -16,20 +15,20 @@ public class User implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "USER_ID")
-    private Long id;
+    Long id;
 
     @Column(name = "PROVIDER_USER_ID")
-    private String providerUserId;
+    String providerUserId;
 
-    private String email;
+    String email;
 
-    private String ipAddress;
+    String ipAddress;
 
     @Column(name = "enabled", columnDefinition = "BIT", length = 1)
-    private boolean enabled;
+    boolean enabled;
 
     @Column(name = "DISPLAY_NAME")
-    private String displayName;
+    String displayName;
 
     @Column(name = "created_date", nullable = false, updatable = false)
     @Temporal(TemporalType.TIMESTAMP)
@@ -38,12 +37,12 @@ public class User implements Serializable {
     @Temporal(TemporalType.TIMESTAMP)
     protected Date modifiedDate;
 
-    private String password;
+    String password;
 
-    private String provider;
+    String provider;
 
     // bi-directional many-to-many association to Role
-    @ManyToMany
+    @ManyToMany(cascade = CascadeType.ALL)
     @JoinTable(name = "user_role", joinColumns = { @JoinColumn(name = "USER_ID") }, inverseJoinColumns = { @JoinColumn(name = "ROLE_ID") })
-    private Set<Role> roles;
+    Set<Role> roles;
 }

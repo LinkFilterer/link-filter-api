@@ -54,7 +54,7 @@ public class LinkServiceTest {
         String s1[]=s.split("[ ]+");
         List<String> splitArray = Arrays.asList(s1);
         System.out.println(splitArray);
-        System.out.println(Integer.parseInt("001"));
+        System.out.println(Integer.parseInt("1970981".substring(0, 7)));
 
 //        if ((true) )
 //        System.out.println(String.format("%s %s", "HI"));

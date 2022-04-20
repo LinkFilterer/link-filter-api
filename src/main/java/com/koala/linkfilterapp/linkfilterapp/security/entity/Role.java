@@ -14,11 +14,11 @@ import java.util.Set;
 @Setter
 @NoArgsConstructor
 public class Role implements Serializable {
-    public static final String USER = "USER";
-    public static final String ROLE_USER = "ROLE_USER";
-    public static final String ROLE_ADMIN = "ROLE_ADMIN";
-    public static final String ROLE_MODERATOR = "ROLE_MODERATOR";
-    public static final String ROLE_PARTNER = "ROLE_PARTNER";
+    public static final String USER = Roles.USER.toString();
+    public static final String ROLE_USER = Roles.ROLE_USER.toString();
+    public static final String ROLE_ADMIN = Roles.ROLE_ADMIN.toString();
+    public static final String ROLE_MODERATOR = Roles.ROLE_MODERATOR.toString();
+    public static final String ROLE_PARTNER = Roles.ROLE_PARTNER.toString();
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -29,7 +29,7 @@ public class Role implements Serializable {
 
     // bi-directional many-to-many association to User
     @JsonIgnore
-    @ManyToMany(mappedBy = "roles")
+    @ManyToMany(mappedBy = "roles", cascade = CascadeType.ALL)
     private Set<User> users;
 
     public Role(String name) {
