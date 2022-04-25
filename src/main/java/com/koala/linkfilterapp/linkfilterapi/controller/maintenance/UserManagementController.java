@@ -38,6 +38,14 @@ public class UserManagementController {
         return new RestResponse<>(HttpStatus.OK.toString(), "", users, null);
     }
 
+    @PutMapping("/editUser")
+    public RestResponse<User> editUser(
+            @RequestBody User user
+    ) throws CommonException {
+        User editedUser = service.editUser(user);
+        return new RestResponse<>(HttpStatus.OK.toString(), "", editedUser, null);
+    }
+
     @PutMapping("/addRole")
     public RestResponse<User> addRole(
             @RequestParam String email,

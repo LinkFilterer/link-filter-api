@@ -1,6 +1,7 @@
 package com.koala.linkfilterapp.linkfilterapi.service.user;
 
 import com.koala.linkfilterapp.linkfilterapi.api.common.exception.CommonException;
+import com.koala.linkfilterapp.linkfilterapi.repository.RoleRepository;
 import com.koala.linkfilterapp.linkfilterapp.security.dto.UserSearchBean;
 import com.koala.linkfilterapp.linkfilterapp.security.entity.Role;
 import com.koala.linkfilterapp.linkfilterapp.security.entity.Roles;
@@ -14,6 +15,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
@@ -22,11 +24,16 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+import static java.util.Objects.isNull;
+
 @Slf4j
 @Service
 public class UserManagementService {
     @Autowired
     UserManageRepository repository;
+
+    @Autowired
+    RoleRepository roleRepository;
 
     public Page<User> getUsers(UserSearchBean searchBean) {
         Specification<User> querySpec = getQuerySpec(searchBean);
@@ -34,11 +41,41 @@ public class UserManagementService {
         return repository.findAll(querySpec, pageRequest);
     }
 
+    public User editUser(User user) throws CommonException {
+        Optional<User> foundUser = repository.findById(user.getId());
+        if (!foundUser.isPresent()) {
+            log.error("User not found");
+            throw new CommonException();
+        }
+
+        BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
+        if(!foundUser.get().getPassword().equals(user.getPassword())) {
+            user.setPassword(encoder.encode(user.getPassword()));
+        }
+
+        return repository.save(user);
+    }
+
+    public User deleteUser(Long id) throws CommonException {
+        Optional<User> result = repository.findById(id);
+        if (!result.isPresent()) {
+            log.error("User not found");
+            throw new CommonException();
+        }
+        repository.delete(result.get());
+        return result.get();
+    }
+
     public User addRole(String email, Roles role) throws CommonException {
         List<User> result = repository.findByEmail(email);
         validateEmail(email, result);
         User user = result.get(0);
-        user.getRoles().add(new Role(role.toString()));
+        Role foundRole = roleRepository.findByName(role.toString());
+        if (isNull(foundRole)) {
+            log.error("Role not found");
+            throw new CommonException();
+        }
+        user.getRoles().add(foundRole);
         log.info(String.format("Role %s added to %s", role, email));
         repository.save(user);
         return user;
@@ -48,12 +85,12 @@ public class UserManagementService {
         List<User> result = repository.findByEmail(email);
         validateEmail(email, result);
         User user = result.get(0);
-        Optional<Role> foundRole = user.getRoles().stream().filter(roleEntity -> roleEntity.getName().equals(role.toString())).findFirst();
-        if (!foundRole.isPresent()) {
-            log.error("Invalid role");
+        Role foundRole = roleRepository.findByName(role.toString());
+        if (isNull(foundRole)) {
+            log.error("Role not found");
             throw new CommonException();
         }
-        user.getRoles().remove(foundRole.get());
+        user.getRoles().remove(foundRole);
         log.info(String.format("Role %s removed from %s", role, email));
         repository.save(user);
         return user;
