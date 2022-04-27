@@ -38,11 +38,29 @@ public class UserManagementController {
         return new RestResponse<>(HttpStatus.OK.toString(), "", users, null);
     }
 
+    @PostMapping("/createUser")
+    public RestResponse<User> createUser(
+            @RequestBody User user
+    ) throws CommonException {
+        user.setId(null);
+        log.info(user.toString());
+        User editedUser = service.createUser(user);
+        return new RestResponse<>(HttpStatus.OK.toString(), "", editedUser, null);
+    }
+
     @PutMapping("/editUser")
     public RestResponse<User> editUser(
             @RequestBody User user
     ) throws CommonException {
         User editedUser = service.editUser(user);
+        return new RestResponse<>(HttpStatus.OK.toString(), "", editedUser, null);
+    }
+
+    @DeleteMapping("/deleteUser/{email}")
+    public RestResponse<User> deleteUser(
+            @PathVariable(name = "email") String email
+    ) throws CommonException {
+        User editedUser = service.deleteUser(email);
         return new RestResponse<>(HttpStatus.OK.toString(), "", editedUser, null);
     }
 

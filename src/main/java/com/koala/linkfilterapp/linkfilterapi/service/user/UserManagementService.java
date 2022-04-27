@@ -21,6 +21,7 @@ import org.springframework.util.StringUtils;
 
 import javax.persistence.criteria.Predicate;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -41,6 +42,19 @@ public class UserManagementService {
         return repository.findAll(querySpec, pageRequest);
     }
 
+    public User createUser(User user) throws CommonException {
+        List<User> result = repository.findByEmail(user.getEmail());
+        if (result.size() > 0) {
+            log.error("User already exists");
+            throw new CommonException();
+        }
+
+        BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
+        user.setPassword(encoder.encode(user.getPassword()));
+        user.setCreatedDate(new Date());
+        return repository.save(user);
+    }
+
     public User editUser(User user) throws CommonException {
         Optional<User> foundUser = repository.findById(user.getId());
         if (!foundUser.isPresent()) {
@@ -54,6 +68,20 @@ public class UserManagementService {
         }
 
         return repository.save(user);
+    }
+
+    public User deleteUser(String email) throws CommonException {
+        List<User> result = repository.findByEmail(email);
+        if (result.size() == 0) {
+            log.error("User not found");
+            throw new CommonException();
+        } else if (result.size() > 1) {
+            log.error("More than one user with that email! : " + result);
+            throw new CommonException();
+        } else {
+            repository.delete(result.get(0));
+        }
+        return result.get(0);
     }
 
     public User deleteUser(Long id) throws CommonException {

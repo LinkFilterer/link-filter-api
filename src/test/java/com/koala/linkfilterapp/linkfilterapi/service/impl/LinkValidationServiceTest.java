@@ -9,8 +9,10 @@ import org.mockito.MockitoAnnotations;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.concurrent.atomic.LongAdder;
+import java.util.stream.Collectors;
 
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
@@ -40,12 +42,25 @@ public class LinkValidationServiceTest {
     @Test
     public void shouldTest() {
         Link link = new Link();
-        String test = "STATION STCD";
-        UriComponentsBuilder builder = UriComponentsBuilder.fromHttpUrl("https://google.com")
-                        .pathSegment("BLAH").pathSegment("TEST");
-        System.out.println(test.substring(0,6));
-        System.out.println(test.substring(1,2));
-        System.out.println(builder.build().encode().toString());
+//        String test = "STATION STCD";
+//        UriComponentsBuilder builder = UriComponentsBuilder.fromHttpUrl("https://google.com")
+//                        .pathSegment("BLAH").pathSegment("TEST");
+//        System.out.println(test.substring(0,6));
+//        System.out.println(test.substring(1,2));
+//        System.out.println(builder.build().encode().toString());
+        long time = new Date().getTime();
+        Date upper = new Date((time) + 72 * 60000L);
+        Date lower = new Date((time) - 72 * 60000L);
+
+        List<Integer> testList = new ArrayList<>();
+        testList.add(1);
+        testList.add(2);
+        testList.add(5);
+
+        System.out.println(testList.stream().sorted().collect(Collectors.toList()));
+        System.out.println(lower);
+        System.out.println(upper);
+
 //        System.out.println(test.split(" ")[0]);
 ////        String date = "19970516";
 ////        String formatted = String.format("%s-%s-%s", date.substring(0,4), date.substring(4,6), date.substring(6,8));
