@@ -15,6 +15,7 @@ import com.koala.linkfilterapp.linkfilterapi.service.sponsor.impl.SponsorService
 import lombok.extern.log4j.Log4j2;
 import org.apache.logging.log4j.util.Strings;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -45,6 +46,8 @@ public class MainController {
     RequestHistoryServiceImpl requestHistoryService;
 
     // Will simply check database for a result and return it (INVALID/VALID/UNKNOWN) is public
+
+
     @PostMapping(value = "/checkLink")
     public ResponseEntity<RestResponse<LinkBean>> checkLink(@RequestParam String url,
                                                             HttpServletRequest request) throws CommonException {

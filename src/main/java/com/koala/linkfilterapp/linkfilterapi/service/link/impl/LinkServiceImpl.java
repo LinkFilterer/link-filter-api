@@ -11,7 +11,9 @@ import com.koala.linkfilterapp.linkfilterapi.service.ipaddress.impl.RequestHisto
 import com.koala.linkfilterapp.linkfilterapi.service.link.LinkService;
 import com.koala.linkfilterapp.linkfilterapi.service.report.ReportService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.http.HttpStatus;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
 
@@ -51,6 +53,8 @@ public class LinkServiceImpl implements LinkService {
     @Autowired
     LinkValidationServiceImpl validationService;
 
+
+
     // Will only check the database for results
     public LinkBean checkLink(String url, String ipAddress, RequestHistory request) throws CommonException {
         log.info(CHECK_LINK_CD + " url = '" + url + "' received from " + ipAddress);
@@ -65,7 +69,7 @@ public class LinkServiceImpl implements LinkService {
 
         String parsedUrl = parseUrlToDomainString(url);
 
-        Optional<Link> retrievedEntity = repository.findById(parsedUrl);
+        Optional<Link> retrievedEntity = repository.findByUrl(parsedUrl);
         Link entity = null;
 
         if (!retrievedEntity.isPresent()) {
@@ -76,11 +80,14 @@ public class LinkServiceImpl implements LinkService {
             request.setUrl(parsedUrl);
             performConnectionCheck(retrievedEntity.get(), request);
         }
-
         log.info("URL FOUND");
         requestHistoryService.processRequestHistory(request, nonNull(entity) ? entity : retrievedEntity.get());
         return convert(nonNull(entity) ? entity : retrievedEntity.get());
     }
+
+    @Scheduled(fixedRate = 300000)
+    @CacheEvict(value = "linkUrls", allEntries = true)
+    public void evictLinkCaches() {}
 
     public List<LinkBean> checkLinks(List<String> urls, String ipAddress, RequestHistory requestHistory) throws CommonException {
         List<LinkBean> checkedLinks = new ArrayList<>();

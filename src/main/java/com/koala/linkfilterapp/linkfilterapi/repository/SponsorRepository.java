@@ -1,6 +1,7 @@
 package com.koala.linkfilterapp.linkfilterapi.repository;
 
 import com.koala.linkfilterapp.linkfilterapi.api.sponsor.entity.Sponsor;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -14,6 +15,7 @@ import java.util.List;
 public interface SponsorRepository extends JpaRepository<Sponsor, String>, JpaSpecificationExecutor<Sponsor> {
     Page<Sponsor> findByIdContains(String projectName, Pageable pageAble);
 
+    @Cacheable("sponsorCache")
     List<Sponsor> findByEndDateAfter(Date currentDate);
 
     List<Sponsor> findByEndDateBefore(Date currentDate);

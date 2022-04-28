@@ -2,6 +2,7 @@ package com.koala.linkfilterapp.linkfilterapi.repository;
 
 import com.koala.linkfilterapp.linkfilterapi.api.link.entity.Link;
 import com.koala.linkfilterapp.linkfilterapi.api.link.enums.LinkStatus;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -17,7 +18,8 @@ public interface LinkRepository extends JpaRepository<Link, String>, JpaSpecific
 
     List<Link> findByStatus(LinkStatus status);
 
-    List<Link> findByUrl(String url);
+    @Cacheable("linkUrl")
+    Optional<Link> findByUrl(String url);
 
     Page<Link> findByUrlContains(String url, Pageable pageAble);
 }
