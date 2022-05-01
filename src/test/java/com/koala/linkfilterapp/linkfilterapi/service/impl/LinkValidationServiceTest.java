@@ -51,15 +51,19 @@ public class LinkValidationServiceTest {
         long time = new Date().getTime();
         Date upper = new Date((time) + 72 * 60000L);
         Date lower = new Date((time) - 72 * 60000L);
+        System.out.format(String.format("%s", null));
+        System.out.println(upper.before(new Date()) + " " + lower.after(new Date())  );
+        if (false || false) {
 
+        }
         List<Integer> testList = new ArrayList<>();
         testList.add(1);
         testList.add(2);
         testList.add(5);
-
-        System.out.println(testList.stream().sorted().collect(Collectors.toList()));
-        System.out.println(lower);
-        System.out.println(upper);
+//
+//        System.out.println(testList.stream().sorted().collect(Collectors.toList()));
+//        System.out.println(lower);
+//        System.out.println(upper);
 
 //        System.out.println(test.split(" ")[0]);
 ////        String date = "19970516";

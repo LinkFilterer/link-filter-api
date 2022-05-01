@@ -42,7 +42,7 @@ public class User implements Serializable {
     String provider;
 
     // bi-directional many-to-many association to Role
-    @ManyToMany(cascade = CascadeType.ALL)
+    @ManyToMany(cascade = CascadeType.DETACH)
     @JoinTable(name = "user_role", joinColumns = { @JoinColumn(name = "USER_ID") }, inverseJoinColumns = { @JoinColumn(name = "ROLE_ID") })
     Set<Role> roles;
 }

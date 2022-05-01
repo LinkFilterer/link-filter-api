@@ -29,7 +29,7 @@ public class Role implements Serializable {
 
     // bi-directional many-to-many association to User
     @JsonIgnore
-    @ManyToMany(mappedBy = "roles", cascade = CascadeType.ALL)
+    @ManyToMany(mappedBy = "roles", cascade = CascadeType.DETACH)
     private Set<User> users;
 
     public Role(String name) {

@@ -52,6 +52,7 @@ public class UserManagementService {
         BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
         user.setPassword(encoder.encode(user.getPassword()));
         user.setCreatedDate(new Date());
+        user.setModifiedDate(new Date());
         return repository.save(user);
     }
 
@@ -66,7 +67,7 @@ public class UserManagementService {
         if(!foundUser.get().getPassword().equals(user.getPassword())) {
             user.setPassword(encoder.encode(user.getPassword()));
         }
-
+        user.setModifiedDate(new Date());
         return repository.save(user);
     }
 
