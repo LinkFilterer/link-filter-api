@@ -53,6 +53,7 @@ public class UserManagementService {
         user.setPassword(encoder.encode(user.getPassword()));
         user.setCreatedDate(new Date());
         user.setModifiedDate(new Date());
+        user.setEnabled(true);
         return repository.save(user);
     }
 
