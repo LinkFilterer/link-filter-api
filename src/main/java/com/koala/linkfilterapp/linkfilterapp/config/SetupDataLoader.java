@@ -20,9 +20,6 @@ public class SetupDataLoader implements ApplicationListener<ContextRefreshedEven
     private boolean alreadySetup = false;
 
     @Autowired
-    private UserRepository userRepository;
-
-    @Autowired
     private RoleRepository roleRepository;
 
     @Autowired
@@ -38,27 +35,7 @@ public class SetupDataLoader implements ApplicationListener<ContextRefreshedEven
         Role userRole = createRoleIfNotFound(Role.ROLE_USER);
         Role adminRole = createRoleIfNotFound(Role.ROLE_ADMIN);
         Role modRole = createRoleIfNotFound(Role.ROLE_MODERATOR);
-        createUserIfNotFound("admin@javachinna.com", new HashSet<>(Arrays.asList(userRole, adminRole, modRole)));
         alreadySetup = true;
-    }
-
-    @Transactional
-    private final User createUserIfNotFound(final String email, Set<Role> roles) {
-        User user = userRepository.findByEmail(email);
-        if (user == null) {
-            user = new User();
-            user.setDisplayName("Admin");
-            user.setEmail(email);
-            user.setPassword(passwordEncoder.encode("admin@"));
-            user.setRoles(roles);
-            user.setProvider(SocialProvider.LOCAL.getProviderType());
-            user.setEnabled(true);
-            Date now = Calendar.getInstance().getTime();
-            user.setCreatedDate(now);
-            user.setModifiedDate(now);
-            user = userRepository.save(user);
-        }
-        return user;
     }
 
     @Transactional

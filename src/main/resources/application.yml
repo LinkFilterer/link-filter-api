@@ -6,3 +6,5 @@ spring:
           github:
             clientId: Iv1.09ebcdbbd939f7ed
             clientSecret: b0be98c10181b2e972477a966a01074dfe6e768a
+
+  profiles: develop

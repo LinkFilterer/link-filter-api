@@ -1,0 +1,50 @@
+version: "3.8"
+services:
+  link_db:
+    image: mysql:latest
+    env_file: .env
+    environment:
+      - MYSQL_ROOT_PASSWORD=password
+      - MYSQL_PASSWORD=password
+      - MYSQL_DATABASE=linkDb
+    ports:
+      - "3308:3306"
+    networks:
+      - database
+  app:
+    image: $IMAGE_NAME
+    depends_on:
+      - link_db
+#    restart: on-failure
+    env_file: .env
+    ports:
+      - $SPRING_LOCAL_PORT:$SPRING_DOCKER_PORT
+    networks:
+      - database
+    environment:
+      SPRING_APPLICATION_JSON: '{
+           "spring.jpa.database-platform":"org.hibernate.dialect.MySQL5Dialect",
+           "spring.datasource.driver-class-name":"com.mysql.cj.jdbc.Driver",
+
+           "spring.jpa.generate-ddl":"true",
+           "spring.jpa.hibernate.ddl-auto" : "update",
+
+           "spring.datasource.url":"jdbc:mysql://localhost:3308/linkDb?reconnect=true&useSSL=false",
+           "spring.datasource.username":"root",
+           "spring.datasource.password":"password",
+
+           "spring.datasource.connection-test-query":"SELECT 1",
+           "spring.datasource.test-while-idle":"true",
+           "spring.datasource.test-on-borrow":"true",
+           "spring.datasource.validation-interval":"10000",
+           "spring.datasource.log-validation-errors":"true",
+
+           "spring.jpa.properties.hibernate.dialect":"org.hibernate.dialect.MySQL55Dialect",
+           "spring.datasource.validation-query":"SELECT 1"
+
+         }'
+
+
+networks:
+  database:
+    external: true
