@@ -8,8 +8,10 @@ import com.koala.linkfilterapp.linkfilterapi.api.report.enums.ReportType;
 import com.koala.linkfilterapp.linkfilterapi.api.requesthistory.entity.RequestHistory;
 import com.koala.linkfilterapp.linkfilterapi.repository.LinkRepository;
 import com.koala.linkfilterapp.linkfilterapi.service.ipaddress.impl.RequestHistoryServiceImpl;
+import com.koala.linkfilterapp.linkfilterapi.service.link.LinkConverter;
 import com.koala.linkfilterapp.linkfilterapi.service.link.LinkService;
 import com.koala.linkfilterapp.linkfilterapi.service.report.ReportService;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.http.HttpStatus;
@@ -18,10 +20,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
 
 import java.sql.Timestamp;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
-import java.util.logging.Logger;
+import java.util.*;
+import java.util.stream.Collectors;
 
 import static com.koala.linkfilterapp.linkfilterapi.service.common.CommonApiConstants.CHECK_LINK_CD;
 import static com.koala.linkfilterapp.linkfilterapi.service.common.CommonApiConstants.REPORT_LINK_CD;
@@ -32,8 +32,8 @@ import static java.util.Objects.isNull;
 import static java.util.Objects.nonNull;
 
 @Service
+@Slf4j
 public class LinkServiceImpl implements LinkService {
-    Logger log = Logger.getLogger("LinkService");
 
     @Autowired
     LinkRepository repository;
@@ -63,7 +63,7 @@ public class LinkServiceImpl implements LinkService {
         List<String> errors = validationService.validateLinkRequest(url, ipAddress);
         if (!CollectionUtils.isEmpty(errors)) {
             CommonException exception = new CommonException(HttpStatus.BAD_REQUEST, "Error occurred while validating request: " + url, null, ipAddress, errors);
-            log.warning(exception.toString());
+            log.error(exception.toString());
             throw exception;
         }
 
@@ -89,14 +89,58 @@ public class LinkServiceImpl implements LinkService {
     @CacheEvict(value = "linkUrls", allEntries = true)
     public void evictLinkCaches() {}
 
-    public List<LinkBean> checkLinks(List<String> urls, String ipAddress, RequestHistory requestHistory) throws CommonException {
-        List<LinkBean> checkedLinks = new ArrayList<>();
-        if(!CollectionUtils.isEmpty(urls)) {
-            for (String url : urls) {
-                checkedLinks.add(checkLink(url, ipAddress, requestHistory));
+    public List<LinkBean> checkLinks(List<String> urls, String ipAddress, List<RequestHistory> requestHistories) throws CommonException {
+        log.info(CHECK_LINK_CD + " url = '" + urls + "' received from " + ipAddress);
+
+        List<String> errors = new ArrayList<>();
+        urls.forEach(url -> errors.addAll(validationService.validateLinkRequest(url, ipAddress)));
+        if (!CollectionUtils.isEmpty(errors)) {
+            CommonException exception = new CommonException(HttpStatus.BAD_REQUEST, "Error occurred while validating request: " + urls, null, ipAddress, errors);
+            log.error(exception.toString());
+            throw exception;
+        }
+
+        Map<String, String> unparsedToParsedUrlMap = new HashMap<>();
+
+        List<String> parsedUrls = urls.stream().map(url -> {
+            try {
+                String parsed = parseUrlToDomainString(url);
+                unparsedToParsedUrlMap.put(parsed, url);
+                return parsed;
+            } catch (CommonException e) {
+                log.error(e.toString());
+                return null;
+            }
+        }).collect(Collectors.toList());
+        log.info("Searching for existing links: " + parsedUrls);
+        List<Link> foundLinks = repository.findAllById(parsedUrls);
+        List<String> foundUrls = foundLinks.stream().map(Link::getUrl).collect(Collectors.toList());
+        List<String> unfoundUrls = parsedUrls.stream().filter(url -> !foundUrls.contains(url)).collect(Collectors.toList());
+        List<Link> newEntities = new ArrayList<>();
+
+        for (String unfoundUrl : unfoundUrls ) {
+            Optional<RequestHistory> mappedRequest = requestHistories.stream().filter(request -> request.getRequestedUrl().equals(unparsedToParsedUrlMap.get(unfoundUrl))).findAny();
+            Link entity = saveNewEntity(unfoundUrl);
+            performConnectionCheck(entity, mappedRequest.get());
+            newEntities.add(entity);
+        }
+
+        for (Link link : foundLinks) {
+            String unparsedUrl = unparsedToParsedUrlMap.get(link.getUrl());
+            Optional<RequestHistory> mappedRequest = requestHistories.stream().filter(request ->
+                    request.getRequestedUrl().equals(unparsedUrl))
+                    .findAny();
+
+            if (isNull(link.getStatus()) || link.getStatus().equals(LinkStatus.UNPROCCESSED)) {
+                if (mappedRequest.isPresent()) {
+                    mappedRequest.get().setUrl(link.getUrl());
+                    performConnectionCheck(link, mappedRequest.get());
+                }
             }
         }
-        return checkedLinks;
+        foundLinks.addAll(newEntities);
+        log.info("multi checklink processed: " + foundLinks);
+        return foundLinks.stream().map(LinkConverter::convert).collect(Collectors.toList());
     }
 
     private void performConnectionCheck(Link entity, RequestHistory request) {
@@ -125,7 +169,7 @@ public class LinkServiceImpl implements LinkService {
 
         if (!CollectionUtils.isEmpty(errors) || (!ReportType.INVALID.equals(reportType) && !ReportType.VALID.equals(reportType))) {
             CommonException exception = new CommonException(HttpStatus.BAD_REQUEST, "Error occurred while validating request: " + url, null, ipAddress, errors);
-            log.warning(exception.toString());
+            log.error(exception.toString());
             throw exception;
         }
 

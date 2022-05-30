@@ -3,6 +3,7 @@ package com.koala.linkfilterapp.linkfilterapi.controller.discord;
 import com.koala.linkfilterapp.linkfilterapi.api.common.dto.response.RestResponse;
 import com.koala.linkfilterapp.linkfilterapi.api.common.enums.AddressType;
 import com.koala.linkfilterapp.linkfilterapi.api.common.exception.CommonException;
+import com.koala.linkfilterapp.linkfilterapi.api.link.dto.request.CheckLinksRequest;
 import com.koala.linkfilterapp.linkfilterapi.api.link.dto.response.LinkBean;
 import com.koala.linkfilterapp.linkfilterapi.api.report.enums.ReportType;
 import com.koala.linkfilterapp.linkfilterapi.api.requesthistory.entity.RequestHistory;
@@ -13,12 +14,15 @@ import com.koala.linkfilterapp.linkfilterapi.service.ipaddress.impl.RequestHisto
 import com.koala.linkfilterapp.linkfilterapi.service.link.impl.LinkServiceImpl;
 import com.koala.linkfilterapp.linkfilterapi.service.sponsor.impl.SponsorServiceImpl;
 import lombok.extern.log4j.Log4j2;
+import org.apache.logging.log4j.util.Strings;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
+
+import java.util.List;
 
 import static com.koala.linkfilterapp.linkfilterapi.controller.common.ControllerConstants.BROWSER_EXTENSION_ORIGIN;
 import static com.koala.linkfilterapp.linkfilterapi.controller.common.ControllerConstants.UI_SERVER_ORIGIN;
@@ -78,6 +82,22 @@ public class DiscordController {
         log.info(String.format("Sending Response to %s: %s", request.getRemoteAddr(), response));
         return new ResponseEntity<>(
                 new RestResponse<>(HttpStatus.OK.toString(), "Link Reported", response, null), HttpStatus.OK);
+    }
+
+    @PostMapping(value = "/checkLinks")
+    public ResponseEntity<RestResponse<List<LinkBean>>> postLink(@RequestBody List<String> urls, HttpServletRequest request) throws CommonException {
+        String ipAddress = request.getRemoteAddr();
+        if (ipAddressService.checkIfBanned(ipAddress, AddressType.WEB, Strings.EMPTY)) {
+            return null;
+        }
+        List<RequestHistory> requestHistories = requestHistoryService.saveRequestHistories(urls, ipAddress, Strings.EMPTY, RequestType.CHECK, AddressType.WEB);
+        requestHistoryService.ipCheck(request.getRemoteAddr());
+        log.info(String.format("Request: %s", request.getAuthType()));
+
+        List<LinkBean> response = linkService.checkLinks(urls, request.getRemoteAddr(), requestHistories);
+
+        return new ResponseEntity<>(
+                new RestResponse<>(HttpStatus.OK.toString(), "Successfully checked links", response, null), HttpStatus.OK);
     }
 
 }

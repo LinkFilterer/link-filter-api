@@ -67,6 +67,21 @@ public class RequestHistoryServiceImpl {
         return requestHistory;
     }
 
+    public List<RequestHistory> saveRequestHistories(List<String> urls, String ipAddress, String userId, RequestType requestType, AddressType source) {
+        List<RequestHistory> requestHistories = new ArrayList<>();
+        for (String url : urls) {
+            RequestHistory requestHistory = new RequestHistory();
+            requestHistory.setSource(source);
+            requestHistory.setUserId(userId);
+            requestHistory.setRequestType(requestType);
+            requestHistory.setIpAddress(ipAddress);
+            requestHistory.setRequestedUrl(url);
+            requestHistory.setRequestTime(new Timestamp(System.currentTimeMillis()));
+            requestHistories.add(requestHistory);
+        }
+        return requestHistoryRepository.saveAll(requestHistories);
+    }
+
     public RequestHistory saveRequestHistory(String url, String ipAddress, RequestType requestType) {
         RequestHistory requestHistory = new RequestHistory();
         requestHistory.setRequestType(requestType);

@@ -2,6 +2,7 @@ package com.koala.linkfilterapp.linkfilterapi.service.link.impl;
 
 import com.google.common.net.InternetDomainName;
 import com.koala.linkfilterapp.linkfilterapi.service.link.LinkValidationService;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.net.URL;
@@ -12,9 +13,8 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 @Service
+@Slf4j
 public class LinkValidationServiceImpl implements LinkValidationService {
-
-    Logger log = Logger.getLogger("LinkValidationService");
 
     @Override
     public List<String> validateLinkRequest(String url, String ipAddress) {
@@ -26,7 +26,7 @@ public class LinkValidationServiceImpl implements LinkValidationService {
 
     private void validateUrl(List<String> errors, String strUrl) {
         strUrl = strUrl.trim();
-
+        log.info("Validating URL: " + strUrl);
 
         try {
             if (isValidUrlString("www."+ strUrl) && !strUrl.startsWith("www.")) { // no https, no www prefix
