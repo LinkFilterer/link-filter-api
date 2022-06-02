@@ -19,4 +19,9 @@ public class CommonException extends Exception {
     Link link;
     String requestType;
     List<String> errors;
+
+    public CommonException(HttpStatus status, String message) {
+        this.description = message;
+        this.httpStatus = status;
+    }
 }
