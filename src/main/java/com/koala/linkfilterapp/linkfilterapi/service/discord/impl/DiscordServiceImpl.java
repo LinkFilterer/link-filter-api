@@ -43,11 +43,11 @@ public class DiscordServiceImpl implements DiscordService {
 
         } else {
             DiscordSettings currentSettings = entity.get();
-            if (settings.getIsAutoDeleteEnabled() != currentSettings.getIsAutoDeleteEnabled()) {
+            if (nonNull(settings.getIsAutoDeleteEnabled())) {
                 currentSettings.setIsAutoDeleteEnabled(settings.getIsAutoDeleteEnabled());
             }
             Short deleteThreshold = settings.getDeleteThreshold();
-            if (nonNull(deleteThreshold) && !deleteThreshold.equals(currentSettings.getDeleteThresh()) ) {
+            if (nonNull(deleteThreshold)) {
                 currentSettings.setDeleteThresh(deleteThreshold);
             }
             settingsEntity = repository.save(currentSettings);
