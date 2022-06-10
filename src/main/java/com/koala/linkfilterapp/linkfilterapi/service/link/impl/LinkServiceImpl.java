@@ -53,8 +53,6 @@ public class LinkServiceImpl implements LinkService {
     @Autowired
     LinkValidationServiceImpl validationService;
 
-
-
     // Will only check the database for results
     public LinkBean checkLink(String url, String ipAddress, RequestHistory request) throws CommonException {
         log.info(CHECK_LINK_CD + " url = '" + url + "' received from " + ipAddress);
@@ -93,16 +91,16 @@ public class LinkServiceImpl implements LinkService {
         log.info(CHECK_LINK_CD + " url = '" + urls + "' received from " + ipAddress);
 
         List<String> errors = new ArrayList<>();
-        urls.forEach(url -> errors.addAll(validationService.validateLinkRequest(url, ipAddress)));
-        if (!CollectionUtils.isEmpty(errors)) {
-            CommonException exception = new CommonException(HttpStatus.BAD_REQUEST, "Error occurred while validating request: " + urls, null, ipAddress, errors);
-            log.error(exception.toString());
-            throw exception;
-        }
+//        urls.forEach(url -> errors.addAll(validationService.validateLinkRequest(url, ipAddress)));
+//        if (!CollectionUtils.isEmpty(errors)) {
+//            CommonException exception = new CommonException(HttpStatus.BAD_REQUEST, "Error occurred while validating request: " + urls, null, ipAddress, errors);
+//            log.error(exception.toString());
+//            throw exception;
+//        }
 
         Map<String, String> unparsedToParsedUrlMap = new HashMap<>();
 
-        List<String> parsedUrls = urls.stream().map(url -> {
+        List<String> parsedUrls = urls.stream().distinct().map(url -> {
             try {
                 String parsed = parseUrlToDomainString(url);
                 unparsedToParsedUrlMap.put(parsed, url);

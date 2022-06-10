@@ -26,4 +26,5 @@ public interface RequestHistoryRepository extends JpaRepository<RequestHistory, 
     long countByRequestTimeBefore(Date beforeDate);
 
     long countByRequestTimeAfterAndIpAddress(Date afterDate, String ip);
+    long countByRequestTimeAfterAndIpAddressAndUserId(Date afterDate, String ip, String userId);
 }

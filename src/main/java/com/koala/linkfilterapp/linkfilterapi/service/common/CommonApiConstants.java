@@ -2,7 +2,7 @@ package com.koala.linkfilterapp.linkfilterapi.service.common;
 
 public class CommonApiConstants {
     // SETTINGS
-    public static long CONNECTION_THRESHOLD = 10; // Request Limit per Min
+    public static long CONNECTION_THRESHOLD = 20; // Request Limit per Min
 
     public static long REPORT_INSPECTION_THRESHOLD = 50;
 

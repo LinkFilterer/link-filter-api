@@ -55,6 +55,19 @@ public class RequestHistoryServiceImpl {
         }
     }
 
+    public void ipCheck(String ipAddress, String userId) throws CommonException {
+        Timestamp currentTime = new Timestamp(System.currentTimeMillis());
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTimeInMillis(currentTime.getTime());
+        calendar.add(Calendar.MINUTE, -1);
+        Timestamp timeInterval = new Timestamp(calendar.getTime().getTime());
+        long timesConnected = requestHistoryRepository.countByRequestTimeAfterAndIpAddressAndUserId(timeInterval,ipAddress, userId);
+        if (timesConnected > CONNECTION_THRESHOLD) {
+            CommonException exception = new CommonException(HttpStatus.TOO_MANY_REQUESTS, "Connection threshold reached please try again in a minute", null, null, null);
+            throw exception;
+        }
+    }
+
     public RequestHistory saveRequestHistory(String url, String ipAddress, String userId, RequestType requestType, AddressType source) {
         RequestHistory requestHistory = new RequestHistory();
         requestHistory.setSource(source);

@@ -26,6 +26,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.servlet.http.HttpServletRequest;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 import static com.koala.linkfilterapp.linkfilterapi.controller.common.ControllerConstants.BROWSER_EXTENSION_ORIGIN;
 import static com.koala.linkfilterapp.linkfilterapi.controller.common.ControllerConstants.UI_SERVER_ORIGIN;
@@ -98,11 +99,12 @@ public class DiscordController {
         if (ipAddressService.checkIfBanned(ipAddress, AddressType.WEB, Strings.EMPTY)) {
             return null;
         }
-        List<RequestHistory> requestHistories = requestHistoryService.saveRequestHistories(urls, ipAddress, userId, RequestType.CHECK, AddressType.DISCORD);
-        requestHistoryService.ipCheck(request.getRemoteAddr());
+        List<String> distinctUrls = urls.stream().distinct().collect(Collectors.toList());
+        List<RequestHistory> requestHistories = requestHistoryService.saveRequestHistories(distinctUrls, ipAddress, userId, RequestType.CHECK, AddressType.DISCORD);
+        requestHistoryService.ipCheck(request.getRemoteAddr(), userId);
         log.info(String.format("Request: %s", request.getAuthType()));
 
-        List<LinkBean> response = linkService.checkLinks(urls, request.getRemoteAddr(), requestHistories);
+        List<LinkBean> response = linkService.checkLinks(distinctUrls, request.getRemoteAddr(), requestHistories);
 
         return new ResponseEntity<>(
                 new RestResponse<>(HttpStatus.OK.toString(), "Successfully checked links", response, null), HttpStatus.OK);
