@@ -4,13 +4,14 @@ import com.google.common.net.InternetDomainName;
 import com.koala.linkfilterapp.linkfilterapi.api.common.exception.CommonException;
 import com.koala.linkfilterapp.linkfilterapi.api.link.entity.Link;
 import com.koala.linkfilterapp.linkfilterapi.api.report.enums.ReportType;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 
 import java.net.URL;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-
+@Slf4j
 public class LinkValidator {
     public static boolean validateReportType(ReportType reportType) throws CommonException {
         if (reportType.equals(ReportType.VALID)) {
@@ -27,6 +28,9 @@ public class LinkValidator {
 
     private static URL parseUrl(String strUrl) throws CommonException {
         strUrl = strUrl.trim();
+        if (strUrl.startsWith("https://www.")) {
+            strUrl = strUrl.replace("https://www.", "www.");
+        }
         try {
             if(isValidUrlString(strUrl) && isHttpPrefixed(strUrl)) {
                 URL uri = new URL(strUrl);
@@ -52,6 +56,7 @@ public class LinkValidator {
 
     public static String parseUrlToDomainString(String url) throws CommonException {
         URL parsedUrl = parseUrl(url);
+        log.info(parsedUrl.toString());
         return InternetDomainName.from(parsedUrl.getHost()).topPrivateDomain().toString();
     }
 

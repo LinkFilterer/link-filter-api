@@ -58,12 +58,12 @@ public class LinkServiceImpl implements LinkService {
         log.info(CHECK_LINK_CD + " url = '" + url + "' received from " + ipAddress);
 
 
-        List<String> errors = validationService.validateLinkRequest(url, ipAddress);
-        if (!CollectionUtils.isEmpty(errors)) {
-            CommonException exception = new CommonException(HttpStatus.BAD_REQUEST, "Error occurred while validating request: " + url, null, ipAddress, errors);
-            log.error(exception.toString());
-            throw exception;
-        }
+//        List<String> errors = validationService.validateLinkRequest(url, ipAddress);
+//        if (!CollectionUtils.isEmpty(errors)) {
+//            CommonException exception = new CommonException(HttpStatus.BAD_REQUEST, "Error occurred while validating request: " + url, null, ipAddress, errors);
+//            log.error(exception.toString());
+//            throw exception;
+//        }
 
         String parsedUrl = parseUrlToDomainString(url);
 
@@ -90,14 +90,6 @@ public class LinkServiceImpl implements LinkService {
     public List<LinkBean> checkLinks(List<String> urls, String ipAddress, List<RequestHistory> requestHistories) throws CommonException {
         log.info(CHECK_LINK_CD + " url = '" + urls + "' received from " + ipAddress);
 
-        List<String> errors = new ArrayList<>();
-//        urls.forEach(url -> errors.addAll(validationService.validateLinkRequest(url, ipAddress)));
-//        if (!CollectionUtils.isEmpty(errors)) {
-//            CommonException exception = new CommonException(HttpStatus.BAD_REQUEST, "Error occurred while validating request: " + urls, null, ipAddress, errors);
-//            log.error(exception.toString());
-//            throw exception;
-//        }
-
         Map<String, String> unparsedToParsedUrlMap = new HashMap<>();
 
         List<String> parsedUrls = urls.stream().distinct().map(url -> {
@@ -110,7 +102,7 @@ public class LinkServiceImpl implements LinkService {
                 return null;
             }
         }).collect(Collectors.toList());
-        log.info("Searching for existing links: " + parsedUrls);
+
         List<Link> foundLinks = repository.findAllById(parsedUrls);
         List<String> foundUrls = foundLinks.stream().map(Link::getUrl).collect(Collectors.toList());
         List<String> unfoundUrls = parsedUrls.stream().filter(url -> !foundUrls.contains(url)).collect(Collectors.toList());

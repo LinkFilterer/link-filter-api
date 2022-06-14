@@ -64,11 +64,11 @@ public class DiscordController {
         }
         RequestHistory requestHistory = requestHistoryService.saveRequestHistory(url, ipAddress, userId, RequestType.CHECK, source);
 
-        log.info(String.format("Request: %s", request.getAuthType()));
+//        log.info(String.format("Request: %s", request.getAuthType()));
         LinkBean response = linkService.checkLink(url, request.getRemoteAddr(), requestHistory);
         SponsorBean sponsor = sponsorService.getSponsorInfo();
         response.setSponsor(sponsor);
-        log.info(String.format("Sending Response to %s: %s", request.getRemoteAddr(), response));
+//        log.info(String.format("Sending Response to %s: %s", request.getRemoteAddr(), response));
         return new ResponseEntity<>(
                 new RestResponse<>(HttpStatus.OK.toString(), "Link Checked", response, null), HttpStatus.OK);
     }
@@ -86,7 +86,7 @@ public class DiscordController {
         RequestHistory requestHistory = requestHistoryService.saveRequestHistory(url, ipAddress, userId, RequestType.CHECK, source);
 
         LinkBean response = linkService.reportLink(url, request.getRemoteAddr(), reportType, requestHistory);
-        log.info(String.format("Sending Response to %s: %s", request.getRemoteAddr(), response));
+//        log.info(String.format("Sending Response to %s: %s", request.getRemoteAddr(), response));
         return new ResponseEntity<>(
                 new RestResponse<>(HttpStatus.OK.toString(), "Link Reported", response, null), HttpStatus.OK);
     }
@@ -102,7 +102,6 @@ public class DiscordController {
         List<String> distinctUrls = urls.stream().distinct().collect(Collectors.toList());
         List<RequestHistory> requestHistories = requestHistoryService.saveRequestHistories(distinctUrls, ipAddress, userId, RequestType.CHECK, AddressType.DISCORD);
         requestHistoryService.ipCheck(request.getRemoteAddr(), userId);
-        log.info(String.format("Request: %s", request.getAuthType()));
 
         List<LinkBean> response = linkService.checkLinks(distinctUrls, request.getRemoteAddr(), requestHistories);
 
