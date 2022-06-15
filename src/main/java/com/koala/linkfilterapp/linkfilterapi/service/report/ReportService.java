@@ -4,5 +4,5 @@ import com.koala.linkfilterapp.linkfilterapi.api.common.exception.CommonExceptio
 import com.koala.linkfilterapp.linkfilterapi.api.link.entity.Link;
 
 public interface ReportService {
-    Link reportLink(String url, String ipAddress, boolean isValid) throws CommonException;
+    Link reportLink(String url, String ipAddress, String userId, boolean isValid) throws CommonException;
 }

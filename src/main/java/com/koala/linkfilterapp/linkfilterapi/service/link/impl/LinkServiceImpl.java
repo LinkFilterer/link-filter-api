@@ -50,20 +50,9 @@ public class LinkServiceImpl implements LinkService {
     @Autowired
     LinkWhoIsService whoIsService;
 
-    @Autowired
-    LinkValidationServiceImpl validationService;
-
     // Will only check the database for results
     public LinkBean checkLink(String url, String ipAddress, RequestHistory request) throws CommonException {
         log.info(CHECK_LINK_CD + " url = '" + url + "' received from " + ipAddress);
-
-
-//        List<String> errors = validationService.validateLinkRequest(url, ipAddress);
-//        if (!CollectionUtils.isEmpty(errors)) {
-//            CommonException exception = new CommonException(HttpStatus.BAD_REQUEST, "Error occurred while validating request: " + url, null, ipAddress, errors);
-//            log.error(exception.toString());
-//            throw exception;
-//        }
 
         String parsedUrl = parseUrlToDomainString(url);
 
@@ -149,20 +138,12 @@ public class LinkServiceImpl implements LinkService {
     }
 
     // Will report a link
-    public LinkBean reportLink(String url, String ipAddress, ReportType reportType, RequestHistory request) throws CommonException {
+    public LinkBean reportLink(String url, String ipAddress, String userId, ReportType reportType, RequestHistory request) throws CommonException {
         log.info(REPORT_LINK_CD + " url = '" + url + "' received from " + ipAddress);
-        requestHistoryService.ipCheck(ipAddress);
+        requestHistoryService.ipCheck(ipAddress, userId);
         log.info(request.toString());
 
-        List<String> errors = validationService.validateLinkRequest(url, ipAddress);
         boolean isValid = validateReportType(reportType);
-
-        if (!CollectionUtils.isEmpty(errors) || (!ReportType.INVALID.equals(reportType) && !ReportType.VALID.equals(reportType))) {
-            CommonException exception = new CommonException(HttpStatus.BAD_REQUEST, "Error occurred while validating request: " + url, null, ipAddress, errors);
-            log.error(exception.toString());
-            throw exception;
-        }
-
         String parsedUrl = parseUrlToDomainString(url);
 
         Optional<Link> retrievedEntity = repository.findById(parsedUrl);
@@ -178,7 +159,7 @@ public class LinkServiceImpl implements LinkService {
         }
 
         requestHistoryService.processRequestHistory(request, nonNull(entity) ? entity : retrievedEntity.get());
-        return convert(reportService.reportLink(parsedUrl, ipAddress, isValid));
+        return convert(reportService.reportLink(parsedUrl, ipAddress, userId, isValid));
     }
 
     private void saveNewEntity(Link entity) {

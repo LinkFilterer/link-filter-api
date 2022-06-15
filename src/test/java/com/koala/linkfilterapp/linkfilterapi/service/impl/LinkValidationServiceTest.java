@@ -28,18 +28,6 @@ public class LinkValidationServiceTest {
         MockitoAnnotations.initMocks(this);
     }
 
-    @Test
-    public void shouldValidateLink() {
-        String url = "asdfasdf";
-        String ip = "1234";
-
-        List<String> res = service.validateLinkRequest(url, ip);
-        assertFalse(res.isEmpty());
-
-        url = "google.com";
-        res = service.validateLinkRequest(url, ip);
-        assertTrue(res.isEmpty());
-    }
 
     private int gcd(int x, int y) {
         if (x == 0) {

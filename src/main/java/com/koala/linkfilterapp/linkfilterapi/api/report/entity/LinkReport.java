@@ -11,11 +11,14 @@ import java.util.Date;
 @Table(name = "LINK_REPORTS")
 public class LinkReport {
     @Id
-    @GeneratedValue(strategy= GenerationType.IDENTITY)
+    @GeneratedValue(strategy= GenerationType.AUTO)
     Integer id;
 
     @Column(name = "url")
     String url;
+
+    @Column(name = "userId")
+    String userId;
 
     // Report Exclusive Fields below
 

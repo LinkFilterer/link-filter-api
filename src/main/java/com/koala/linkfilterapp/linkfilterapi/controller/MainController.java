@@ -69,13 +69,14 @@ public class MainController {
     @PostMapping(value = "/reportLink")
     public ResponseEntity<RestResponse<LinkBean>> reportLink(@RequestParam String url,
                                                              @RequestParam ReportType reportType,
+                                                             @RequestParam(required = false) String userId,
                                                              HttpServletRequest request) throws CommonException {
         String ipAddress = request.getRemoteAddr();
         if (ipAddressService.checkIfBanned(ipAddress, AddressType.WEB, Strings.EMPTY)) {
             return null;
         }
         RequestHistory requestHistory = requestHistoryService.saveRequestHistory(url, ipAddress,Strings.EMPTY, RequestType.REPORT, AddressType.WEB);
-        LinkBean response = linkService.reportLink(url, request.getRemoteAddr(), reportType, requestHistory );
+        LinkBean response = linkService.reportLink(url, request.getRemoteAddr(),userId, reportType, requestHistory );
         log.info(String.format("Sending Response to %s: %s", request.getRemoteAddr(), response));
         return new ResponseEntity<>(
                 new RestResponse<>(HttpStatus.OK.toString(), "Link Reported", response, null), HttpStatus.OK);

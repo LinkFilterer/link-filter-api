@@ -27,20 +27,21 @@ public class ReportServiceImpl implements ReportService {
     @Autowired
     LinkReportRepository reportRepository;
 
-    public Link reportLink(String url, String ipAddress, boolean isValid) throws CommonException {
+    public Link reportLink(String url, String ipAddress, String userId, boolean isValid) throws CommonException {
         Optional<LinkReport> foundReport = reportRepository.findByUrlAndIpAddress(url, ipAddress);
         // TODO: Rework to do interval-based reported per ip
         if (foundReport.isPresent()) {
             foundReport.get().setValidReport(isValid);
+            foundReport.get().setUserId(userId);
             reportRepository.save(foundReport.get());
             return saveUpdateReport(foundReport.get(), isValid);
         } else {
             log.info(String.format("No report present for %s", url));
-            return saveNewReport(url, ipAddress, isValid);
+            return saveNewReport(url, ipAddress, userId, isValid);
         }
     }
 
-    private Link saveNewReport(String url, String ipAddress, boolean isValid) {
+    private Link saveNewReport(String url, String ipAddress, String userId, boolean isValid) {
         Optional<Link> foundLink = linkRepository.findById(url);
         if (foundLink.isPresent() && foundLink.get().getStatus().equals(LinkStatus.VERIFIED)) {
             log.info(String.format("Link already verified %s", url));
@@ -49,6 +50,7 @@ public class ReportServiceImpl implements ReportService {
             log.info(String.format("Updating previous report: %s", url));
             LinkReport linkReport = convert(foundLink.get());
             linkReport.setIpAddress(ipAddress);
+            linkReport.setUserId(userId);
             linkReport.setValidReport(isValid);
             linkReport.setLinkRequested(foundLink.get());
             reportRepository.save(linkReport);
@@ -62,6 +64,7 @@ public class ReportServiceImpl implements ReportService {
             linkRepository.save(link);
             LinkReport linkReport = convert(link);
             linkReport.setLinkRequested(link);
+            linkReport.setUserId(userId);
             linkReport.setIpAddress(ipAddress);
             linkReport.setValidReport(isValid);
             linkReport.setLinkRequested(link);
