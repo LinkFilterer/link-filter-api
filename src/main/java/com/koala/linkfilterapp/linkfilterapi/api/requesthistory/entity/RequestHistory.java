@@ -22,21 +22,21 @@ public class RequestHistory {
     @Column (name = "requestType")
     RequestType requestType;
 
-    @Column (name = "url")
+    @Column (name = "url", length = 64)
     String url;
 
     // History Exclusive Fields below
 
-    @Column (name = "requestedUrl")
+    @Column (name = "requestedUrl", length = 64)
     String requestedUrl;
 
-    @Column(name = "ipAddress", nullable = false, updatable = false)
+    @Column(name = "ipAddress", nullable = false, updatable = false, length = 39)
     String ipAddress;
 
     @Column(name = "source")
     AddressType source;
 
-    @Column(name = "userId")
+    @Column(name = "userId", length = 32)
     String userId;
 
     @Column (name = "requestTime")

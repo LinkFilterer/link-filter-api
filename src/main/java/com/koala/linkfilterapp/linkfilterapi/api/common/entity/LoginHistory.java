@@ -2,18 +2,17 @@ package com.koala.linkfilterapp.linkfilterapi.api.common.entity;
 
 import lombok.Data;
 
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
+import javax.persistence.*;
 import java.util.Date;
 
 @Data
 @Entity
 public class LoginHistory {
     @Id
+    @Column(name = "ip", length = 39)
     String ip;
 
+    @Column(name = "name", length = 32)
     String name;
 
     boolean isAuthenticated;

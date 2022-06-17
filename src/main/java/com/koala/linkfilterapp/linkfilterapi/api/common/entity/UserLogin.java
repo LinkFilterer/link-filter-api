@@ -12,16 +12,16 @@ import javax.persistence.Table;
 @Data
 public class UserLogin {
     @Id
-    @Column(name = "user_id")
+    @Column(name = "user_id", length = 32)
     Integer userId;
 
-    @Column(name = "username")
+    @Column(name = "username", length = 32)
     String username;
 
-    @Column(name = "password")
+    @Column(name = "password", length = 64)
     String password;
 
-    @Column(name = "role")
+    @Column(name = "role", length = 16)
     String role;
 
     @Column(name = "enabled")

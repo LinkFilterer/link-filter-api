@@ -10,7 +10,7 @@ import java.util.Date;
 @Table(name = "sponsor")
 public class Sponsor {
     @Id
-    @Column (name = "projectName")
+    @Column (name = "projectName", length = 64)
     String id;
 
     @Column (name = "description")
@@ -19,7 +19,7 @@ public class Sponsor {
     @Column (name = "banner")
     String banner;
 
-    @Column (name = "url")
+    @Column (name = "url", length = 64)
     String url;
 
     @Column (name = "creationDate")

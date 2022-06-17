@@ -10,6 +10,7 @@ import java.util.Date;
 @Table(name = "discordSettings")
 public class DiscordSettings {
     @Id
+    @Column(name = "serverId", length = 32)
     String serverId;
 
     @Column

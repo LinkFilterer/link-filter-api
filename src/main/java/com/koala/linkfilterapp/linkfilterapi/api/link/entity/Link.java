@@ -16,7 +16,7 @@ import java.util.List;
 @Table(name = "link")
 public class Link implements Serializable {
     @Id
-    @Column (name = "url")
+    @Column (name = "url", length = 64)
     String url;
 
     @Column (name = "status")
@@ -36,7 +36,7 @@ public class Link implements Serializable {
     @Temporal(TemporalType.DATE)
     Date modifiedDate;
 
-    @Column (name = "description")
+    @Column (name = "description", length = 64)
     String description;
 
     @Column (name = "isConnectable")

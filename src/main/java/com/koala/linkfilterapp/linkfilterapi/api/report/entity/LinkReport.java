@@ -14,10 +14,10 @@ public class LinkReport {
     @GeneratedValue(strategy= GenerationType.AUTO)
     Integer id;
 
-    @Column(name = "url")
+    @Column(name = "url", length = 64)
     String url;
 
-    @Column(name = "userId")
+    @Column(name = "userId", length = 32)
     String userId;
 
     // Report Exclusive Fields below
@@ -25,7 +25,7 @@ public class LinkReport {
     @Column(name = "reportType", nullable = false)
     Boolean validReport = false;
 
-    @Column(name = "ipAddress", nullable = false, updatable = false)
+    @Column(name = "ipAddress", nullable = false, updatable = false, length = 39)
     String ipAddress;
 
     @Column (name = "requestTime", nullable = false)
