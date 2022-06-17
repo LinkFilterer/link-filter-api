@@ -3,10 +3,8 @@ package com.koala.linkfilterapp.linkfilterapi.service;
 
 import org.junit.Test;
 
-import java.util.*;
-
-import static org.junit.Assert.assertEquals;
-import static org.mockito.ArgumentMatchers.any;
+import java.util.Arrays;
+import java.util.List;
 
 public class LinkServiceTest {
 //    RequestHistory requestHistory;

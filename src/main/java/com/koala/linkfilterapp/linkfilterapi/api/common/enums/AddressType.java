@@ -10,7 +10,7 @@ public enum AddressType {
 
     private final String source;
 
-    private AddressType(String source) {
+    AddressType(String source) {
         this.source = source;
     }
 

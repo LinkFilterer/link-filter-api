@@ -15,7 +15,6 @@ import com.koala.linkfilterapp.linkfilterapi.service.sponsor.impl.SponsorService
 import lombok.extern.log4j.Log4j2;
 import org.apache.logging.log4j.util.Strings;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.cache.annotation.Cacheable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -75,8 +74,8 @@ public class MainController {
         if (ipAddressService.checkIfBanned(ipAddress, AddressType.WEB, Strings.EMPTY)) {
             return null;
         }
-        RequestHistory requestHistory = requestHistoryService.saveRequestHistory(url, ipAddress,Strings.EMPTY, RequestType.REPORT, AddressType.WEB);
-        LinkBean response = linkService.reportLink(url, request.getRemoteAddr(),userId, reportType, requestHistory );
+        RequestHistory requestHistory = requestHistoryService.saveRequestHistory(url, ipAddress, Strings.EMPTY, RequestType.REPORT, AddressType.WEB);
+        LinkBean response = linkService.reportLink(url, request.getRemoteAddr(), userId, reportType, requestHistory);
         log.info(String.format("Sending Response to %s: %s", request.getRemoteAddr(), response));
         return new ResponseEntity<>(
                 new RestResponse<>(HttpStatus.OK.toString(), "Link Reported", response, null), HttpStatus.OK);

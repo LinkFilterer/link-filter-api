@@ -1,8 +1,8 @@
 package com.koala.linkfilterapp.linkfilterapi.service;
 
+import com.koala.linkfilterapp.linkfilterapi.api.common.exception.CommonException;
 import com.koala.linkfilterapp.linkfilterapi.api.sponsor.dto.response.SponsorBean;
 import com.koala.linkfilterapp.linkfilterapi.api.sponsor.entity.Sponsor;
-import com.koala.linkfilterapp.linkfilterapi.api.common.exception.CommonException;
 import com.koala.linkfilterapp.linkfilterapi.repository.SponsorRepository;
 import com.koala.linkfilterapp.linkfilterapi.service.sponsor.impl.SponsorServiceImpl;
 import org.junit.Before;

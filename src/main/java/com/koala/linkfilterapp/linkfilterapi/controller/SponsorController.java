@@ -26,7 +26,7 @@ public class SponsorController {
     @Autowired
     IpAddressServiceImpl ipAddressService;
 
-    @GetMapping (value = "/getSponsor")
+    @GetMapping(value = "/getSponsor")
     public ResponseEntity<RestResponse<SponsorBean>> getSponsor(HttpServletRequest request) throws CommonException {
         if (ipAddressService.checkIfBanned(request.getRemoteAddr())) {
             return null;

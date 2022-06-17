@@ -6,5 +6,6 @@ import com.koala.linkfilterapp.linkfilterapi.api.discord.entity.DiscordSettings;
 
 public interface DiscordService {
     DiscordSettings getSettings(String serverId) throws CommonException;
+
     DiscordSettings updateSettings(DiscordSettingsRequest settings) throws CommonException;
 }

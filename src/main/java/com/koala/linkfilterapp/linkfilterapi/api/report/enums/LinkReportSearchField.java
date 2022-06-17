@@ -6,7 +6,9 @@ public enum LinkReportSearchField {
 
     private final String fieldName;
 
-    private LinkReportSearchField(String fieldName) { this.fieldName = fieldName; }
+    LinkReportSearchField(String fieldName) {
+        this.fieldName = fieldName;
+    }
 
 /*
 *

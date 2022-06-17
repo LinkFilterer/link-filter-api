@@ -7,8 +7,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.logging.Logger;
 
-import static com.koala.linkfilterapp.linkfilterapi.service.link.validator.LinkValidator.*;
-import static org.junit.Assert.assertTrue;
+import static com.koala.linkfilterapp.linkfilterapi.service.link.validator.LinkValidator.parseUrlToDomainString;
 
 public class LinkValidatorTest {
     String validStatus;

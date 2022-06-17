@@ -54,14 +54,30 @@ public class SponsorServiceImpl implements SponsorService {
     private Specification<Sponsor> createQuery(SponsorSearchBean searchBean) {
         return (root, query, builder) -> {
             final List<Predicate> predicates = new ArrayList<>();
-            if(StringUtils.hasText(searchBean.getId())) { predicates.add(builder.equal(root.<String>get("id"), searchBean.getId())); }
-            if(StringUtils.hasText(searchBean.getDescription())) { predicates.add(builder.equal(root.<String>get("description"), searchBean.getDescription())); }
-            if(StringUtils.hasText(searchBean.getBanner())) { predicates.add(builder.equal(root.<String>get("banner"), searchBean.getBanner())); }
-            if(StringUtils.hasText(searchBean.getUrl())) { predicates.add(builder.equal(root.<String>get("url"), searchBean.getUrl())); }
-            if(StringUtils.hasText(searchBean.getCreationDate())) { predicates.add(builder.equal(root.<String>get("creationDate"), searchBean.getCreationDate())); }
-            if(StringUtils.hasText(searchBean.getEndDate())) { predicates.add(builder.equal(root.<String>get("endDate"), searchBean.getEndDate())); }
-            if(nonNull(searchBean.getIsExpired())) { predicates.add(builder.equal(root.<String>get("isExpired"), searchBean.getIsExpired())); }
-            if(nonNull(searchBean.getWeight())) { predicates.add(builder.equal(root.<String>get("weight"), searchBean.getWeight())); }
+            if (StringUtils.hasText(searchBean.getId())) {
+                predicates.add(builder.equal(root.<String>get("id"), searchBean.getId()));
+            }
+            if (StringUtils.hasText(searchBean.getDescription())) {
+                predicates.add(builder.equal(root.<String>get("description"), searchBean.getDescription()));
+            }
+            if (StringUtils.hasText(searchBean.getBanner())) {
+                predicates.add(builder.equal(root.<String>get("banner"), searchBean.getBanner()));
+            }
+            if (StringUtils.hasText(searchBean.getUrl())) {
+                predicates.add(builder.equal(root.<String>get("url"), searchBean.getUrl()));
+            }
+            if (StringUtils.hasText(searchBean.getCreationDate())) {
+                predicates.add(builder.equal(root.<String>get("creationDate"), searchBean.getCreationDate()));
+            }
+            if (StringUtils.hasText(searchBean.getEndDate())) {
+                predicates.add(builder.equal(root.<String>get("endDate"), searchBean.getEndDate()));
+            }
+            if (nonNull(searchBean.getIsExpired())) {
+                predicates.add(builder.equal(root.<String>get("isExpired"), searchBean.getIsExpired()));
+            }
+            if (nonNull(searchBean.getWeight())) {
+                predicates.add(builder.equal(root.<String>get("weight"), searchBean.getWeight()));
+            }
             return builder.and(predicates.toArray(new Predicate[predicates.size()]));
         };
     }

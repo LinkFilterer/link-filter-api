@@ -5,7 +5,6 @@ import com.koala.linkfilterapp.linkfilterapi.api.common.enums.AddressType;
 import com.koala.linkfilterapp.linkfilterapi.api.common.exception.CommonException;
 import com.koala.linkfilterapp.linkfilterapi.api.discord.dto.DiscordSettingsRequest;
 import com.koala.linkfilterapp.linkfilterapi.api.discord.entity.DiscordSettings;
-import com.koala.linkfilterapp.linkfilterapi.api.link.dto.request.CheckLinksRequest;
 import com.koala.linkfilterapp.linkfilterapi.api.link.dto.response.LinkBean;
 import com.koala.linkfilterapp.linkfilterapi.api.report.enums.ReportType;
 import com.koala.linkfilterapp.linkfilterapi.api.requesthistory.entity.RequestHistory;
@@ -16,7 +15,7 @@ import com.koala.linkfilterapp.linkfilterapi.service.ipaddress.impl.IpAddressSer
 import com.koala.linkfilterapp.linkfilterapi.service.ipaddress.impl.RequestHistoryServiceImpl;
 import com.koala.linkfilterapp.linkfilterapi.service.link.impl.LinkServiceImpl;
 import com.koala.linkfilterapp.linkfilterapi.service.sponsor.impl.SponsorServiceImpl;
-import lombok.extern.log4j.Log4j2;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.logging.log4j.util.Strings;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -24,7 +23,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
-
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -33,7 +31,7 @@ import static com.koala.linkfilterapp.linkfilterapi.controller.common.Controller
 
 @CrossOrigin(origins = {UI_SERVER_ORIGIN, BROWSER_EXTENSION_ORIGIN})
 @RestController
-@Log4j2
+@Slf4j
 @RequestMapping("/discord")
 public class DiscordController {
 
@@ -64,11 +62,9 @@ public class DiscordController {
         }
         RequestHistory requestHistory = requestHistoryService.saveRequestHistory(url, ipAddress, userId, RequestType.CHECK, source);
 
-//        log.info(String.format("Request: %s", request.getAuthType()));
         LinkBean response = linkService.checkLink(url, request.getRemoteAddr(), requestHistory);
         SponsorBean sponsor = sponsorService.getSponsorInfo();
         response.setSponsor(sponsor);
-//        log.info(String.format("Sending Response to %s: %s", request.getRemoteAddr(), response));
         return new ResponseEntity<>(
                 new RestResponse<>(HttpStatus.OK.toString(), "Link Checked", response, null), HttpStatus.OK);
     }
@@ -86,7 +82,6 @@ public class DiscordController {
         RequestHistory requestHistory = requestHistoryService.saveRequestHistory(url, ipAddress, userId, RequestType.CHECK, source);
 
         LinkBean response = linkService.reportLink(url, request.getRemoteAddr(), userId, reportType, requestHistory);
-//        log.info(String.format("Sending Response to %s: %s", request.getRemoteAddr(), response));
         return new ResponseEntity<>(
                 new RestResponse<>(HttpStatus.OK.toString(), "Link Reported", response, null), HttpStatus.OK);
     }
@@ -111,7 +106,7 @@ public class DiscordController {
 
     @GetMapping(value = "getSettings/{serverId}")
     public ResponseEntity<RestResponse<DiscordSettings>> getSettings(@PathVariable("serverId") String serverId,
-                                                                    HttpServletRequest request) throws CommonException {
+                                                                     HttpServletRequest request) throws CommonException {
         String ipAddress = request.getRemoteAddr();
         // Todo spam check?
         if (ipAddressService.checkIfBanned(ipAddress, AddressType.WEB, Strings.EMPTY)) {
@@ -119,12 +114,12 @@ public class DiscordController {
         }
         DiscordSettings settings = discordService.getSettings(serverId);
         return new ResponseEntity<>(
-                new RestResponse<>(HttpStatus.OK.toString(), "Successfully received settings", settings , null), HttpStatus.OK);
+                new RestResponse<>(HttpStatus.OK.toString(), "Successfully received settings", settings, null), HttpStatus.OK);
     }
 
     @PostMapping(value = "postSettings")
     public ResponseEntity<RestResponse<DiscordSettings>> postSettings(@RequestBody DiscordSettingsRequest settingsRequest,
-                                                                     HttpServletRequest request) throws CommonException {
+                                                                      HttpServletRequest request) throws CommonException {
         String ipAddress = request.getRemoteAddr();
         // Todo spam check?
         if (ipAddressService.checkIfBanned(ipAddress, AddressType.WEB, Strings.EMPTY)) {
@@ -132,6 +127,6 @@ public class DiscordController {
         }
         DiscordSettings settings = discordService.updateSettings(settingsRequest);
         return new ResponseEntity<>(
-                new RestResponse<>(HttpStatus.OK.toString(), "Successfully updated settings", settings , null), HttpStatus.OK);
+                new RestResponse<>(HttpStatus.OK.toString(), "Successfully updated settings", settings, null), HttpStatus.OK);
     }
 }

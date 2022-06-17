@@ -1,8 +1,8 @@
 package com.koala.linkfilterapp.linkfilterapp.security.oauth2;
 
-import com.koala.linkfilterapp.linkfilterapp.security.service.UserService;
 import com.koala.linkfilterapp.linkfilterapp.security.dto.SocialProvider;
 import com.koala.linkfilterapp.linkfilterapp.security.exception.OAuth2AuthenticationProcessingException;
+import com.koala.linkfilterapp.linkfilterapp.security.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.env.Environment;
 import org.springframework.http.HttpEntity;
@@ -51,7 +51,7 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
         }
     }
 
-    @SuppressWarnings({ "rawtypes", "unchecked" })
+    @SuppressWarnings({"rawtypes", "unchecked"})
     public void populateEmailAddressFromLinkedIn(OAuth2UserRequest oAuth2UserRequest, Map<String, Object> attributes) throws OAuth2AuthenticationException {
         String emailEndpointUri = env.getProperty("linkedin.email-address-uri");
         Assert.notNull(emailEndpointUri, "LinkedIn email address end point required");

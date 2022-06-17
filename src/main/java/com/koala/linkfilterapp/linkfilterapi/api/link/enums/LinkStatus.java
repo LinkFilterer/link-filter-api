@@ -13,7 +13,7 @@ public enum LinkStatus {
 
     private final String status;
 
-    private LinkStatus(String status) {
+    LinkStatus(String status) {
         this.status = status;
     }
 }

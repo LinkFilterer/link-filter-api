@@ -62,7 +62,7 @@ public class RequestHistoryMaintenanceController {
 
     @GetMapping(value = "/getRequestHistory")
     public ResponseEntity<RestResponse<RequestHistoryStatResponse>> getRequestHistory(
-            @RequestParam (required = false) String url,
+            @RequestParam(required = false) String url,
             @RequestParam TimeInterval timeInterval,
             @RequestParam String startingDate,
             @RequestParam String endDate) throws CommonException {

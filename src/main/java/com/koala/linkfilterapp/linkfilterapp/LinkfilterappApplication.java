@@ -23,15 +23,15 @@ import java.util.logging.Logger;
 @EnableTransactionManagement
 @EnableCaching
 public class LinkfilterappApplication {
-	Logger log = Logger.getLogger("LinkfilterApplication");
+    Logger log = Logger.getLogger("LinkfilterApplication");
 
-	public static void main(String[] args) {
-		SpringApplication.run(LinkfilterappApplication.class, args);
-	}
+    public static void main(String[] args) {
+        SpringApplication.run(LinkfilterappApplication.class, args);
+    }
 
-	@Bean
-	public Docket productApi() {
-		return new Docket(DocumentationType.SWAGGER_2).select()
-				.apis(RequestHandlerSelectors.basePackage("com.koala.linkfilterapp")).build();
-	}
+    @Bean
+    public Docket productApi() {
+        return new Docket(DocumentationType.SWAGGER_2).select()
+                .apis(RequestHandlerSelectors.basePackage("com.koala.linkfilterapp")).build();
+    }
 }

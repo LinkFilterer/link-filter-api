@@ -9,6 +9,7 @@ import com.koala.linkfilterapp.linkfilterapi.api.ipaddress.dto.IpSearchBean;
 import com.koala.linkfilterapp.linkfilterapi.api.ipaddress.entity.IpAddress;
 import com.koala.linkfilterapp.linkfilterapi.api.ipaddress.enums.IpSortType;
 import com.koala.linkfilterapp.linkfilterapi.service.ipaddress.impl.IpAddressServiceImpl;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
@@ -17,15 +18,14 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.List;
-import java.util.logging.Logger;
 
 import static com.koala.linkfilterapp.linkfilterapi.controller.common.ControllerConstants.UI_SERVER_ORIGIN;
 
 @CrossOrigin(origins = UI_SERVER_ORIGIN)
 @RestController
 @RequestMapping("/maintenance")
+@Slf4j
 public class IpMaintenanceController {
-    Logger log = Logger.getLogger("IpMaintenanceController");
 
     @Autowired
     IpAddressServiceImpl ipAddressService;
@@ -50,7 +50,7 @@ public class IpMaintenanceController {
                 new RestResponse<>(HttpStatus.OK.toString(), "Ips fetched", res, null), HttpStatus.OK);
     }
 
-    @GetMapping (value = "/searchIps")
+    @GetMapping(value = "/searchIps")
     public ResponseEntity<RestResponse<Page<IpAddress>>> searchIps(
             @RequestParam(required = false) String ipAddress,
             @RequestParam(required = false) BanStatus isBanned,

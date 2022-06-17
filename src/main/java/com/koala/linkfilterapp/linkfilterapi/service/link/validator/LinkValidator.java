@@ -32,10 +32,10 @@ public class LinkValidator {
             strUrl = strUrl.replace("https://www.", "www.");
         }
         try {
-            if(isValidUrlString(strUrl) && isHttpPrefixed(strUrl)) {
+            if (isValidUrlString(strUrl) && isHttpPrefixed(strUrl)) {
                 URL uri = new URL(strUrl);
                 return uri;
-            } else if (isValidUrlString("www."+ strUrl) && !strUrl.startsWith("www.")) { // no https, no www prefix
+            } else if (isValidUrlString("www." + strUrl) && !strUrl.startsWith("www.")) { // no https, no www prefix
                 URL uri = new URL("https://www." + strUrl);
                 return uri;
             } else if (isValidUrlString(strUrl) && !isHttpPrefixed(strUrl)) { // has www, no http prefix
@@ -49,7 +49,7 @@ public class LinkValidator {
         } catch (Exception e) {
             Link badLink = new Link();
             badLink.setUrl(strUrl);
-            CommonException exception = new CommonException(HttpStatus.BAD_REQUEST, e.toString(), badLink,  null, null);
+            CommonException exception = new CommonException(HttpStatus.BAD_REQUEST, e.toString(), badLink, null, null);
             throw exception;
         }
     }
@@ -64,7 +64,7 @@ public class LinkValidator {
         // regex will always be a valid URL i.e. starts with http:// and ends with a domain name
         Pattern p = Pattern.compile("(?i)\\b((?:[a-z][\\w-]+:(?:\\/{1,3}|[a-z0-9%])|www\\d{0,3}[.]|[a-z0-9.\\-]+[.][a-z]{2,4}\\/)(?:[^\\s()<>]+|\\(([^\\s()<>]+|(\\([^\\s()<>]+\\)))*\\))+(?:\\(([^\\s()<>]+|(\\([^\\s()<>]+\\)))*\\)|[^\\s`!()\\[\\]{};:'\".,<>?«»“”‘’]))");
         Matcher m = p.matcher(url);
-        return(m.matches());
+        return (m.matches());
     }
 
     public static boolean isHttpPrefixed(String url) {

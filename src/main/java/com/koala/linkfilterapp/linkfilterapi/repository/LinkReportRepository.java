@@ -9,9 +9,11 @@ import java.util.List;
 import java.util.Optional;
 
 @Repository
-public interface LinkReportRepository extends JpaRepository <LinkReport, String>, JpaSpecificationExecutor<LinkReport> {
+public interface LinkReportRepository extends JpaRepository<LinkReport, String>, JpaSpecificationExecutor<LinkReport> {
     Optional<LinkReport> findByUrlAndIpAddress(String url, String ipAddress);
+
     List<LinkReport> findByUrl(String url);
+
     List<LinkReport> findByIpAddress(String ipAddress);
 
     long countByUrlAndValidReport(String url, boolean valid);

@@ -4,7 +4,6 @@ import com.koala.linkfilterapp.linkfilterapi.api.common.exception.CommonExceptio
 import org.junit.Before;
 import org.junit.Test;
 
-
 import java.util.ArrayList;
 import java.util.List;
 

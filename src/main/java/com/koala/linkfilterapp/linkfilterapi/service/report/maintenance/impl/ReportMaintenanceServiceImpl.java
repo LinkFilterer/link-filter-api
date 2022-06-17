@@ -41,7 +41,7 @@ public class ReportMaintenanceServiceImpl {
     public List<LinkReportBean> deleteReportsByIp(String ip) throws CommonException {
         List<LinkReport> reports = repository.findByIpAddress(ip);
         if (reports.isEmpty()) {
-            CommonException exception = new CommonException(HttpStatus.NOT_FOUND, "No reports found from ip " + ip , null, "Delete Report", null);
+            CommonException exception = new CommonException(HttpStatus.NOT_FOUND, "No reports found from ip " + ip, null, "Delete Report", null);
             log.warning(exception.toString());
             throw exception;
         }
@@ -63,19 +63,19 @@ public class ReportMaintenanceServiceImpl {
     private Specification<LinkReport> createQuery(LinkReportSearchBean searchBean) {
         return (root, query, builder) -> {
             final List<Predicate> predicates = new ArrayList<>();
-            if(StringUtils.hasText(searchBean.getId())) {
+            if (StringUtils.hasText(searchBean.getId())) {
                 predicates.add(builder.equal(root.<String>get("id"), searchBean.getId()));
             }
-            if(StringUtils.hasText(searchBean.getReportTime())) {
+            if (StringUtils.hasText(searchBean.getReportTime())) {
                 predicates.add(builder.equal(root.<String>get("reportTime"), searchBean.getReportTime()));
             }
-            if(StringUtils.hasText(searchBean.getIpAddress())) {
+            if (StringUtils.hasText(searchBean.getIpAddress())) {
                 predicates.add(builder.equal(root.<String>get("ipAddress"), searchBean.getIpAddress()));
             }
-            if(StringUtils.hasText(searchBean.getUrl())) {
+            if (StringUtils.hasText(searchBean.getUrl())) {
                 predicates.add(builder.equal(root.<String>get("url"), searchBean.getUrl()));
             }
-            if(nonNull(searchBean.getValidReport())) {
+            if (nonNull(searchBean.getValidReport())) {
                 predicates.add(builder.equal(root.<String>get("validReport"), searchBean.getValidReport()));
             }
 

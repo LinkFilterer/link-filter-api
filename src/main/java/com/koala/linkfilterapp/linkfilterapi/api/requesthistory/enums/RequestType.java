@@ -5,7 +5,7 @@ public enum RequestType {
 
     private final String type;
 
-    private RequestType(String type) {
+    RequestType(String type) {
         this.type = type;
     }
 }

@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 public class CommonExceptionHandler {
     @ExceptionHandler(CommonException.class)
     public ResponseEntity<RestResponse<Exception>> handleCommonException(CommonException exception) {
-        RestResponse<Exception> response = new RestResponse<Exception>(exception.getHttpStatus().toString(), exception.getDescription(),null, exception.getErrors());
+        RestResponse<Exception> response = new RestResponse<Exception>(exception.getHttpStatus().toString(), exception.getDescription(), null, exception.getErrors());
         return new ResponseEntity<RestResponse<Exception>>(response, HttpStatus.OK);
     }
 

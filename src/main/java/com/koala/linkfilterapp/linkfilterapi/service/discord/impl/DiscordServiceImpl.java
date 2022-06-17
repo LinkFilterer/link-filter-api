@@ -23,7 +23,7 @@ public class DiscordServiceImpl implements DiscordService {
     @Override
     public DiscordSettings getSettings(String serverId) throws CommonException {
         Optional<DiscordSettings> entity = repository.findById(serverId);
-        if(!entity.isPresent()) {
+        if (!entity.isPresent()) {
             throw new CommonException(HttpStatus.NOT_FOUND, "Discord settings not found for this server");
         }
         return entity.get();
@@ -33,7 +33,7 @@ public class DiscordServiceImpl implements DiscordService {
     public DiscordSettings updateSettings(DiscordSettingsRequest settings) throws CommonException {
         Optional<DiscordSettings> entity = repository.findById(settings.getServerId());
         DiscordSettings settingsEntity;
-        if(!entity.isPresent()) {
+        if (!entity.isPresent()) {
             DiscordSettings newSettings = new DiscordSettings();
             newSettings.setServerId(settings.getServerId());
             newSettings.setDeleteThresh(nonNull(settings.getDeleteThreshold()) ? settings.getDeleteThreshold() : 8);

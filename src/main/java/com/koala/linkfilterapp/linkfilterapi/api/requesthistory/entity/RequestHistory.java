@@ -16,18 +16,18 @@ import java.util.Date;
 @Data
 public class RequestHistory {
     @Id
-    @GeneratedValue (strategy=GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     Integer id;
 
-    @Column (name = "requestType")
+    @Column(name = "requestType")
     RequestType requestType;
 
-    @Column (name = "url", length = 64)
+    @Column(name = "url", length = 64)
     String url;
 
     // History Exclusive Fields below
 
-    @Column (name = "requestedUrl", length = 64)
+    @Column(name = "requestedUrl", length = 64)
     String requestedUrl;
 
     @Column(name = "ipAddress", nullable = false, updatable = false, length = 39)
@@ -39,7 +39,7 @@ public class RequestHistory {
     @Column(name = "userId", length = 32)
     String userId;
 
-    @Column (name = "requestTime")
+    @Column(name = "requestTime")
     @Temporal(TemporalType.TIMESTAMP)
     Date requestTime;
 

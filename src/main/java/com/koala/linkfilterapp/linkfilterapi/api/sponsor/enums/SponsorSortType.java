@@ -6,5 +6,7 @@ public enum SponsorSortType {
 
     private final String sortType;
 
-    private SponsorSortType(String sortType) { this.sortType = sortType; }
+    SponsorSortType(String sortType) {
+        this.sortType = sortType;
+    }
 }

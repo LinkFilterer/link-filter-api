@@ -5,7 +5,7 @@ public enum ReportType {
 
     private final String reportType;
 
-    private ReportType(String reportType) {
+    ReportType(String reportType) {
         this.reportType = reportType;
     }
 }

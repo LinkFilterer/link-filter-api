@@ -6,5 +6,7 @@ public enum RequestField {
 
     private final String requestField;
 
-    private RequestField(String requestField) { this.requestField = requestField; }
+    RequestField(String requestField) {
+        this.requestField = requestField;
+    }
 }

@@ -16,15 +16,14 @@ import static com.koala.linkfilterapp.linkfilterapi.service.link.LinkUtils.conve
 
 @Service
 public class LinkWhoIsService {
+    private static final String WHOIS_SERVICE_URL = "%s.whois-servers.net";
+    private static final String WHOIS_BLOG_SERVICE_URL = "whois.nic.blog";
+    private static final String GG_DATE_FORMAT = "dd MMMM yyyy";
+    private static final String TK_DATE_FORMAT = "MM/dd/yyyy";
+    private static final String UK_DATE_FORMAT = "dd-MMMM-yyyy";
+    private static final String UK_OLD_DATE_FORMAT = "MMMM-yyyy";
+    private static final String DEFAULT_DATE_FORMAT = "yyyy-MM-dd";
     Logger log = Logger.getLogger("whoIsService");
-
-    private static String WHOIS_SERVICE_URL = "%s.whois-servers.net";
-    private static String WHOIS_BLOG_SERVICE_URL = "whois.nic.blog";
-    private static String GG_DATE_FORMAT = "dd MMMM yyyy";
-    private static String TK_DATE_FORMAT = "MM/dd/yyyy";
-    private static String UK_DATE_FORMAT = "dd-MMMM-yyyy";
-    private static String UK_OLD_DATE_FORMAT = "MMMM-yyyy";
-    private static String DEFAULT_DATE_FORMAT = "yyyy-MM-dd";
 
     public void setWhoIsDate(Link link) {
         String url = link.getUrl();
@@ -52,7 +51,7 @@ public class LinkWhoIsService {
                     case ("uk"):
                         pattern = Pattern.compile("\\bRegistered on: \\b(\\d{2}-\\b\\w+\\b-\\d{4})");
                         matcher = pattern.matcher(result);
-                        if(!matcher.find()) {
+                        if (!matcher.find()) {
                             pattern = Pattern.compile("\\bRegistered on: [b|B]efore \\b(.*)");
                         }
                         dateFormat = UK_DATE_FORMAT;

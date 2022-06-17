@@ -7,5 +7,6 @@ public enum Roles {
     ROLE_MODERATOR("ROLE_MODERATOR"),
     ROLE_PARTNER("ROLE_PARTNER");
 
-    Roles(String role) { }
+    Roles(String role) {
+    }
 }

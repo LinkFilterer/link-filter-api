@@ -1,18 +1,14 @@
 package com.koala.linkfilterapp.linkfilterapi.controller.maintenance;
 
 import com.koala.linkfilterapp.linkfilterapi.api.common.dto.response.RestResponse;
-import com.koala.linkfilterapp.linkfilterapi.api.common.enums.AddressType;
 import com.koala.linkfilterapp.linkfilterapi.api.common.exception.CommonException;
 import com.koala.linkfilterapp.linkfilterapi.api.link.dto.request.*;
 import com.koala.linkfilterapp.linkfilterapi.api.link.dto.response.LinkBean;
 import com.koala.linkfilterapp.linkfilterapi.api.link.entity.Link;
 import com.koala.linkfilterapp.linkfilterapi.api.link.enums.LinkSortType;
 import com.koala.linkfilterapp.linkfilterapi.api.link.enums.LinkStatus;
-import com.koala.linkfilterapp.linkfilterapi.api.requesthistory.entity.RequestHistory;
-import com.koala.linkfilterapp.linkfilterapi.api.requesthistory.enums.RequestType;
 import com.koala.linkfilterapp.linkfilterapi.service.link.impl.LinkServiceImpl;
 import com.koala.linkfilterapp.linkfilterapi.service.link.maintenance.LinkMaintenanceService;
-import org.apache.logging.log4j.util.Strings;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
@@ -38,13 +34,13 @@ public class LinkMaintenanceController {
     @Autowired
     LinkMaintenanceService maintenanceService;
 
-    @PostMapping(value ="/createLink")
+    @PostMapping(value = "/createLink")
     public ResponseEntity<RestResponse<Link>> createLink(
             @RequestBody CreateLinkRequest request) {
         log.info("Request received: " + request);
         Link response = maintenanceService.createLink(request);
         return new ResponseEntity<>(
-                new RestResponse<>(HttpStatus.CREATED.toString(),"Link successfully created", response, null), HttpStatus.CREATED);
+                new RestResponse<>(HttpStatus.CREATED.toString(), "Link successfully created", response, null), HttpStatus.CREATED);
     }
 
     @GetMapping(value = "/searchLinks")
@@ -126,13 +122,13 @@ public class LinkMaintenanceController {
     public ResponseEntity<RestResponse<LinkBean>> performLinkMaintenance(@RequestParam String url) throws CommonException {
         Link link = maintenanceService.performMaintenance(url);
         return new ResponseEntity<RestResponse<LinkBean>>(
-                new RestResponse<LinkBean>(HttpStatus.OK.toString(), "Successfully performed maintenance}",convert(link), null), HttpStatus.OK);
+                new RestResponse<LinkBean>(HttpStatus.OK.toString(), "Successfully performed maintenance}", convert(link), null), HttpStatus.OK);
     }
 
     @PutMapping(value = "/performMaintenance")
     public ResponseEntity<RestResponse<LinkBean>> performLinkMaintenance() throws CommonException {
         maintenanceService.performMaintenance();
         return new ResponseEntity<RestResponse<LinkBean>>(
-                new RestResponse<LinkBean>(HttpStatus.OK.toString(), "Successfully performed maintenance}",null, null), HttpStatus.OK);
+                new RestResponse<LinkBean>(HttpStatus.OK.toString(), "Successfully performed maintenance}", null, null), HttpStatus.OK);
     }
 }

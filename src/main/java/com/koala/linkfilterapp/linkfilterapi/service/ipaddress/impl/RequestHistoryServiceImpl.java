@@ -29,7 +29,6 @@ import java.time.ZoneId;
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
-import java.util.logging.Logger;
 
 import static com.koala.linkfilterapp.linkfilterapi.service.common.CommonApiConstants.CONNECTION_THRESHOLD;
 import static com.koala.linkfilterapp.linkfilterapi.service.common.CommonApiConstants.REQUEST_DATE_FORMAT;
@@ -37,7 +36,6 @@ import static java.util.Objects.nonNull;
 
 @Service
 public class RequestHistoryServiceImpl {
-    Logger log = Logger.getLogger("RequestHistoryServiceImpl");
 
     @Autowired
     RequestHistoryRepository requestHistoryRepository;
@@ -48,7 +46,7 @@ public class RequestHistoryServiceImpl {
         calendar.setTimeInMillis(currentTime.getTime());
         calendar.add(Calendar.MINUTE, -1);
         Timestamp timeInterval = new Timestamp(calendar.getTime().getTime());
-        long timesConnected = requestHistoryRepository.countByRequestTimeAfterAndIpAddress(timeInterval,ipAddress);
+        long timesConnected = requestHistoryRepository.countByRequestTimeAfterAndIpAddress(timeInterval, ipAddress);
         if (timesConnected > CONNECTION_THRESHOLD) {
             CommonException exception = new CommonException(HttpStatus.TOO_MANY_REQUESTS, "Connection threshold reached please try again in a minute", null, null, null);
             throw exception;
@@ -61,7 +59,7 @@ public class RequestHistoryServiceImpl {
         calendar.setTimeInMillis(currentTime.getTime());
         calendar.add(Calendar.MINUTE, -1);
         Timestamp timeInterval = new Timestamp(calendar.getTime().getTime());
-        long timesConnected = requestHistoryRepository.countByRequestTimeAfterAndIpAddressAndUserId(timeInterval,ipAddress, userId);
+        long timesConnected = requestHistoryRepository.countByRequestTimeAfterAndIpAddressAndUserId(timeInterval, ipAddress, userId);
         if (timesConnected > CONNECTION_THRESHOLD) {
             CommonException exception = new CommonException(HttpStatus.TOO_MANY_REQUESTS, "Connection threshold reached please try again in a minute", null, null, null);
             throw exception;
@@ -95,16 +93,6 @@ public class RequestHistoryServiceImpl {
         return requestHistoryRepository.saveAll(requestHistories);
     }
 
-    public RequestHistory saveRequestHistory(String url, String ipAddress, RequestType requestType) {
-        RequestHistory requestHistory = new RequestHistory();
-        requestHistory.setRequestType(requestType);
-        requestHistory.setIpAddress(ipAddress);
-        requestHistory.setRequestedUrl(url);
-        requestHistory.setRequestTime(new Timestamp(System.currentTimeMillis()));
-        requestHistoryRepository.save(requestHistory);
-        return requestHistory;
-    }
-
     public void processRequestHistory(RequestHistory requestHistory, Link link) {
         requestHistory.setUrl(link.getUrl());
         requestHistoryRepository.save(requestHistory);
@@ -131,19 +119,30 @@ public class RequestHistoryServiceImpl {
     private Specification<RequestHistory> createQuery(RequestHistorySearchBean searchBean) {
         return (root, query, builder) -> {
             final List<Predicate> predicates = new ArrayList<>();
-            if(nonNull(searchBean.getId())) { predicates.add(builder.equal(root.<String>get("id"), searchBean.getId())); }
-            if(nonNull(searchBean.getRequestType())) { predicates.add(builder.equal(root.<String>get("requestType"), searchBean.getRequestType())); }
-            if(StringUtils.hasText(searchBean.getUrl())) { predicates.add(builder.equal(root.<String>get("url"), searchBean.getUrl())); }
-            if(StringUtils.hasText(searchBean.getRequestedUrl())) { predicates.add(builder.equal(root.<String>get("requestedUrl"), searchBean.getRequestedUrl())); }
-            if(StringUtils.hasText(searchBean.getIpAddress())) { predicates.add(builder.equal(root.<String>get("ipAddress"), searchBean.getIpAddress())); }
-            if(StringUtils.hasText(searchBean.getRequestTime())) { predicates.add(builder.equal(root.<String>get("requestTime"), searchBean.getRequestTime())); }
+            if (nonNull(searchBean.getId())) {
+                predicates.add(builder.equal(root.<String>get("id"), searchBean.getId()));
+            }
+            if (nonNull(searchBean.getRequestType())) {
+                predicates.add(builder.equal(root.<String>get("requestType"), searchBean.getRequestType()));
+            }
+            if (StringUtils.hasText(searchBean.getUrl())) {
+                predicates.add(builder.equal(root.<String>get("url"), searchBean.getUrl()));
+            }
+            if (StringUtils.hasText(searchBean.getRequestedUrl())) {
+                predicates.add(builder.equal(root.<String>get("requestedUrl"), searchBean.getRequestedUrl()));
+            }
+            if (StringUtils.hasText(searchBean.getIpAddress())) {
+                predicates.add(builder.equal(root.<String>get("ipAddress"), searchBean.getIpAddress()));
+            }
+            if (StringUtils.hasText(searchBean.getRequestTime())) {
+                predicates.add(builder.equal(root.<String>get("requestTime"), searchBean.getRequestTime()));
+            }
             return builder.and(predicates.toArray(new Predicate[predicates.size()]));
         };
     }
 
     public RequestHistoryStatResponse getRequestHistoryStatistics(String url, TimeInterval timeInterval, String startingDate,
                                                                   String endDate) throws CommonException {
-        log.info("Get request statistics service");
         RequestHistoryStatResponse response = new RequestHistoryStatResponse();
         response.setInterval(timeInterval);
         List<RequestHistoryStatistic> responseData = new ArrayList<>();
@@ -152,17 +151,17 @@ public class RequestHistoryServiceImpl {
         if (start.before(end)) {
             long interval = getIntervalValue(timeInterval);
             long startTime = start.getTime();
-            for (long i = startTime; i < end.getTime(); i+=interval) {
+            for (long i = startTime; i < end.getTime(); i += interval) {
                 RequestHistoryStatistic stat = new RequestHistoryStatistic();
                 Date before = new Date();
                 Date after = new Date();
                 before.setTime(i);
-                after.setTime(i+interval);
+                after.setTime(i + interval);
                 long requestCount = 0;
                 if (!StringUtils.isEmpty(url)) {
                     requestCount = requestHistoryRepository.countByLinkRequestedUrlAndRequestTimeBetween(url, before, after);
                 } else {
-                    requestCount = requestHistoryRepository.countByRequestTimeBetween(before,after);
+                    requestCount = requestHistoryRepository.countByRequestTimeBetween(before, after);
                 }
                 stat.setCount(requestCount);
                 stat.setTime(convertDateToString(before, timeInterval));
@@ -190,7 +189,7 @@ public class RequestHistoryServiceImpl {
     private String convertDateToString(Date date, TimeInterval interval) {
         String dateFormat = getDateFormat(interval);
         String formattedDate = null;
-        if(nonNull(date)) {
+        if (nonNull(date)) {
             DateTimeFormatter formatter = DateTimeFormatter.ofPattern(dateFormat).withZone(ZoneId.systemDefault());
             formattedDate = formatter.format(date.toInstant());
         }

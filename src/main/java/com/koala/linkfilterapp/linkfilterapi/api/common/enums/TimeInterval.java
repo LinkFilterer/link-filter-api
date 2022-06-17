@@ -10,7 +10,7 @@ public enum TimeInterval {
 
     private final String interval;
 
-    private TimeInterval(String interval) {
+    TimeInterval(String interval) {
         this.interval = interval;
     }
 }

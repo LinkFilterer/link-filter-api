@@ -5,5 +5,7 @@ public enum IpSortType {
 
     private final String fieldName;
 
-    private IpSortType(String fieldName) { this.fieldName = fieldName; }
+    IpSortType(String fieldName) {
+        this.fieldName = fieldName;
+    }
 }

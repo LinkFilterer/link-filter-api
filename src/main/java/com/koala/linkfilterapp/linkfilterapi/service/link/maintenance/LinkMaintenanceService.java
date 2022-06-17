@@ -12,6 +12,7 @@ import com.koala.linkfilterapp.linkfilterapi.repository.LinkRepository;
 import com.koala.linkfilterapp.linkfilterapi.service.link.LinkConverter;
 import com.koala.linkfilterapp.linkfilterapi.service.link.impl.LinkConnectionValidationService;
 import com.koala.linkfilterapp.linkfilterapi.service.link.impl.LinkWhoIsService;
+import lombok.extern.slf4j.Slf4j;
 import org.dozer.DozerBeanMapper;
 import org.openqa.selenium.chrome.ChromeOptions;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,7 +31,6 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
-import java.util.logging.Logger;
 import java.util.stream.Collectors;
 
 import static com.koala.linkfilterapp.linkfilterapi.service.common.CommonApiConstants.SERVICE_LOG_MESSAGE;
@@ -38,8 +38,8 @@ import static java.util.Objects.isNull;
 import static java.util.Objects.nonNull;
 
 @Service
+@Slf4j
 public class LinkMaintenanceService {
-    Logger log = Logger.getLogger("LinkMaintenanceService");
 
     @Autowired
     LinkRepository repository;
@@ -68,17 +68,39 @@ public class LinkMaintenanceService {
     private Specification<Link> createQuery(LinkSearchBean searchBean) {
         return (root, query, builder) -> {
             final List<Predicate> predicates = new ArrayList<>();
-            if(StringUtils.hasText(searchBean.getUrl())) { predicates.add(builder.equal(root.<String>get("url"), searchBean.getUrl())); }
-            if(nonNull(searchBean.getStatus())) { predicates.add(builder.equal(root.<String>get("status"), searchBean.getStatus())); }
-            if(StringUtils.hasText(searchBean.getSecurityLevel())) { predicates.add(builder.equal(root.<String>get("securityLevel"), searchBean.getSecurityLevel())); }
-            if(StringUtils.hasText(searchBean.getBadCount())) { predicates.add(builder.equal(root.<String>get("badCount"), searchBean.getBadCount())); }
-            if(StringUtils.hasText(searchBean.getCreationDate())) { predicates.add(builder.equal(root.<String>get("creationDate"), searchBean.getCreationDate())); }
-            if(StringUtils.hasText(searchBean.getModifiedDate())) { predicates.add(builder.equal(root.<String>get("modifiedDate"), searchBean.getModifiedDate())); }
-            if(StringUtils.hasText(searchBean.getDescription())) { predicates.add(builder.equal(root.<String>get("description"), searchBean.getDescription())); }
-            if(nonNull(searchBean.getIsConnectable())) { predicates.add(builder.equal(root.<String>get("isConnectable"), searchBean.getIsConnectable())); }
-            if(nonNull(searchBean.getStatusCode())) { predicates.add(builder.equal(root.<String>get("statusCode"), searchBean.getStatusCode())); }
-            if(StringUtils.hasText(searchBean.getLastMaintenance())) { predicates.add(builder.equal(root.<String>get("lastMaintenance"), searchBean.getLastMaintenance())); }
-            if(StringUtils.hasText(searchBean.getWhoIsDate())) { predicates.add(builder.equal(root.<String>get("whoIsDate"), searchBean.getWhoIsDate())); }
+            if (StringUtils.hasText(searchBean.getUrl())) {
+                predicates.add(builder.equal(root.<String>get("url"), searchBean.getUrl()));
+            }
+            if (nonNull(searchBean.getStatus())) {
+                predicates.add(builder.equal(root.<String>get("status"), searchBean.getStatus()));
+            }
+            if (StringUtils.hasText(searchBean.getSecurityLevel())) {
+                predicates.add(builder.equal(root.<String>get("securityLevel"), searchBean.getSecurityLevel()));
+            }
+            if (StringUtils.hasText(searchBean.getBadCount())) {
+                predicates.add(builder.equal(root.<String>get("badCount"), searchBean.getBadCount()));
+            }
+            if (StringUtils.hasText(searchBean.getCreationDate())) {
+                predicates.add(builder.equal(root.<String>get("creationDate"), searchBean.getCreationDate()));
+            }
+            if (StringUtils.hasText(searchBean.getModifiedDate())) {
+                predicates.add(builder.equal(root.<String>get("modifiedDate"), searchBean.getModifiedDate()));
+            }
+            if (StringUtils.hasText(searchBean.getDescription())) {
+                predicates.add(builder.equal(root.<String>get("description"), searchBean.getDescription()));
+            }
+            if (nonNull(searchBean.getIsConnectable())) {
+                predicates.add(builder.equal(root.<String>get("isConnectable"), searchBean.getIsConnectable()));
+            }
+            if (nonNull(searchBean.getStatusCode())) {
+                predicates.add(builder.equal(root.<String>get("statusCode"), searchBean.getStatusCode()));
+            }
+            if (StringUtils.hasText(searchBean.getLastMaintenance())) {
+                predicates.add(builder.equal(root.<String>get("lastMaintenance"), searchBean.getLastMaintenance()));
+            }
+            if (StringUtils.hasText(searchBean.getWhoIsDate())) {
+                predicates.add(builder.equal(root.<String>get("whoIsDate"), searchBean.getWhoIsDate()));
+            }
             return builder.and(predicates.toArray(new Predicate[predicates.size()]));
         };
     }
@@ -107,7 +129,7 @@ public class LinkMaintenanceService {
             CommonException exception = new CommonException(
                     HttpStatus.NOT_FOUND,
                     SERVICE_LOG_MESSAGE + "No links with status " + status + " found!",
-                    null,"GET",null);
+                    null, "GET", null);
             throw exception;
         }
         return links.stream().map(LinkConverter::convert).collect(Collectors.toList());
@@ -119,7 +141,7 @@ public class LinkMaintenanceService {
             CommonException exception = new CommonException(
                     HttpStatus.NOT_FOUND,
                     SERVICE_LOG_MESSAGE + "Link not found!",
-                    null,"PUT",null);
+                    null, "PUT", null);
             throw exception;
         }
 
@@ -151,10 +173,10 @@ public class LinkMaintenanceService {
         repository.delete(foundLink.get());
     }
 
-    private void approveLink (String url, Integer securityLevel) {
+    private void approveLink(String url, Integer securityLevel) {
         Optional<Link> link = repository.findById(url);
         if (link.isPresent()) {
-            if(nonNull(securityLevel)) {
+            if (nonNull(securityLevel)) {
                 link.get().setSecurityLevel(securityLevel);
             } else {
                 link.get().setSecurityLevel(9);
@@ -164,10 +186,10 @@ public class LinkMaintenanceService {
         }
     }
 
-    private void invalidateLink (String url, Integer securityLevel) {
+    private void invalidateLink(String url, Integer securityLevel) {
         Optional<Link> link = repository.findById(url);
         if (link.isPresent()) {
-            if(nonNull(securityLevel)) {
+            if (nonNull(securityLevel)) {
                 link.get().setSecurityLevel(securityLevel);
             } else {
                 link.get().setSecurityLevel(-9);
@@ -181,7 +203,7 @@ public class LinkMaintenanceService {
         Optional<Link> foundLink = repository.findById(url);
         if (!foundLink.isPresent()) {
             CommonException exception = new CommonException(HttpStatus.NOT_FOUND, "Url not found", null, "maintenance", null);
-            log.warning(exception.toString());
+            log.error(exception.toString());
             throw exception;
         }
         Link link = foundLink.get();

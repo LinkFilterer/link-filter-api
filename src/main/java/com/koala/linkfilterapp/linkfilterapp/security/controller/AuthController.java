@@ -1,9 +1,9 @@
 package com.koala.linkfilterapp.linkfilterapp.security.controller;
 
-import com.koala.linkfilterapp.linkfilterapp.security.service.UserService;
 import com.koala.linkfilterapp.linkfilterapp.security.dto.*;
 import com.koala.linkfilterapp.linkfilterapp.security.exception.UserAlreadyExistAuthenticationException;
 import com.koala.linkfilterapp.linkfilterapp.security.jwt.TokenProvider;
+import com.koala.linkfilterapp.linkfilterapp.security.service.UserService;
 import com.koala.linkfilterapp.linkfilterapp.security.utils.GeneralUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -43,7 +43,7 @@ public class AuthController {
             SecurityContextHolder.getContext().setAuthentication(authentication);
             String jwt = tokenProvider.createToken(authentication);
             LocalUser localUser = (LocalUser) authentication.getPrincipal();
-            ResponseEntity<JwtAuthenticationResponse> response =  ResponseEntity.ok(new JwtAuthenticationResponse(jwt, GeneralUtils.buildUserInfo(localUser)));
+            ResponseEntity<JwtAuthenticationResponse> response = ResponseEntity.ok(new JwtAuthenticationResponse(jwt, GeneralUtils.buildUserInfo(localUser)));
             log.info(response.toString());
             return response;
         } catch (Exception e) {

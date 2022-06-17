@@ -5,7 +5,7 @@ public enum BanStatus {
 
     private final String action;
 
-    private BanStatus(String action) {
+    BanStatus(String action) {
         this.action = action;
     }
 

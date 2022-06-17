@@ -40,14 +40,11 @@ import java.util.Arrays;
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Autowired
+    CustomOidcUserService customOidcUserService;
+    @Autowired
     private UserDetailsService userDetailsService;
-
     @Autowired
     private CustomOAuth2UserService customOAuth2UserService;
-
-    @Autowired
-    CustomOidcUserService customOidcUserService;
-
     @Autowired
     private OAuth2AuthenticationSuccessHandler oAuth2AuthenticationSuccessHandler;
 

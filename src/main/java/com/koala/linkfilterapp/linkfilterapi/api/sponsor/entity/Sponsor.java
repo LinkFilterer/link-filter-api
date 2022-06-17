@@ -10,26 +10,26 @@ import java.util.Date;
 @Table(name = "sponsor")
 public class Sponsor {
     @Id
-    @Column (name = "projectName", length = 64)
+    @Column(name = "projectName", length = 64)
     String id;
 
-    @Column (name = "description")
+    @Column(name = "description")
     String description;
 
-    @Column (name = "banner")
+    @Column(name = "banner")
     String banner;
 
-    @Column (name = "url", length = 64)
+    @Column(name = "url", length = 64)
     String url;
 
-    @Column (name = "creationDate")
+    @Column(name = "creationDate")
     @Temporal(TemporalType.DATE)
     Date creationDate;
 
-    @Column (name = "endDate")
+    @Column(name = "endDate")
     @Temporal(TemporalType.DATE)
     Date endDate;
 
-    @Column (name = "weight", nullable = false)
+    @Column(name = "weight", nullable = false)
     Double weight = 1.0;
 }

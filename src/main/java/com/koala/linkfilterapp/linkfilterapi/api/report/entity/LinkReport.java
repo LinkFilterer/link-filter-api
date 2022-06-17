@@ -11,7 +11,7 @@ import java.util.Date;
 @Table(name = "LINK_REPORTS")
 public class LinkReport {
     @Id
-    @GeneratedValue(strategy= GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.AUTO)
     Integer id;
 
     @Column(name = "url", length = 64)
@@ -28,7 +28,7 @@ public class LinkReport {
     @Column(name = "ipAddress", nullable = false, updatable = false, length = 39)
     String ipAddress;
 
-    @Column (name = "requestTime", nullable = false)
+    @Column(name = "requestTime", nullable = false)
     @Temporal(TemporalType.TIMESTAMP)
     Date reportTime;
 

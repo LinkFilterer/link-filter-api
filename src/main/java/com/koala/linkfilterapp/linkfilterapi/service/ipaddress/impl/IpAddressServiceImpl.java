@@ -58,10 +58,18 @@ public class IpAddressServiceImpl implements IpAddressService {
     private Specification<IpAddress> createQuery(IpSearchBean searchBean) {
         return (root, query, builder) -> {
             final List<Predicate> predicates = new ArrayList<>();
-            if(StringUtils.hasText(searchBean.getIpAddress())) { predicates.add(builder.equal(root.<String>get("ipAddress"), searchBean.getIpAddress())); }
-            if(nonNull(searchBean.getIpAddressType())) { predicates.add(builder.equal(root.<String>get("ipAddressType"), searchBean.getIpAddressType())); }
-            if(nonNull(searchBean.getIsBanned())) { predicates.add(builder.equal(root.<String>get("isBanned"), searchBean.getIsBanned())); }
-            if(nonNull(searchBean.getLastAccessed())) { predicates.add(builder.equal(root.<String>get("lastAccessed"), searchBean.getLastAccessed())); }
+            if (StringUtils.hasText(searchBean.getIpAddress())) {
+                predicates.add(builder.equal(root.<String>get("ipAddress"), searchBean.getIpAddress()));
+            }
+            if (nonNull(searchBean.getIpAddressType())) {
+                predicates.add(builder.equal(root.<String>get("ipAddressType"), searchBean.getIpAddressType()));
+            }
+            if (nonNull(searchBean.getIsBanned())) {
+                predicates.add(builder.equal(root.<String>get("isBanned"), searchBean.getIsBanned()));
+            }
+            if (nonNull(searchBean.getLastAccessed())) {
+                predicates.add(builder.equal(root.<String>get("lastAccessed"), searchBean.getLastAccessed()));
+            }
             return builder.and(predicates.toArray(new Predicate[predicates.size()]));
         };
     }
@@ -69,7 +77,7 @@ public class IpAddressServiceImpl implements IpAddressService {
     public boolean checkIfBanned(String ipAddress) {
         IpAddressPk id = new IpAddressPk(ipAddress, "N/A");
         Optional<IpAddress> ipAddressEntity = repository.findById(id);
-        if(ipAddressEntity.isPresent()) {
+        if (ipAddressEntity.isPresent()) {
             ipAddressEntity.get().setLastAccessed(new Date());
             repository.save(ipAddressEntity.get());
             return BanStatus.BAN.equals(ipAddressEntity.get().getIsBanned());
@@ -85,7 +93,7 @@ public class IpAddressServiceImpl implements IpAddressService {
     public boolean checkIfBanned(String ipAddress, AddressType addressType) {
         IpAddressPk id = new IpAddressPk(ipAddress, "N/A");
         Optional<IpAddress> ipAddressEntity = repository.findById(id);
-        if(ipAddressEntity.isPresent()) {
+        if (ipAddressEntity.isPresent()) {
             ipAddressEntity.get().setLastAccessed(new Date());
             repository.save(ipAddressEntity.get());
             return BanStatus.BAN.equals(ipAddressEntity.get().getIsBanned());
@@ -99,7 +107,7 @@ public class IpAddressServiceImpl implements IpAddressService {
     public boolean checkIfBanned(String ipAddress, AddressType addressType, String userId) {
         IpAddressPk id = new IpAddressPk(ipAddress, userId);
         Optional<IpAddress> ipAddressEntity = repository.findById(id);
-        if(ipAddressEntity.isPresent()) {
+        if (ipAddressEntity.isPresent()) {
             ipAddressEntity.get().setLastAccessed(new Date());
             repository.save(ipAddressEntity.get());
             return BanStatus.BAN.equals(ipAddressEntity.get().getIsBanned());
@@ -113,7 +121,7 @@ public class IpAddressServiceImpl implements IpAddressService {
     @Override
     public List<IpAddress> manageIpBan(List<BanAction> request) throws CommonException {
         IpAddressPk id = new IpAddressPk();
-        if(!CollectionUtils.isEmpty(request)) {
+        if (!CollectionUtils.isEmpty(request)) {
             return request.stream().map(action -> {
                 IpAddress entity;
                 Optional<IpAddress> ipAddressEntity = repository.findById(id);

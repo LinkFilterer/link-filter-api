@@ -39,10 +39,6 @@ public class LocalUser extends User implements OAuth2User, OidcUser {
         return localUser;
     }
 
-    public void setAttributes(Map<String, Object> attributes) {
-        this.attributes = attributes;
-    }
-
     @Override
     public String getName() {
         return this.user.getDisplayName();
@@ -51,6 +47,10 @@ public class LocalUser extends User implements OAuth2User, OidcUser {
     @Override
     public Map<String, Object> getAttributes() {
         return this.attributes;
+    }
+
+    public void setAttributes(Map<String, Object> attributes) {
+        this.attributes = attributes;
     }
 
     @Override

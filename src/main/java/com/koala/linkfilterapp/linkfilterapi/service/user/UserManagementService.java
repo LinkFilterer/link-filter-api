@@ -65,7 +65,7 @@ public class UserManagementService {
         }
 
         BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
-        if(!foundUser.get().getPassword().equals(user.getPassword())) {
+        if (!foundUser.get().getPassword().equals(user.getPassword())) {
             user.setPassword(encoder.encode(user.getPassword()));
         }
         user.setModifiedDate(new Date());

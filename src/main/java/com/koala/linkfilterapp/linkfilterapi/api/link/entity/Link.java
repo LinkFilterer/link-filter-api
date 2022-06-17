@@ -16,51 +16,51 @@ import java.util.List;
 @Table(name = "link")
 public class Link implements Serializable {
     @Id
-    @Column (name = "url", length = 64)
+    @Column(name = "url", length = 64)
     String url;
 
-    @Column (name = "status")
+    @Column(name = "status")
     LinkStatus status;
 
-    @Column (name = "securityLevel")
+    @Column(name = "securityLevel")
     Integer securityLevel;
 
-    @Column (name = "badCount")
+    @Column(name = "badCount")
     Integer badCount;
 
-    @Column (name = "creationDate")
+    @Column(name = "creationDate")
     @Temporal(TemporalType.DATE)
     Date creationDate;
 
-    @Column (name = "modifiedDate")
+    @Column(name = "modifiedDate")
     @Temporal(TemporalType.DATE)
     Date modifiedDate;
 
-    @Column (name = "description", length = 64)
+    @Column(name = "description", length = 64)
     String description;
 
-    @Column (name = "isConnectable")
+    @Column(name = "isConnectable")
     Boolean isConnectable;
 
-    @Column (name = "statusCode")
+    @Column(name = "statusCode")
     Integer statusCode;
 
-    @Column (name = "lastMaintenance")
+    @Column(name = "lastMaintenance")
     @Temporal(TemporalType.TIMESTAMP)
     Date lastMaintenance;
 
-    @Column (name = "whoIsDate")
+    @Column(name = "whoIsDate")
     @Temporal(TemporalType.TIMESTAMP)
     Date whoIsDate;
 
     @ToString.Exclude
-    @OneToMany (orphanRemoval = true)
-    @JoinColumn (name = "url")
+    @OneToMany(orphanRemoval = true)
+    @JoinColumn(name = "url")
     List<RequestHistory> requestHistory;
 
     @ToString.Exclude
-    @OneToMany (orphanRemoval = true)
-    @JoinColumn (name = "url")
+    @OneToMany(orphanRemoval = true)
+    @JoinColumn(name = "url")
     List<LinkReport> reports;
 
     public void incrementBadCount() {

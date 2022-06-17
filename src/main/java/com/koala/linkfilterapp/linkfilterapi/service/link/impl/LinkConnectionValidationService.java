@@ -25,7 +25,6 @@ public class LinkConnectionValidationService {
     Logger log = Logger.getLogger("LinkVerificationService");
 
 
-
     public void isValidConnectionJSoup(Link link) {
         String parsed = null;
         try {
@@ -39,7 +38,7 @@ public class LinkConnectionValidationService {
                     .execute();
             int statusCode = response.statusCode();
             link.setStatusCode(statusCode);
-            log.info(response.url().toExternalForm() +" : " + statusCode);
+            log.info(response.url().toExternalForm() + " : " + statusCode);
             if (statusCode >= 500) { // Redirection, Client Error, or Server Error
                 link.setIsConnectable(false);
                 link.setStatus(LinkStatus.INVALID);
@@ -51,15 +50,15 @@ public class LinkConnectionValidationService {
                 link.setStatus(LinkStatus.INVALID);
                 link.setIsConnectable(false);
             }
-        } catch(SocketTimeoutException e) {
+        } catch (SocketTimeoutException e) {
             log.info(String.format("Retrying %s with 'http://'", parsed));
             isValidConnectionJSoupHttp(link);
-        } catch(HttpStatusException e) {
+        } catch (HttpStatusException e) {
             log.log(Level.WARNING, e.toString());
             link.setStatus(LinkStatus.UNKNOWN);
             link.setStatusCode(e.getStatusCode());
             link.setIsConnectable(false);
-        } catch(Exception e) {
+        } catch (Exception e) {
             log.info(String.format("Retrying %s with 'http://'", parsed));
             isValidConnectionJSoupHttp(link);
         }
@@ -75,7 +74,7 @@ public class LinkConnectionValidationService {
                     .execute();
             int statusCode = response.statusCode();
             link.setStatusCode(statusCode);
-            log.info(response.url().toExternalForm() +" : " + statusCode);
+            log.info(response.url().toExternalForm() + " : " + statusCode);
             if (statusCode >= 500) { // Redirection, Client Error, or Server Error
                 link.setIsConnectable(false);
                 link.setStatus(LinkStatus.INVALID);
@@ -86,18 +85,17 @@ public class LinkConnectionValidationService {
                 link.setStatus(LinkStatus.INVALID);
                 link.setIsConnectable(false);
             }
-        } catch(SocketTimeoutException e) {
+        } catch (SocketTimeoutException e) {
             log.log(Level.WARNING, e.toString());
             link.setStatus(LinkStatus.UNKNOWN);
             link.setIsConnectable(false);
 
-        } catch(HttpStatusException e) {
+        } catch (HttpStatusException e) {
             log.log(Level.WARNING, e.toString());
             link.setStatus(LinkStatus.UNKNOWN);
             link.setStatusCode(e.getStatusCode());
             link.setIsConnectable(false);
-        }
-        catch(Exception e) {
+        } catch (Exception e) {
             log.log(Level.WARNING, e.toString());
             link.setStatus(LinkStatus.UNKNOWN);
             link.setIsConnectable(false);
@@ -110,7 +108,7 @@ public class LinkConnectionValidationService {
         ChromeOptions options = new ChromeOptions();
         options.addArguments("headless");
         options.addArguments("--disable-blink-features=AutomationControlled");
-        WebDriver driver = new ChromeDriver(options);;
+        WebDriver driver = new ChromeDriver(options);
         String parsed = null;
         String resolvedUrl = null;
         for (Link link : links) {
@@ -128,7 +126,7 @@ public class LinkConnectionValidationService {
                 log.info(resolvedUrl + " failed to connect");
                 log.warning(e.toString());
                 link.setIsConnectable(false);
-            } catch(Exception e){
+            } catch (Exception e) {
                 log.log(Level.WARNING, e.toString());
             }
         }
@@ -146,7 +144,6 @@ public class LinkConnectionValidationService {
             String parsedUrl = parseUrlToDomainString(url);
             WebDriver driver = new ChromeDriver(options);
             driver.get(parsedUrl);
-            System.out.println(driver.getCurrentUrl());
             driver.quit();
             return true;
         } catch (Exception e) {
@@ -165,7 +162,7 @@ public class LinkConnectionValidationService {
             if (statusCode >= 400) { //Client Error, or Server Error
                 return false;
             } else if (statusCode >= 100 && !isDNSError(response)) {
-                log.info(response.url().toExternalForm() +" : " + statusCode);
+                log.info(response.url().toExternalForm() + " : " + statusCode);
                 return true;
             } else {
                 return false;

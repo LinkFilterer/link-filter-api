@@ -14,10 +14,8 @@ import com.koala.linkfilterapp.linkfilterapi.service.report.ReportService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.CacheEvict;
-import org.springframework.http.HttpStatus;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
-import org.springframework.util.CollectionUtils;
 
 import java.sql.Timestamp;
 import java.util.*;
@@ -53,7 +51,6 @@ public class LinkServiceImpl implements LinkService {
     // Will only check the database for results
     public LinkBean checkLink(String url, String ipAddress, RequestHistory request) throws CommonException {
         log.info(CHECK_LINK_CD + " url = '" + url + "' received from " + ipAddress);
-
         String parsedUrl = parseUrlToDomainString(url);
 
         Optional<Link> retrievedEntity = repository.findByUrl(parsedUrl);
@@ -67,18 +64,17 @@ public class LinkServiceImpl implements LinkService {
             request.setUrl(parsedUrl);
             performConnectionCheck(retrievedEntity.get(), request);
         }
-        log.info("URL FOUND");
         requestHistoryService.processRequestHistory(request, nonNull(entity) ? entity : retrievedEntity.get());
         return convert(nonNull(entity) ? entity : retrievedEntity.get());
     }
 
     @Scheduled(fixedRate = 300000)
     @CacheEvict(value = "linkUrls", allEntries = true)
-    public void evictLinkCaches() {}
+    public void evictLinkCaches() {
+    }
 
     public List<LinkBean> checkLinks(List<String> urls, String ipAddress, List<RequestHistory> requestHistories) throws CommonException {
         log.info(CHECK_LINK_CD + " url = '" + urls + "' received from " + ipAddress);
-
         Map<String, String> unparsedToParsedUrlMap = new HashMap<>();
 
         List<String> parsedUrls = urls.stream().distinct().map(url -> {
@@ -97,7 +93,7 @@ public class LinkServiceImpl implements LinkService {
         List<String> unfoundUrls = parsedUrls.stream().filter(url -> !foundUrls.contains(url)).collect(Collectors.toList());
         List<Link> newEntities = new ArrayList<>();
 
-        for (String unfoundUrl : unfoundUrls ) {
+        for (String unfoundUrl : unfoundUrls) {
             Optional<RequestHistory> mappedRequest = requestHistories.stream().filter(request -> request.getRequestedUrl().equals(unparsedToParsedUrlMap.get(unfoundUrl))).findAny();
             Link entity = saveNewEntity(unfoundUrl);
             performConnectionCheck(entity, mappedRequest.get());
@@ -107,7 +103,7 @@ public class LinkServiceImpl implements LinkService {
         for (Link link : foundLinks) {
             String unparsedUrl = unparsedToParsedUrlMap.get(link.getUrl());
             Optional<RequestHistory> mappedRequest = requestHistories.stream().filter(request ->
-                    request.getRequestedUrl().equals(unparsedUrl))
+                            request.getRequestedUrl().equals(unparsedUrl))
                     .findAny();
 
             if (isNull(link.getStatus()) || link.getStatus().equals(LinkStatus.UNPROCCESSED)) {
@@ -118,18 +114,15 @@ public class LinkServiceImpl implements LinkService {
             }
         }
         foundLinks.addAll(newEntities);
-        log.info("multi checklink processed: " + foundLinks);
         return foundLinks.stream().map(LinkConverter::convert).collect(Collectors.toList());
     }
 
     private void performConnectionCheck(Link entity, RequestHistory request) {
         if (connectionValidationService.isValidConnection(entity.getUrl())) {
             whoIsService.setWhoIsDate(entity);
-            log.info("URL CONNECTABLE, UNKNOWN STATUS");
             entity.setStatus(LinkStatus.SUSPICIOUS);
             requestHistoryService.processRequestHistory(request, entity);
         } else {
-            log.info("URL CANT BE CONNECTED TO");
             entity.setStatus(LinkStatus.NOT_CONNECTABLE);
             requestHistoryService.processRequestHistory(request, entity);
         }
@@ -164,7 +157,7 @@ public class LinkServiceImpl implements LinkService {
 
     private void saveNewEntity(Link entity) {
         Timestamp currentTime = new Timestamp((System.currentTimeMillis()));
-        if(isNull(entity.getCreationDate())) {
+        if (isNull(entity.getCreationDate())) {
             entity.setCreationDate(currentTime);
         }
         entity.setModifiedDate(currentTime);
@@ -175,7 +168,7 @@ public class LinkServiceImpl implements LinkService {
         Link entity = new Link();
         entity.setUrl(url);
         Timestamp currentTime = new Timestamp((System.currentTimeMillis()));
-        if(isNull(entity.getCreationDate())) {
+        if (isNull(entity.getCreationDate())) {
             entity.setCreationDate(currentTime);
         }
         entity.setModifiedDate(currentTime);

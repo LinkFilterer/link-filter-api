@@ -33,7 +33,7 @@ public class SponsorMaintenanceController {
     IpAddressServiceImpl ipAddressService;
 
 
-    @GetMapping (value = "/searchSponsors")
+    @GetMapping(value = "/searchSponsors")
     public ResponseEntity<RestResponse<Page<Sponsor>>> searchSponsors(
             @RequestParam(required = false) String projectName,
             @RequestParam(required = false) String description,
@@ -104,7 +104,7 @@ public class SponsorMaintenanceController {
     }
 
     @CacheEvict(value = "sponsorCache")
-    @DeleteMapping (value = "/deleteSponsor")
+    @DeleteMapping(value = "/deleteSponsor")
     public ResponseEntity<RestResponse<String>> deleteSponsor(String projectName, HttpServletRequest request) throws CommonException {
         if (ipAddressService.checkIfBanned(request.getRemoteAddr())) {
             return null;

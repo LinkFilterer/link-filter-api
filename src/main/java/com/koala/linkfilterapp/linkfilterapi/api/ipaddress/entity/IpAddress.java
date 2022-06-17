@@ -9,7 +9,7 @@ import lombok.NoArgsConstructor;
 import javax.persistence.*;
 import java.util.Date;
 
-@Table (name = "ip_table")
+@Table(name = "ip_table")
 @Entity
 @Data
 @AllArgsConstructor
