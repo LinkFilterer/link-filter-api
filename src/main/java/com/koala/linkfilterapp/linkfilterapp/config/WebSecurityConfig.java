@@ -71,25 +71,24 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .authenticationEntryPoint(new RestAuthenticationEntryPoint())
                 .and()
                 .authorizeRequests()
-//                .antMatchers("/signup","/login","/signin","/","/checkLink","/reportLink","/getSponsor",
-//                        "/error", "/api/auth/**", "/oauth2/**").permitAll()
-//                .antMatchers("/discord/**").hasRole("PARTNER")
-//                .antMatchers(
-//                        "/discord/**"
-//                        ,"/maintenance/banIp"
-//                        ,"/maintenance/getAllIps"
-//                        ,"/maintenance/searchIps"
-//                        ,"/maintenance/createLink"
-//                        ,"/maintenance/updateLink"
-//                        ,"/maintenance/deleteReportsByIp"
-//                        ,"/maintenance/getReports"
-//                        ,"/maintenance/getAllRequestHistory"
-//                        ,"/maintenance/getRequestHistory"
-//                        ,"/maintenance/updateSponsor"
-//                        ,"/maintenance/searchSponsors"
-//                ).hasRole("MODERATOR")
-                .anyRequest().permitAll()
-//                .hasRole("ADMIN")
+                .antMatchers("/signup","/login","/signin","/","/checkLink","/reportLink","/getSponsor",
+                        "/error", "/api/auth/**", "/oauth2/**").permitAll()
+                .antMatchers("/discord/**").hasRole("PARTNER")
+                .antMatchers(
+                        "/discord/**"
+                        ,"/maintenance/banIp"
+                        ,"/maintenance/getAllIps"
+                        ,"/maintenance/searchIps"
+                        ,"/maintenance/createLink"
+                        ,"/maintenance/updateLink"
+                        ,"/maintenance/deleteReportsByIp"
+                        ,"/maintenance/getReports"
+                        ,"/maintenance/getAllRequestHistory"
+                        ,"/maintenance/getRequestHistory"
+                        ,"/maintenance/updateSponsor"
+                        ,"/maintenance/searchSponsors"
+                ).hasRole("MODERATOR")
+                .anyRequest().hasRole("ADMIN")
                 .and()
                 .oauth2Login()
                 .authorizationEndpoint()
