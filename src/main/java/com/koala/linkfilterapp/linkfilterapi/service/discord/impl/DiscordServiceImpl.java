@@ -6,6 +6,8 @@ import com.koala.linkfilterapp.linkfilterapi.api.discord.entity.DiscordSettings;
 import com.koala.linkfilterapp.linkfilterapi.repository.DiscordSettingsRepository;
 import com.koala.linkfilterapp.linkfilterapi.service.discord.DiscordService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
@@ -20,6 +22,7 @@ public class DiscordServiceImpl implements DiscordService {
     @Autowired
     DiscordSettingsRepository repository;
 
+    @Cacheable("discordSettings")
     @Override
     public DiscordSettings getSettings(String serverId) throws CommonException {
         Optional<DiscordSettings> entity = repository.findById(serverId);
@@ -29,6 +32,7 @@ public class DiscordServiceImpl implements DiscordService {
         return entity.get();
     }
 
+    @CacheEvict("discordSettings")
     @Override
     public DiscordSettings updateSettings(DiscordSettingsRequest settings) throws CommonException {
         Optional<DiscordSettings> entity = repository.findById(settings.getServerId());
