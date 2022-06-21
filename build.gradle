@@ -1,5 +1,5 @@
 plugins {
-	id 'io.spring.dependency-management' version '1.0.11.RELEASE'
+	id 'io.spring.dependency-management'
 	id 'java'
 	id 'jacoco'
 }
@@ -19,6 +19,7 @@ configurations {
 }
 
 repositories {
+	jcenter()
 	mavenCentral()
 	maven{
 		url "https://plugins.gradle.org/m2/"
