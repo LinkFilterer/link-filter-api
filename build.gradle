@@ -22,7 +22,7 @@ configurations {
 repositories {
 	mavenCentral()
 	maven{
-		url "htpps://plugins.gradle.org/m2/"
+		url "https://plugins.gradle.org/m2/"
 	}
 }
 
