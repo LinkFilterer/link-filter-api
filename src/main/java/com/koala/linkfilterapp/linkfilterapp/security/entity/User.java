@@ -11,6 +11,7 @@ import java.util.Set;
 @Data
 @NoArgsConstructor
 @Entity
+@Table(name = "users")
 public class User implements Serializable {
     @Column(name = "created_date", nullable = false, updatable = false)
     @Temporal(TemporalType.TIMESTAMP)
@@ -25,7 +26,7 @@ public class User implements Serializable {
     String providerUserId;
     String email;
     String ipAddress;
-    @Column(name = "enabled", columnDefinition = "BIT", length = 1)
+    @Column(name = "enabled", columnDefinition = "TINYINT(1)", length = 1)
     boolean enabled;
     @Column(name = "DISPLAY_NAME")
     String displayName;
