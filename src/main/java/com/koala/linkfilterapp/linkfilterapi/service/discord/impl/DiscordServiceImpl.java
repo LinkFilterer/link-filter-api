@@ -40,7 +40,7 @@ public class DiscordServiceImpl implements DiscordService {
         if (!entity.isPresent()) {
             DiscordSettings newSettings = new DiscordSettings();
             newSettings.setServerId(settings.getServerId());
-            newSettings.setDeleteThresh(nonNull(settings.getDeleteThreshold()) ? settings.getDeleteThreshold() : 8);
+            newSettings.setDeleteThresh(nonNull(settings.getDeleteThreshold()) ? settings.getDeleteThreshold() : -8);
             newSettings.setIsAutoDeleteEnabled(nonNull(settings.getIsAutoDeleteEnabled()) ? settings.getIsAutoDeleteEnabled() : false);
             newSettings.setCreatedTime(new Date());
             settingsEntity = repository.save(newSettings);
