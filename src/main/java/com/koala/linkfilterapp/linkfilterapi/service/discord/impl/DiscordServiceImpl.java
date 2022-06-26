@@ -32,7 +32,7 @@ public class DiscordServiceImpl implements DiscordService {
         return entity.get();
     }
 
-    @CacheEvict("discordSettings")
+    @CacheEvict(value = "discordSettings", allEntries = true)
     @Override
     public DiscordSettings updateSettings(DiscordSettingsRequest settings) throws CommonException {
         Optional<DiscordSettings> entity = repository.findById(settings.getServerId());
