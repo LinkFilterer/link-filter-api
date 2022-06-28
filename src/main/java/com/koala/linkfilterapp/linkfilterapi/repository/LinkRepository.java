@@ -18,7 +18,7 @@ public interface LinkRepository extends JpaRepository<Link, String>, JpaSpecific
 
     List<Link> findByStatus(LinkStatus status);
 
-    @Cacheable("linkUrl")
+//    @Cacheable("linkUrl")
     Optional<Link> findByUrl(String url);
 
     Page<Link> findByUrlContains(String url, Pageable pageAble);
