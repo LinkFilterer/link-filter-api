@@ -1,6 +1,7 @@
 .gradle
 /build/
 
+db-data
 out
 .idea
 
