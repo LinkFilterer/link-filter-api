@@ -46,6 +46,15 @@ services:
            "spring.datasource.validation-query":"SELECT 1",
            "server.port":"8080"
          }'
+  discord_bot:
+    container_name: discord_bot
+    # Need to add discord folder to build
+    build:
+      context: .
+      dockerfile: Dockerfile
+    restart: unless-stopped
+    networks:
+      - database
 
 
 networks:
