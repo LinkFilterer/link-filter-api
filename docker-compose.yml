@@ -48,25 +48,23 @@ services:
            "spring.datasource.validation-query":"SELECT 1",
            "server.port":"8080"
          }'
-  discord_bot:
-    container_name: discord_bot
-    # Need to add discord folder to build
-    build:
-      context: .
-      dockerfile: Dockerfile
-    restart: unless-stopped
-    networks:
-      - database
-  admin_dashboard:
-    container_name: admin_dashboard
-    # Need to add admin(linkfilter ui) folder to build (angular)
-    build: .
-    ports:
-      - "4200:80"
-    volumes:
-      - .:/code
-    environment:
-      ANGULAR_ENV: development
+#  discord_bot:
+#    container_name: discord_bot
+#    # Need to add discord folder to build
+#    image: discord-bot:latest
+#    restart: unless-stopped
+#    networks:
+#      - database
+#  admin_dashboard:
+#    container_name: admin_dashboard
+#    # Need to add admin(linkfilter ui) folder to build (angular)
+#    build: .
+#    ports:
+#      - "4200:80"
+#    volumes:
+#      - .:/code
+#    environment:
+#      ANGULAR_ENV: development
 
 networks:
   database:
