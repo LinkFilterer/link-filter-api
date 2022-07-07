@@ -2,6 +2,7 @@ package com.koala.linkfilterapp.linkfilterapp.security.entity;
 
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.Type;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -26,7 +27,8 @@ public class User implements Serializable {
     String providerUserId;
     String email;
     String ipAddress;
-    @Column(name = "enabled", columnDefinition = "TINYINT(1)", length = 1)
+    @Column(name = "enabled", length = 1)
+    @Type(type = "org.hibernate.type.NumericBooleanType")
     boolean enabled;
     @Column(name = "DISPLAY_NAME")
     String displayName;
