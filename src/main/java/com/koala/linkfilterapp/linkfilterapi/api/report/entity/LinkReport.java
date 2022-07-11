@@ -14,7 +14,7 @@ public class LinkReport {
     @GeneratedValue(strategy = GenerationType.AUTO)
     Integer id;
 
-    @Column(name = "url", length = 64)
+    @Column(name = "url", length = 64, insertable = false, updatable = false)
     String url;
 
     @Column(name = "userId", length = 32)
@@ -32,7 +32,7 @@ public class LinkReport {
     @Temporal(TemporalType.TIMESTAMP)
     Date reportTime;
 
-    @JoinColumn(name = "url", insertable = false)
+    @JoinColumn(name = "url")
     @ManyToOne(fetch = FetchType.LAZY)
     Link linkRequested;
 }
