@@ -8,6 +8,7 @@ import com.koala.linkfilterapp.linkfilterapi.repository.LinkReportRepository;
 import com.koala.linkfilterapp.linkfilterapi.repository.LinkRepository;
 import com.koala.linkfilterapp.linkfilterapi.service.report.ReportService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import java.sql.Timestamp;
@@ -30,6 +31,10 @@ public class ReportServiceImpl implements ReportService {
     public Link reportLink(String url, String ipAddress, String userId, boolean isValid) throws CommonException {
         Optional<LinkReport> foundReport = reportRepository.findByUrlAndIpAddress(url, ipAddress);
         // TODO: Rework to do interval-based reported per ip
+        Optional<Link> foundLink = linkRepository.findById(url);
+        if (foundLink.isPresent() && (foundLink.get().getSecurityLevel() > 8 || foundLink.get().getStatus().equals(LinkStatus.VERIFIED))) {
+            throwAlreadyVerifiedException();
+        }
         if (foundReport.isPresent()) {
             foundReport.get().setValidReport(isValid);
             foundReport.get().setUserId(userId);
@@ -41,12 +46,9 @@ public class ReportServiceImpl implements ReportService {
         }
     }
 
-    private Link saveNewReport(String url, String ipAddress, String userId, boolean isValid) {
+    private Link saveNewReport(String url, String ipAddress, String userId, boolean isValid) throws CommonException {
         Optional<Link> foundLink = linkRepository.findById(url);
-        if (foundLink.isPresent() && foundLink.get().getStatus().equals(LinkStatus.VERIFIED)) {
-            log.info(String.format("Link already verified %s", url));
-            return foundLink.get();
-        } else if (foundLink.isPresent()) {
+        if (foundLink.isPresent()) {
             log.info(String.format("Updating previous report: %s", url));
             LinkReport linkReport = convert(foundLink.get());
             linkReport.setIpAddress(ipAddress);
@@ -73,11 +75,10 @@ public class ReportServiceImpl implements ReportService {
         }
     }
 
-    private Link saveUpdateReport(LinkReport report, boolean isValid) {
-        Optional<Link> foundLink = linkRepository.findById(report.getUrl());
-        if (foundLink.isPresent() && foundLink.get().getStatus().equals(LinkStatus.VERIFIED)) {
-            return null;
-        }
+
+
+    private Link saveUpdateReport(LinkReport report, boolean isValid) throws CommonException {
+
         long validReportCnt = reportRepository.countByUrlAndValidReport(report.getUrl(), true);
         long invalidReportCnt = reportRepository.countByUrlAndValidReport(report.getUrl(), false);
         log.info(String.format("Invalid count: %d Valid Count: %d", invalidReportCnt, validReportCnt));
@@ -107,6 +108,11 @@ public class ReportServiceImpl implements ReportService {
         report.setReportTime(new Timestamp(System.currentTimeMillis()));
         reportRepository.save(report);
         return report.getLinkRequested();
+    }
+
+    private void throwAlreadyVerifiedException() throws CommonException {
+        CommonException exception = new CommonException(HttpStatus.OK, "Link has already been verified by the team");
+        throw exception;
     }
 
     // Determines Link's rating depending on valid/invalid count

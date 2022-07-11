@@ -14,15 +14,16 @@ import com.koala.linkfilterapp.linkfilterapi.service.report.ReportService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.http.HttpStatus;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
+import javax.naming.LinkException;
 import java.sql.Timestamp;
 import java.util.*;
 import java.util.stream.Collectors;
 
-import static com.koala.linkfilterapp.linkfilterapi.service.common.CommonApiConstants.CHECK_LINK_CD;
-import static com.koala.linkfilterapp.linkfilterapi.service.common.CommonApiConstants.REPORT_LINK_CD;
+import static com.koala.linkfilterapp.linkfilterapi.service.common.CommonApiConstants.*;
 import static com.koala.linkfilterapp.linkfilterapi.service.link.LinkConverter.convert;
 import static com.koala.linkfilterapp.linkfilterapi.service.link.validator.LinkValidator.parseUrlToDomainString;
 import static com.koala.linkfilterapp.linkfilterapi.service.link.validator.LinkValidator.validateReportType;
@@ -136,8 +137,12 @@ public class LinkServiceImpl implements LinkService {
         requestHistoryService.ipCheck(ipAddress, userId);
         log.info(request.toString());
 
-        boolean isValid = validateReportType(reportType);
+
         String parsedUrl = parseUrlToDomainString(url);
+        boolean isValid = validateReportType(reportType);
+        if (checkIfVerified(url)) {
+            throwAlreadyVerifiedException();
+        }
 
         Optional<Link> retrievedEntity = repository.findById(parsedUrl);
         Link entity = null;
@@ -153,6 +158,16 @@ public class LinkServiceImpl implements LinkService {
 
         requestHistoryService.processRequestHistory(request, nonNull(entity) ? entity : retrievedEntity.get());
         return convert(reportService.reportLink(parsedUrl, ipAddress, userId, isValid));
+    }
+
+    private void throwAlreadyVerifiedException() throws CommonException {
+        CommonException exception = new CommonException(HttpStatus.OK, "Link has already been verified by the team");
+        throw exception;
+    }
+
+    private boolean checkIfVerified(String url) {
+        Optional<Link> link = repository.findById(url);
+        return link.filter(value -> value.getSecurityLevel() > 8 || LinkStatus.VERIFIED.equals(value.getStatus())).isPresent();
     }
 
     private void saveNewEntity(Link entity) {
