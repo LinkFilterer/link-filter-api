@@ -32,7 +32,7 @@ public class LinkReport {
     @Temporal(TemporalType.TIMESTAMP)
     Date reportTime;
 
-    @JoinColumn(name = "url", insertable = false, updatable = false)
+    @JoinColumn(name = "url", insertable = false)
     @ManyToOne(fetch = FetchType.LAZY)
     Link linkRequested;
 }
