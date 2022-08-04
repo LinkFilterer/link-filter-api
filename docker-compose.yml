@@ -8,8 +8,10 @@ services:
     ports:
       - "8080:8080"
     networks:
-      - database
-      - nginxengine
+      database:
+      nginxengine:
+        aliases:
+         - linkfilter-api
     environment:
       SPRING_DATASOURCE_URL: jdbc:postgresql://link_db:5432/postgres
       SPRING_DATASOURCE_USER: postgres
