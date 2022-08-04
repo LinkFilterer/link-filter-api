@@ -9,7 +9,7 @@ services:
       - "8080:8080"
     networks:
       - database
-
+      - nginxengine
     environment:
       SPRING_DATASOURCE_URL: jdbc:postgresql://link_db:5432/postgres
       SPRING_DATASOURCE_USER: postgres
@@ -34,6 +34,7 @@ services:
            "spring.datasource.validation-query":"SELECT 1",
            "server.port":"8080"
          }'
+    
 #  admin_dashboard:
 #    container_name: admin_dashboard
 #    # Need to add admin(linkfilter ui) folder to build (angular)
@@ -48,3 +49,5 @@ services:
 networks:
   database:
     external: true
+  nginxengine:
+    external: true 
