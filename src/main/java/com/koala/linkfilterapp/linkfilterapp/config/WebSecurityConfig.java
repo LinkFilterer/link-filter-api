@@ -72,7 +72,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .and()
                 .authorizeRequests()
                 .antMatchers("/signup","/login","/signin","/","/checkLink","/reportLink","/getSponsor",
-                        "/error", "/api/auth/**", "/oauth2/**").permitAll()
+                        "/error", "/api/auth/**","/api/common/**", "/oauth2/**").permitAll()
                 .antMatchers("/discord/**").hasRole("PARTNER")
                 .antMatchers(
                         "/discord/**"

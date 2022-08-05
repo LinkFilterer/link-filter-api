@@ -21,7 +21,7 @@ services:
            "spring.datasource.driver-class-name":"org.postgresql.Driver",
 
            "server.servlet.context-path":"/api",
-           
+
            "spring.datasource.username":"postgres",
            "spring.datasource.password":"AlexLuc2000",
            "spring.jpa.properties.hibernate.dialect":"org.hibernate.dialect.PostgreSQLDialect",

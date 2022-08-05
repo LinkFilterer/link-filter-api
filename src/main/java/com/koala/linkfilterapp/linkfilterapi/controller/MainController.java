@@ -17,10 +17,7 @@ import org.apache.logging.log4j.util.Strings;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -30,6 +27,7 @@ import static com.koala.linkfilterapp.linkfilterapi.controller.common.Controller
 @CrossOrigin(origins = {UI_SERVER_ORIGIN, BROWSER_EXTENSION_ORIGIN})
 @RestController
 @Log4j2
+@RequestMapping("/api/common")
 public class MainController {
 
     @Autowired
