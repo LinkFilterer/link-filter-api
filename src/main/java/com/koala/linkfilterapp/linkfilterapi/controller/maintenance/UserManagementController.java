@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.*;
 
 @Slf4j
 @RestController
-@RequestMapping("/userManagement")
+@RequestMapping("/api/userManagement")
 public class UserManagementController {
     @Autowired
     UserManagementService service;

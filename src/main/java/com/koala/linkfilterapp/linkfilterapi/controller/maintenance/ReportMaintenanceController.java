@@ -19,7 +19,7 @@ import static com.koala.linkfilterapp.linkfilterapi.controller.common.Controller
 
 @CrossOrigin(origins = UI_SERVER_ORIGIN)
 @RestController
-@RequestMapping("/maintenance")
+@RequestMapping("/api/maintenance")
 public class ReportMaintenanceController {
     Logger log = Logger.getLogger("ReportMaintenanceController");
 
