@@ -18,7 +18,7 @@ import java.util.logging.Logger;
 
 @CrossOrigin(origins = "http://localhost:4200")
 @RestController
-@RequestMapping("/api/common")
+@RequestMapping("/common")
 public class SponsorController {
     Logger log = Logger.getLogger("SponsorController");
 

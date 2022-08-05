@@ -32,7 +32,7 @@ import static com.koala.linkfilterapp.linkfilterapi.controller.common.Controller
 @CrossOrigin(origins = {UI_SERVER_ORIGIN, BROWSER_EXTENSION_ORIGIN})
 @RestController
 @Slf4j
-@RequestMapping("/api/discord")
+@RequestMapping("/discord")
 public class DiscordController {
 
     @Autowired

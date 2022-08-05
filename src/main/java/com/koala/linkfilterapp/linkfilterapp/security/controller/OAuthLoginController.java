@@ -11,7 +11,7 @@ import java.util.Map;
 import java.util.logging.Logger;
 
 @RestController
-@RequestMapping("/api/common")
+@RequestMapping("/common")
 public class OAuthLoginController {
     Logger log = Logger.getLogger("OAuthLoginController");
 

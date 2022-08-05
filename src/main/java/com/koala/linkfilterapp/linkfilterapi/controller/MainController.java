@@ -27,7 +27,7 @@ import static com.koala.linkfilterapp.linkfilterapi.controller.common.Controller
 @CrossOrigin(origins = {UI_SERVER_ORIGIN, BROWSER_EXTENSION_ORIGIN})
 @RestController
 @Log4j2
-@RequestMapping("/api/common")
+@RequestMapping("/common")
 public class MainController {
 
     @Autowired
