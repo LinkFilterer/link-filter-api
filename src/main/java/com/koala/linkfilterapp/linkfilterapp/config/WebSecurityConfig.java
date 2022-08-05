@@ -71,22 +71,21 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .authenticationEntryPoint(new RestAuthenticationEntryPoint())
                 .and()
                 .authorizeRequests()
-                .antMatchers("/signup","/login","/signin","/","/checkLink","/reportLink","/getSponsor",
-                        "/error", "/api/auth/**","/api/common/**", "/oauth2/**").permitAll()
-                .antMatchers("/api/discord/**").hasRole("PARTNER")
+                .antMatchers("/error", "/auth/**","/common/**", "/oauth2/**").permitAll()
+                .antMatchers("/discord/**").hasRole("PARTNER")
                 .antMatchers(
-                        "/api/discord/**"
-                        ,"/api/maintenance/banIp"
-                        ,"/api/maintenance/getAllIps"
-                        ,"/api/maintenance/searchIps"
-                        ,"/api/maintenance/createLink"
-                        ,"/api/maintenance/updateLink"
-                        ,"/api/maintenance/deleteReportsByIp"
-                        ,"/api/maintenance/getReports"
-                        ,"/api/maintenance/getAllRequestHistory"
-                        ,"/api/maintenance/getRequestHistory"
-                        ,"/api/maintenance/updateSponsor"
-                        ,"/api/maintenance/searchSponsors"
+                        "/discord/**"
+                        ,"/maintenance/banIp"
+                        ,"/maintenance/getAllIps"
+                        ,"/maintenance/searchIps"
+                        ,"/maintenance/createLink"
+                        ,"/maintenance/updateLink"
+                        ,"/maintenance/deleteReportsByIp"
+                        ,"/maintenance/getReports"
+                        ,"/maintenance/getAllRequestHistory"
+                        ,"/maintenance/getRequestHistory"
+                        ,"/maintenance/updateSponsor"
+                        ,"/maintenance/searchSponsors"
                 ).hasRole("MODERATOR")
                 .anyRequest().hasRole("ADMIN")
                 .and()
