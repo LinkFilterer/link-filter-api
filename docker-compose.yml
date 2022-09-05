@@ -1,7 +1,6 @@
 version: "3.8"
 services:
-  app:
-    container_name: springboot_app
+  springboot_app:
     image: linkfilter/link-filter-api
     restart: unless-stopped
     env_file: .env
@@ -38,7 +37,7 @@ services:
            "spring.datasource.validation-query":"SELECT 1",
            "server.port":"8080"
          }'
-    
+
 #  admin_dashboard:
 #    container_name: admin_dashboard
 #    # Need to add admin(linkfilter ui) folder to build (angular)
@@ -54,4 +53,4 @@ networks:
   database:
     external: true
   nginxengine:
-    external: true 
+    external: true
